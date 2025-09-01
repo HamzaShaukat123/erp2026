@@ -1630,7 +1630,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Wrong Sales Ageing Voucher</h2>
+													<h2 class="card-title">Deleted Sales Ageing Voucher</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1657,7 +1657,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Wrong Purchase Ageing Voucher</h2>
+													<h2 class="card-title">Deleted Purchase Ageing Voucher</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1670,6 +1670,60 @@
 															</tr>
 														</thead>
 														<tbody id="WrongPurTable">
+															
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+
+										<div class="col-12 col-md-6 mb-3">
+											<section class="card">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+
+													<h2 class="card-title">Wrong Sales Ageing Voucher</h2>
+												</header>
+												<div class="card-body scrollable-div">
+													
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
+															</tr>
+														</thead>
+														<tbody id="WrongSaleACTable">
+															
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+
+										<div class="col-12 col-md-6 mb-3">
+											<section class="card">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+
+													<h2 class="card-title">Wrong Purchase Ageing Voucher</h2>
+												</header>
+												<div class="card-body scrollable-div">
+													
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Pur-ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+															</tr>
+														</thead>
+														<tbody id="WrongPurACTable">
 															
 														</tbody>
 													</table>
@@ -2952,6 +3006,16 @@
 					table.deleteRow(0);
 				}
 
+				var table = document.getElementById('WrongSaleACTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('WrongPurACTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/uv',
@@ -2984,6 +3048,8 @@
 						});
 						$('#UVPurTable').html(UVpurchaseRows);
 
+
+						// For deleted Sale Ageing
 						var salesRows = '';
 						$.each(result['sales_ageing'], function (index, value) {
 							salesRows += `<tr>
@@ -2994,7 +3060,7 @@
 						});
 						$('#WrongSaleTable').html(salesRows);
 
-						// For Purchase Ageing
+						// For deleted Purchase Ageing
 						var purchaseRows = '';
 						$.each(result['purchase_ageing'], function (index, value) {
 							purchaseRows += `<tr>
@@ -3004,6 +3070,26 @@
 							</tr>`;
 						});
 						$('#WrongPurTable').html(purchaseRows);
+
+						// For wrong Ac Sale Ageing
+						var wrongsalesacRows = '';
+						$.each(result['salesageing_jv2_account_differ'], function (index, value) {
+							wrongsalesacRows += `<tr>
+								<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+								<td>
+								${value['acc2'] ? value['acc2'] : ''} 
+								${value['acc2'] && value['acc1'] ? ' / ' : ''} 
+								${value['acc1'] ? value['acc1'] : ''}
+								</td>
+								<td>
+								${value['credit'] ? value['credit'] : ''} 
+								${value['credit'] && value['amount'] ? ' / ' : ''} 
+								${value['amount'] ? value['amount'] : ''}
+								</td>
+
+							</tr>`;
+						});
+						$('#WrongSaleACTable').html(wrongsalesacRows);
 					},
 					error: function() {
 						alert("Error loading UV data");
