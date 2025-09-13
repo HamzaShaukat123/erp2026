@@ -471,7 +471,9 @@
         // RPT by Item Name2 Sale 
         Route::get('/rep-by-item-name2/sale', [App\Http\Controllers\RptItemName2SaleController::class, 'sale'])->name('sale-rep-by-item-name2');
         Route::get('/rep-by-item-name2/sale/report', [App\Http\Controllers\RptItemName2SaleController::class, 'ItemName2SaleReport'])->name('sale-rep-by-item-name2-report');
+        Route::get('/rep-by-item-name2/sale/excel', [App\Http\Controllers\RptItemName2SaleController::class, 'ItemName2SaleExcel'])->name('sale-rep-by-item-name2-excel');
     
+
     
         // RPT by Item Name2 Purchase 
         Route::get('/rep-by-item-name2/pur', [App\Http\Controllers\RptItemName2PurController::class, 'purchase'])->name('pur-rep-by-item-name2');
