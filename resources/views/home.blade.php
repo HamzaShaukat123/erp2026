@@ -2515,168 +2515,126 @@
 				var month = document.getElementById('filterHR').value;
 
 				$.ajax({
-					type: "GET",
-					url: '/dashboard-tabs/hr',
-					data: {
-						month: month,
-					},
-					success: function(result) {
+	type: "GET",
+	url: '/dashboard-tabs/hr',
+	data: { month: month },
+	beforeSend: function() {
+		// Show loading placeholders in tables
+		$('#SteelexSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+		$('#SPMSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+		$('#MehboobSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+		$('#GodownSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+		$('#Top3Cus').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+		$('#Pur2Summary').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
 
-						const { datasets, chartLabels } = generateChartDatasets(result['dash_pur_2_summary_monthly_companywise'], mills, colors);
+		// Optionally add spinner overlay for charts
+		$('#top5CustomerPerformance').parent().append(`<div id="chart-loading-bar" class="text-center">Loading chart...</div>`);
+		$('#MonthlyTonage').parent().append(`<div id="chart-loading-donut" class="text-center">Loading chart...</div>`);
+	},
+	success: function(result) {
+		// Remove chart loading placeholders
+		$('#chart-loading-bar').remove();
+		$('#chart-loading-donut').remove();
 
-						if (top5CustomerPerformanceChart) {
-							top5CustomerPerformanceChart.destroy();
-						}
+		const { datasets, chartLabels } = generateChartDatasets(result['dash_pur_2_summary_monthly_companywise'], mills, colors);
 
-						const top5CustomerPerformance = document.getElementById('top5CustomerPerformance');
+		if (top5CustomerPerformanceChart) {
+			top5CustomerPerformanceChart.destroy();
+		}
 
-						top5CustomerPerformance.width = 600; // Set desired width
-						top5CustomerPerformance.height = 353; // Set desired height
+		const top5CustomerPerformance = document.getElementById('top5CustomerPerformance');
+		top5CustomerPerformance.width = 600;
+		top5CustomerPerformance.height = 353;
 
-						// Create the new chart
-						top5CustomerPerformanceChart = new Chart(top5CustomerPerformance, {
-							type: 'bar',
-							data: {
-								labels: chartLabels, // 'dat' values as labels
-								datasets: datasets,  // Dynamic datasets based on groupedData
-							},
-						});
+		// Create bar chart
+		top5CustomerPerformanceChart = new Chart(top5CustomerPerformance, {
+			type: 'bar',
+			data: { labels: chartLabels, datasets: datasets },
+		});
 
-						const groupedData = groupByMillCode(mills, result['dash_pur_2_summary_monthly_companywise_for_donut']);
+		const groupedData = groupByMillCode(mills, result['dash_pur_2_summary_monthly_companywise_for_donut']);
 
-						if (monthlyTonageChart) {
-							monthlyTonageChart.destroy();
-						}
+		if (monthlyTonageChart) {
+			monthlyTonageChart.destroy();
+		}
 
-						const chartData = {
-							labels: groupedData.labels, // Set the labels directly here
-							datasets: [
-								{
-									data: groupedData.data, // Extract total_weight values for each mill
-									backgroundColor: groupedData.backgroundColor, // Assign background colors
-								}
-							]
-						};
-						
-						// Create the doughnut chart
-						monthlyTonageChart = new Chart(MonthlyTonage, {
-							type: 'doughnut',
-							data: chartData,
-						});
+		// Create doughnut chart
+		monthlyTonageChart = new Chart(MonthlyTonage, {
+			type: 'doughnut',
+			data: {
+				labels: groupedData.labels,
+				datasets: [{
+					data: groupedData.data,
+					backgroundColor: groupedData.backgroundColor,
+				}]
+			}
+		});
 
-						var rows = '';
-						var totalWeight = 0; // Initialize total
+		// --- Steelex Table ---
+		let rows = '', totalWeight = 0;
+		$.each(result['steelex'], function (index, value) {
+			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+			totalWeight += weight;
+			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+		});
+		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+		$('#SteelexSaleTable').html(rows);
 
-						$.each(result['steelex'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
+		// --- SPM Table ---
+		rows = ''; totalWeight = 0;
+		$.each(result['spm'], function (index, value) {
+			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+			totalWeight += weight;
+			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+		});
+		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+		$('#SPMSaleTable').html(rows);
 
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`;
+		// --- Mehboob Table ---
+		rows = ''; totalWeight = 0;
+		$.each(result['mehboob'], function (index, value) {
+			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+			totalWeight += weight;
+			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+		});
+		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+		$('#MehboobSaleTable').html(rows);
 
-						$('#SteelexSaleTable').html(rows);
+		// --- Godown Table ---
+		rows = ''; totalWeight = 0;
+		$.each(result['godown'], function (index, value) {
+			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+			totalWeight += weight;
+			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+		});
+		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+		$('#GodownSaleTable').html(rows);
 
+		// --- Top Customers ---
+		rows = '';
+		$.each(result['top_customers_of_pur2'], function (index, value) {
+			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${value['weight'] || ''}</td></tr>`;
+		});
+		$('#Top3Cus').html(rows);
 
-						var rows = '';
-						var totalWeight = 0; // Initialize total
+		// --- Pur2 Summary ---
+		rows = ''; totalWeight = 0;
+		$.each(result['pur2summary'], function (index, value) {
+			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+			totalWeight += weight;
+			rows += `<tr><td>${value['company_name'] || ''}</td><td>${weight}</td></tr>`;
+		});
+		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+		$('#Pur2Summary').html(rows);
+	},
+	error: function() {
+		// Fallback on error
+		$('#SteelexSaleTable, #SPMSaleTable, #MehboobSaleTable, #GodownSaleTable, #Top3Cus, #Pur2Summary').html(
+			`<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>`
+		);
+	}
+});
 
-						$.each(result['spm'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`
-
-						$('#SPMSaleTable').html(rows);
-
-						var rows = '';
-						var totalWeight = 0; // Initialize total
-
-						$.each(result['mehboob'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`
-
-						$('#MehboobSaleTable').html(rows);
-
-						var rows = '';
-						var totalWeight = 0; // Initialize total
-
-						$.each(result['godown'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`
-						$('#GodownSaleTable').html(rows);
-
-						var rows = '';
-
-						$.each(result['top_customers_of_pur2'], function (index, value) {
-							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['weight'] ? value['weight'] : ''}</td>
-							</tr>`;
-						});
-						$('#Top3Cus').html(rows);
-
-						var rows = '';
-						var totalWeight = 0; // Initialize total
-
-						$.each(result['pur2summary'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['company_name'] ? value['company_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`
-						$('#Pur2Summary').html(rows);
-
-						
-					},
-					error: function() {
-						alert("Error loading HR data");
-					}
-				});
         	}
 			else if(tabId=="#IIL"){
 				var table = document.getElementById('CRCSaleTable');
