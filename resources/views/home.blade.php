@@ -2341,87 +2341,93 @@
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/pending-invoices',
+					beforeSend: function() {
+						// Show loading in all pending-invoice tables
+						$('#Sale1NotTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#Pur1NotTable').html(`<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>`);
+						$('#Sale2NotTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#PendingSaleAgainstPur2Table').html(`<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>`);
+						$('#PendingSaleAgainstGodwonTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+					},
 					success: function(result) {
-						var rows = '';
+						let rows = '';
 
+						// Sale1 Not
 						$.each(result['sale1_not'], function (index, value) {
 							rows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['Sal_inv_no'] ? value['Sal_inv_no'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['Sal_inv_no'] || ''}</td>
 								<td class="text-center">${value['sa_date'] ? moment(value['sa_date']).format('D-M-YY') : ''}</td>
-								<td>${value['pur_ord_no'] ? value['pur_ord_no'] : ''}</td>
-								<td>${value['account_name'] ? value['account_name'] : ''}</td>
-								<td>${value['Cash_pur_name'] ? value['Cash_pur_name'] : ''}</td>
-								<td>${value['Sales_remarks'] ? value['Sales_remarks'] : ''}</td>
+								<td>${value['pur_ord_no'] || ''}</td>
+								<td>${value['account_name'] || ''}</td>
+								<td>${value['Cash_pur_name'] || ''}</td>
+								<td>${value['Sales_remarks'] || ''}</td>
 							</tr>`;
 						});
-
-						$('#Sale1NotTable').html(rows);
+						$('#Sale1NotTable').html(rows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
 
 						rows = '';
 
+						// Pur1 Not
 						$.each(result['pur1_not'], function (index, value) {
 							rows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['pur_id'] ? value['pur_id'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['pur_id'] || ''}</td>
 								<td class="text-center">${value['pur_date'] ? moment(value['pur_date']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['cash_saler_name'] ? value['cash_saler_name'] : ''}</td>
-								<td>${value['pur_remarks'] ? value['pur_remarks'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['cash_saler_name'] || ''}</td>
+								<td>${value['pur_remarks'] || ''}</td>
 							</tr>`;
 						});
-
-						$('#Pur1NotTable').html(rows);
+						$('#Pur1NotTable').html(rows || `<tr><td colspan="5" style="text-align:center;">No records found</td></tr>`);
 
 						rows = '';
 
+						// Sale2 Not
 						$.each(result['sale2_not'], function (index, value) {
 							rows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['Sal_inv_no'] ? value['Sal_inv_no'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['Sal_inv_no'] || ''}</td>
 								<td class="text-center">${value['sa_date'] ? moment(value['sa_date']).format('D-M-YY') : ''}</td>
-								<td>${value['pur_inv'] ? value['pur_inv'] : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['name_of'] ? value['name_of'] : ''}</td>
-								<td>${value['remarks'] ? value['remarks'] : ''}</td>
+								<td>${value['pur_inv'] || ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['name_of'] || ''}</td>
+								<td>${value['remarks'] || ''}</td>
 							</tr>`;
 						});
-
-						$('#Sale2NotTable').html(rows);
-
+						$('#Sale2NotTable').html(rows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
 
 						rows = '';
 
+						// Pending Sale Against Pur2
 						$.each(result['pending_sale_against_pur2'], function (index, value) {
 							rows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['Sale_inv_no'] ? value['Sale_inv_no'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['Sale_inv_no'] || ''}</td>
 								<td class="text-center">${value['sa_date'] ? moment(value['sa_date']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['customer_name'] ? value['customer_name'] : ''}</td>
-								<td>${value['Cash_pur_name'] ? value['Cash_pur_name'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['customer_name'] || ''}</td>
+								<td>${value['Cash_pur_name'] || ''}</td>
 							</tr>`;
 						});
-
-						$('#PendingSaleAgainstPur2Table').html(rows);
+						$('#PendingSaleAgainstPur2Table').html(rows || `<tr><td colspan="5" style="text-align:center;">No records found</td></tr>`);
 
 						rows = '';
 
+						// Pending Sale Against Godwon
 						$.each(result['pending_sale_against_tstockout'], function (index, value) {
 							rows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['Sal_inv_no'] ? value['Sal_inv_no'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['Sal_inv_no'] || ''}</td>
 								<td class="text-center">${value['sa_date'] ? moment(value['sa_date']).format('D-M-YY') : ''}</td>
-								<td>${value['mill_gate'] ? value['mill_gate'] : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['cash_pur_name'] ? value['cash_pur_name'] : ''}</td>
+								<td>${value['mill_gate'] || ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['cash_pur_name'] || ''}</td>
 								<td>${value['item_type'] == 1 ? '<strong>Pipes</strong>' : (value['item_type'] == 2 ? '<strong>Garder / TR</strong>' : '')}</td>
-
 							</tr>`;
 						});
-
-						$('#PendingSaleAgainstGodwonTable').html(rows);
-
-						},
+						$('#PendingSaleAgainstGodwonTable').html(rows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+					},
 					error: function() {
 						alert("Error loading Pending Invoices data");
 					}
 				});
+
 
 			}
 			else if (tabId === "#BILL_NOT_RECVD") {
@@ -2434,6 +2440,14 @@
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/bill-not',
+					beforeSend: function() {
+						// Show loading row before data loads
+						$('#BillNotRECVDTable').html(`
+							<tr>
+								<td colspan="7" class="text-center">Loading...</td>
+							</tr>
+						`);
+					},
 					success: function(result) {
 						var rows = '';
 
@@ -2449,16 +2463,23 @@
 							</tr>`;
 						});
 
+						// If no rows, show "No Data Found"
+						if (rows === '') {
+							rows = `<tr>
+								<td colspan="7" class="text-center">No Data Found</td>
+							</tr>`;
+						}
+
 						$('#BillNotRECVDTable').html(rows);
-
-					
-
-						},
+					},
 					error: function() {
-						alert("Error loading BILL NOT RECVD data");
+						$('#BillNotRECVDTable').html(`
+							<tr>
+								<td colspan="7" class="text-center text-danger">Error loading data</td>
+							</tr>
+						`);
 					}
 				});
-
 			}
 			else if(tabId=="#HR"){
 				var table = document.getElementById('SteelexSaleTable');
@@ -3082,116 +3103,116 @@
 				}
 
 				$.ajax({
-			type: "GET",
-			url: '/dashboard-tabs/uv',
-			beforeSend: function() {
-				// Show loading in all tables
-				$('#UVSaleTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
-				$('#UVPurTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
-				$('#WrongSaleTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
-				$('#WrongPurTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
-				$('#EditedSaleACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
-				$('#EditedPurACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
-				$('#WrongSaleACTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
-			},
-			success: function(result) {
-				// For UV Sales Ageing
-				var UVsalesRows = '';
-				$.each(result['unadjusted_sales_ageing_jv2'], function (index, value) {
-					UVsalesRows += `<tr>
-						<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
-						<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
-						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-						<td>${value['SumCredit'] ? value['SumCredit'] : ''}</td>
-						<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
-						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-					</tr>`;
-				});
-				$('#UVSaleTable').html(UVsalesRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+					type: "GET",
+					url: '/dashboard-tabs/uv',
+					beforeSend: function() {
+						// Show loading in all tables
+						$('#UVSaleTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#UVPurTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#WrongSaleTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+						$('#WrongPurTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+						$('#EditedSaleACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
+						$('#EditedPurACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
+						$('#WrongSaleACTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+					},
+					success: function(result) {
+						// For UV Sales Ageing
+						var UVsalesRows = '';
+						$.each(result['unadjusted_sales_ageing_jv2'], function (index, value) {
+							UVsalesRows += `<tr>
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+								<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+								<td>${value['SumCredit'] ? value['SumCredit'] : ''}</td>
+								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+							</tr>`;
+						});
+						$('#UVSaleTable').html(UVsalesRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
 
-				// For UV Purchase Ageing
-				var UVpurchaseRows = '';
-				$.each(result['unadjusted_purchase_ageing_jv2'], function (index, value) {
-					UVpurchaseRows += `<tr>
-						<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
-						<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
-						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-						<td>${value['SumDebit'] ? value['SumDebit'] : ''}</td>
-						<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
-						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-					</tr>`;
-				});
-				$('#UVPurTable').html(UVpurchaseRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+						// For UV Purchase Ageing
+						var UVpurchaseRows = '';
+						$.each(result['unadjusted_purchase_ageing_jv2'], function (index, value) {
+							UVpurchaseRows += `<tr>
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+								<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+								<td>${value['SumDebit'] ? value['SumDebit'] : ''}</td>
+								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+							</tr>`;
+						});
+						$('#UVPurTable').html(UVpurchaseRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
 
-				// For deleted Sale Ageing
-				var salesRows = '';
-				$.each(result['sales_ageing'], function (index, value) {
-					salesRows += `<tr>
-						<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-						<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
-						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-					</tr>`;
-				});
-				$('#WrongSaleTable').html(salesRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+						// For deleted Sale Ageing
+						var salesRows = '';
+						$.each(result['sales_ageing'], function (index, value) {
+							salesRows += `<tr>
+								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+							</tr>`;
+						});
+						$('#WrongSaleTable').html(salesRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
 
-				// For deleted Purchase Ageing
-				var purchaseRows = '';
-				$.each(result['purchase_ageing'], function (index, value) {
-					purchaseRows += `<tr>
-						<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-						<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
-						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-					</tr>`;
-				});
-				$('#WrongPurTable').html(purchaseRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+						// For deleted Purchase Ageing
+						var purchaseRows = '';
+						$.each(result['purchase_ageing'], function (index, value) {
+							purchaseRows += `<tr>
+								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+							</tr>`;
+						});
+						$('#WrongPurTable').html(purchaseRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
 
-				// For Edited Sale
-				var editedsalesacRows = '';
-				$.each(result['editedsale'], function (index, value) {
-					editedsalesacRows += `<tr>
-						<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
-						<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
-						<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
-						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-					</tr>`;
-				});
-				$('#EditedSaleACTable').html(editedsalesacRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
+						// For Edited Sale
+						var editedsalesacRows = '';
+						$.each(result['editedsale'], function (index, value) {
+							editedsalesacRows += `<tr>
+								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+							</tr>`;
+						});
+						$('#EditedSaleACTable').html(editedsalesacRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
 
-				// For Edited Purchase
-				var editedpuracRows = '';
-				$.each(result['editedpur'], function (index, value) {
-					editedpuracRows += `<tr>
-						<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
-						<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
-						<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
-						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-					</tr>`;
-				});
-				$('#EditedPurACTable').html(editedpuracRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
+						// For Edited Purchase
+						var editedpuracRows = '';
+						$.each(result['editedpur'], function (index, value) {
+							editedpuracRows += `<tr>
+								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+							</tr>`;
+						});
+						$('#EditedPurACTable').html(editedpuracRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
 
-				// For wrong Ac Sale Ageing
-				var wrongsalesacRows = '';
-				$.each(result['salesageing_jv2_account_differ'], function (index, value) {
-					wrongsalesacRows += `<tr>
-						<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-						<td>
-							${value['acc2'] ? value['acc2'] : ''} 
-							${value['acc2'] && value['acc1'] ? ' / ' : ''} 
-							${value['acc1'] ? value['acc1'] : ''}
-						</td>
-						<td>
-							${value['credit'] ? value['credit'] : ''} 
-							${value['credit'] && value['amount'] ? ' / ' : ''} 
-							${value['amount'] ? value['amount'] : ''}
-						</td>
-					</tr>`;
+						// For wrong Ac Sale Ageing
+						var wrongsalesacRows = '';
+						$.each(result['salesageing_jv2_account_differ'], function (index, value) {
+							wrongsalesacRows += `<tr>
+								<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+								<td>
+									${value['acc2'] ? value['acc2'] : ''} 
+									${value['acc2'] && value['acc1'] ? ' / ' : ''} 
+									${value['acc1'] ? value['acc1'] : ''}
+								</td>
+								<td>
+									${value['credit'] ? value['credit'] : ''} 
+									${value['credit'] && value['amount'] ? ' / ' : ''} 
+									${value['amount'] ? value['amount'] : ''}
+								</td>
+							</tr>`;
+						});
+						$('#WrongSaleACTable').html(wrongsalesacRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+					},
+					error: function() {
+						alert("Error loading UV data");
+					}
 				});
-				$('#WrongSaleACTable').html(wrongsalesacRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
-			},
-			error: function() {
-				alert("Error loading UV data");
-			}
-		});
 
 
 			}
