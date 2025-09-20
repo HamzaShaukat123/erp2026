@@ -2755,55 +2755,58 @@
 					type: "GET",
 					url: '/dashboard-tabs/garder',
 					data: { month: month },
+					beforeSend: function() {
+						// Show "Loading..." in both tables
+						$('#GarderPurTable, #GarderSaleTable')
+							.html('<tr><td colspan="2" class="text-center">Loading...</td></tr>');
+					},
 					success: function(result) {
-
+						// Garder Mill Table
 						var rows = '';
-						var totalWeight = 0; // Initialize total
+						var totalWeight = 0;
 
-						$.each(result['garder_mill'], function (index, value) {
-							var weight = value['weight'] ? parseFloat(value['weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
+						$.each(result['garder_mill'], function(index, value) {
+							var weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
 							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${weight || ''}</td>
 							</tr>`;
 						});
 
-						// Append a row for the total
 						rows += `<tr>
 							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
+							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
 						</tr>`;
 
 						$('#GarderPurTable').html(rows);
 
+						// Garder Customer Table
 						rows = '';
-						var totalWeight = 0; // Initialize total
+						totalWeight = 0;
 
-						$.each(result['garder_customer'], function (index, value) {
-							var weight = value['tt_weight'] ? parseFloat(value['tt_weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
+						$.each(result['garder_customer'], function(index, value) {
+							var weight = value['tt_weight'] ? parseFloat(value['tt_weight']) : 0;
+							totalWeight += weight;
 							rows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${weight || ''}</td>
 							</tr>`;
 						});
 
-						// Append a row for the total
 						rows += `<tr>
 							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
+							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
 						</tr>`;
 
 						$('#GarderSaleTable').html(rows);
-
-
-						
 					},
 					error: function() {
-						alert("Error loading Garder data");
+						$('#GarderPurTable, #GarderSaleTable')
+							.html('<tr><td colspan="2" class="text-center text-danger">Error loading Garder data</td></tr>');
 					}
 				});
+
 
         	}
 			else if (tabId === "#ITEM_OF_MONTH") {
@@ -2833,6 +2836,20 @@
 					type: "GET",
 					url: '/dashboard-tabs/item-of-the-month',
 					data: { month: month },
+					beforeSend: function() {
+						// Show "Loading..." in all tables
+						const tables = [
+							'HRItemByWeightTable', 'HRItemByQtyTable',
+							'WTItemByWeightTable', 'WTItemByQtyTable',
+							'CRCItemByWeightTable', 'CRCItemByQtyTable',
+							'ECOItemByWeightTable', 'ECOItemByQtyTable',
+							'COSMOItemByWeightTable', 'COSMOItemByQtyTable'
+						];
+
+						tables.forEach(tableId => {
+							$(`#${tableId}`).html('<tr><td colspan="2" class="text-center">Loading...</td></tr>');
+						});
+					},
 					success: function (result) {
 						const populateTable = (data, tableId, fields) => {
 							let rows = '';
@@ -2860,6 +2877,7 @@
 						alert("Error loading Item Of The Month data");
 					}
 				});
+
 			}
 			else if (tabId == "#ANNUAL") {
 				// Clear previous rows from the tables
