@@ -3082,111 +3082,117 @@
 				}
 
 				$.ajax({
-					type: "GET",
-					url: '/dashboard-tabs/uv',
-					success: function(result) {
-						// For UV Sales Ageing
-						var UVsalesRows = '';
-						$.each(result['unadjusted_sales_ageing_jv2'], function (index, value) {
-							UVsalesRows += `<tr>
-								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
-								<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['SumCredit'] ? value['SumCredit'] : ''}</td>
-								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
-								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-							</tr>`;
-						});
-						$('#UVSaleTable').html(UVsalesRows);
-
-						// For UV Purchase Ageing
-						var UVpurchaseRows = '';
-						$.each(result['unadjusted_purchase_ageing_jv2'], function (index, value) {
-							UVpurchaseRows += `<tr>
-								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
-								<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['SumDebit'] ? value['SumDebit'] : ''}</td>
-								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
-								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-							</tr>`;
-						});
-						$('#UVPurTable').html(UVpurchaseRows);
-
-
-						// For deleted Sale Ageing
-						var salesRows = '';
-						$.each(result['sales_ageing'], function (index, value) {
-							salesRows += `<tr>
-								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-							</tr>`;
-						});
-						$('#WrongSaleTable').html(salesRows);
-
-						// For deleted Purchase Ageing
-						var purchaseRows = '';
-						$.each(result['purchase_ageing'], function (index, value) {
-							purchaseRows += `<tr>
-								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-							</tr>`;
-						});
-						$('#WrongPurTable').html(purchaseRows);
-						
-						// For Edited  Sale
-						var editedsalesacRows = '';
-							$.each(result['editedsale'], function (index, value) {
-								editedsalesacRows += `<tr>
-								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
-								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
-								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
-								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-
-								</tr>`;
-							});
-						$('#EditedSaleACTable').html(editedsalesacRows);
-
-						// For Edited  Pur
-						var editedpuracRows = '';
-							$.each(result['editedpur'], function (index, value) {
-								editedpuracRows += `<tr>
-								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
-								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
-								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
-								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
-
-								</tr>`;
-							});
-						$('#EditedPurACTable').html(editedpuracRows);
-					
-						
-						// For wrong Ac Sale Ageing
-						var wrongsalesacRows = '';
-						$.each(result['salesageing_jv2_account_differ'], function (index, value) {
-							wrongsalesacRows += `<tr>
-								<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-								<td>
-								${value['acc2'] ? value['acc2'] : ''} 
-								${value['acc2'] && value['acc1'] ? ' / ' : ''} 
-								${value['acc1'] ? value['acc1'] : ''}
-								</td>
-								<td>
-								${value['credit'] ? value['credit'] : ''} 
-								${value['credit'] && value['amount'] ? ' / ' : ''} 
-								${value['amount'] ? value['amount'] : ''}
-								</td>
-
-							</tr>`;
-						});
-						$('#WrongSaleACTable').html(wrongsalesacRows);
-					},
-					error: function() {
-						alert("Error loading UV data");
-					}
+			type: "GET",
+			url: '/dashboard-tabs/uv',
+			beforeSend: function() {
+				// Show loading in all tables
+				$('#UVSaleTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+				$('#UVPurTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+				$('#WrongSaleTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+				$('#WrongPurTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+				$('#EditedSaleACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
+				$('#EditedPurACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
+				$('#WrongSaleACTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+			},
+			success: function(result) {
+				// For UV Sales Ageing
+				var UVsalesRows = '';
+				$.each(result['unadjusted_sales_ageing_jv2'], function (index, value) {
+					UVsalesRows += `<tr>
+						<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+						<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
+						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+						<td>${value['SumCredit'] ? value['SumCredit'] : ''}</td>
+						<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
+						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+					</tr>`;
 				});
+				$('#UVSaleTable').html(UVsalesRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+
+				// For UV Purchase Ageing
+				var UVpurchaseRows = '';
+				$.each(result['unadjusted_purchase_ageing_jv2'], function (index, value) {
+					UVpurchaseRows += `<tr>
+						<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['prefix'] ? value['prefix'] : ''}${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+						<td>${value['jv_date'] ? moment(value['jv_date']).format('D-M-YYYY') : ''}</td>
+						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+						<td>${value['SumDebit'] ? value['SumDebit'] : ''}</td>
+						<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
+						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+					</tr>`;
+				});
+				$('#UVPurTable').html(UVpurchaseRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+
+				// For deleted Sale Ageing
+				var salesRows = '';
+				$.each(result['sales_ageing'], function (index, value) {
+					salesRows += `<tr>
+						<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+						<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
+						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+					</tr>`;
+				});
+				$('#WrongSaleTable').html(salesRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+
+				// For deleted Purchase Ageing
+				var purchaseRows = '';
+				$.each(result['purchase_ageing'], function (index, value) {
+					purchaseRows += `<tr>
+						<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+						<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
+						<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+					</tr>`;
+				});
+				$('#WrongPurTable').html(purchaseRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+
+				// For Edited Sale
+				var editedsalesacRows = '';
+				$.each(result['editedsale'], function (index, value) {
+					editedsalesacRows += `<tr>
+						<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+						<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+						<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
+						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+					</tr>`;
+				});
+				$('#EditedSaleACTable').html(editedsalesacRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
+
+				// For Edited Purchase
+				var editedpuracRows = '';
+				$.each(result['editedpur'], function (index, value) {
+					editedpuracRows += `<tr>
+						<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+						<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+						<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
+						<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+					</tr>`;
+				});
+				$('#EditedPurACTable').html(editedpuracRows || `<tr><td colspan="4" style="text-align:center;">No records found</td></tr>`);
+
+				// For wrong Ac Sale Ageing
+				var wrongsalesacRows = '';
+				$.each(result['salesageing_jv2_account_differ'], function (index, value) {
+					wrongsalesacRows += `<tr>
+						<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+						<td>
+							${value['acc2'] ? value['acc2'] : ''} 
+							${value['acc2'] && value['acc1'] ? ' / ' : ''} 
+							${value['acc1'] ? value['acc1'] : ''}
+						</td>
+						<td>
+							${value['credit'] ? value['credit'] : ''} 
+							${value['credit'] && value['amount'] ? ' / ' : ''} 
+							${value['amount'] ? value['amount'] : ''}
+						</td>
+					</tr>`;
+				});
+				$('#WrongSaleACTable').html(wrongsalesacRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+			},
+			error: function() {
+				alert("Error loading UV data");
+			}
+		});
+
 
 			}
 			else if(tabId=="#OVER_DAYS"){
