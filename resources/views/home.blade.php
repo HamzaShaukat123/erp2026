@@ -2515,125 +2515,125 @@
 				var month = document.getElementById('filterHR').value;
 
 				$.ajax({
-	type: "GET",
-	url: '/dashboard-tabs/hr',
-	data: { month: month },
-	beforeSend: function() {
-		// Show loading placeholders in tables
-		$('#SteelexSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
-		$('#SPMSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
-		$('#MehboobSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
-		$('#GodownSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
-		$('#Top3Cus').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
-		$('#Pur2Summary').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+					type: "GET",
+					url: '/dashboard-tabs/hr',
+					data: { month: month },
+					beforeSend: function() {
+						// Show loading placeholders in tables
+						$('#SteelexSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+						$('#SPMSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+						$('#MehboobSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+						$('#GodownSaleTable').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+						$('#Top3Cus').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
+						$('#Pur2Summary').html(`<tr><td colspan="2" class="text-center">Loading...</td></tr>`);
 
-		// Optionally add spinner overlay for charts
-		$('#top5CustomerPerformance').parent().append(`<div id="chart-loading-bar" class="text-center">Loading chart...</div>`);
-		$('#MonthlyTonage').parent().append(`<div id="chart-loading-donut" class="text-center">Loading chart...</div>`);
-	},
-	success: function(result) {
-		// Remove chart loading placeholders
-		$('#chart-loading-bar').remove();
-		$('#chart-loading-donut').remove();
+						// Optionally add spinner overlay for charts
+						$('#top5CustomerPerformance').parent().append(`<div id="chart-loading-bar" class="text-center">Loading chart...</div>`);
+						$('#MonthlyTonage').parent().append(`<div id="chart-loading-donut" class="text-center">Loading chart...</div>`);
+					},
+					success: function(result) {
+						// Remove chart loading placeholders
+						$('#chart-loading-bar').remove();
+						$('#chart-loading-donut').remove();
 
-		const { datasets, chartLabels } = generateChartDatasets(result['dash_pur_2_summary_monthly_companywise'], mills, colors);
+						const { datasets, chartLabels } = generateChartDatasets(result['dash_pur_2_summary_monthly_companywise'], mills, colors);
 
-		if (top5CustomerPerformanceChart) {
-			top5CustomerPerformanceChart.destroy();
-		}
+						if (top5CustomerPerformanceChart) {
+							top5CustomerPerformanceChart.destroy();
+						}
 
-		const top5CustomerPerformance = document.getElementById('top5CustomerPerformance');
-		top5CustomerPerformance.width = 600;
-		top5CustomerPerformance.height = 353;
+						const top5CustomerPerformance = document.getElementById('top5CustomerPerformance');
+						top5CustomerPerformance.width = 600;
+						top5CustomerPerformance.height = 353;
 
-		// Create bar chart
-		top5CustomerPerformanceChart = new Chart(top5CustomerPerformance, {
-			type: 'bar',
-			data: { labels: chartLabels, datasets: datasets },
-		});
+						// Create bar chart
+						top5CustomerPerformanceChart = new Chart(top5CustomerPerformance, {
+							type: 'bar',
+							data: { labels: chartLabels, datasets: datasets },
+						});
 
-		const groupedData = groupByMillCode(mills, result['dash_pur_2_summary_monthly_companywise_for_donut']);
+						const groupedData = groupByMillCode(mills, result['dash_pur_2_summary_monthly_companywise_for_donut']);
 
-		if (monthlyTonageChart) {
-			monthlyTonageChart.destroy();
-		}
+						if (monthlyTonageChart) {
+							monthlyTonageChart.destroy();
+						}
 
-		// Create doughnut chart
-		monthlyTonageChart = new Chart(MonthlyTonage, {
-			type: 'doughnut',
-			data: {
-				labels: groupedData.labels,
-				datasets: [{
-					data: groupedData.data,
-					backgroundColor: groupedData.backgroundColor,
-				}]
-			}
-		});
+						// Create doughnut chart
+						monthlyTonageChart = new Chart(MonthlyTonage, {
+							type: 'doughnut',
+							data: {
+								labels: groupedData.labels,
+								datasets: [{
+									data: groupedData.data,
+									backgroundColor: groupedData.backgroundColor,
+								}]
+							}
+						});
 
-		// --- Steelex Table ---
-		let rows = '', totalWeight = 0;
-		$.each(result['steelex'], function (index, value) {
-			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
-			totalWeight += weight;
-			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
-		});
-		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
-		$('#SteelexSaleTable').html(rows);
+						// --- Steelex Table ---
+						let rows = '', totalWeight = 0;
+						$.each(result['steelex'], function (index, value) {
+							let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
+							rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+						});
+						rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+						$('#SteelexSaleTable').html(rows);
 
-		// --- SPM Table ---
-		rows = ''; totalWeight = 0;
-		$.each(result['spm'], function (index, value) {
-			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
-			totalWeight += weight;
-			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
-		});
-		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
-		$('#SPMSaleTable').html(rows);
+						// --- SPM Table ---
+						rows = ''; totalWeight = 0;
+						$.each(result['spm'], function (index, value) {
+							let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
+							rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+						});
+						rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+						$('#SPMSaleTable').html(rows);
 
-		// --- Mehboob Table ---
-		rows = ''; totalWeight = 0;
-		$.each(result['mehboob'], function (index, value) {
-			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
-			totalWeight += weight;
-			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
-		});
-		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
-		$('#MehboobSaleTable').html(rows);
+						// --- Mehboob Table ---
+						rows = ''; totalWeight = 0;
+						$.each(result['mehboob'], function (index, value) {
+							let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
+							rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+						});
+						rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+						$('#MehboobSaleTable').html(rows);
 
-		// --- Godown Table ---
-		rows = ''; totalWeight = 0;
-		$.each(result['godown'], function (index, value) {
-			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
-			totalWeight += weight;
-			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
-		});
-		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
-		$('#GodownSaleTable').html(rows);
+						// --- Godown Table ---
+						rows = ''; totalWeight = 0;
+						$.each(result['godown'], function (index, value) {
+							let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
+							rows += `<tr><td>${value['ac_name'] || ''}</td><td>${weight}</td></tr>`;
+						});
+						rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+						$('#GodownSaleTable').html(rows);
 
-		// --- Top Customers ---
-		rows = '';
-		$.each(result['top_customers_of_pur2'], function (index, value) {
-			rows += `<tr><td>${value['ac_name'] || ''}</td><td>${value['weight'] || ''}</td></tr>`;
-		});
-		$('#Top3Cus').html(rows);
+						// --- Top Customers ---
+						rows = '';
+						$.each(result['top_customers_of_pur2'], function (index, value) {
+							rows += `<tr><td>${value['ac_name'] || ''}</td><td>${value['weight'] || ''}</td></tr>`;
+						});
+						$('#Top3Cus').html(rows);
 
-		// --- Pur2 Summary ---
-		rows = ''; totalWeight = 0;
-		$.each(result['pur2summary'], function (index, value) {
-			let weight = value['weight'] ? parseFloat(value['weight']) : 0;
-			totalWeight += weight;
-			rows += `<tr><td>${value['company_name'] || ''}</td><td>${weight}</td></tr>`;
-		});
-		rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
-		$('#Pur2Summary').html(rows);
-	},
-	error: function() {
-		// Fallback on error
-		$('#SteelexSaleTable, #SPMSaleTable, #MehboobSaleTable, #GodownSaleTable, #Top3Cus, #Pur2Summary').html(
-			`<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>`
-		);
-	}
-});
+						// --- Pur2 Summary ---
+						rows = ''; totalWeight = 0;
+						$.each(result['pur2summary'], function (index, value) {
+							let weight = value['weight'] ? parseFloat(value['weight']) : 0;
+							totalWeight += weight;
+							rows += `<tr><td>${value['company_name'] || ''}</td><td>${weight}</td></tr>`;
+						});
+						rows += `<tr><td><strong>Total</strong></td><td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td></tr>`;
+						$('#Pur2Summary').html(rows);
+					},
+					error: function() {
+						// Fallback on error
+						$('#SteelexSaleTable, #SPMSaleTable, #MehboobSaleTable, #GodownSaleTable, #Top3Cus, #Pur2Summary').html(
+							`<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>`
+						);
+					}
+				});
 
         	}
 			else if(tabId=="#IIL"){
@@ -2663,10 +2663,14 @@
 					type: "GET",
 					url: '/dashboard-tabs/iil',
 					data: { month: month },
+					beforeSend: function() {
+						// Show "Loading..." in all tables
+						$('#CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
+							.html('<tr><td colspan="2" class="text-center">Loading...</td></tr>');
+					},
 					success: function(result) {
 						const itemGroupNames = result['item_group_name'].map(item => item.item_group_name);
 
-						// Log the array with item_group_name values
 						const { datasets, chartLabels } = generateChartDatasetsforIIL(result['dash_chart_for_item_group'], itemGroupNames, colors);
 
 						if (IILtop5CustomerPerformanceChart) {
@@ -2674,17 +2678,12 @@
 						}
 
 						const IILtop5CustomerPerformance = document.getElementById('IILtop5CustomerPerformance');
+						IILtop5CustomerPerformance.width = 600;
+						IILtop5CustomerPerformance.height = 353;
 
-						IILtop5CustomerPerformance.width = 600; // Set desired width
-						IILtop5CustomerPerformance.height = 353; // Set desired height
-
-						// Create the new chart
 						IILtop5CustomerPerformanceChart = new Chart(IILtop5CustomerPerformance, {
 							type: 'bar',
-							data: {
-								labels: chartLabels, // 'dat' values as labels
-								datasets: datasets,  // Dynamic datasets based on groupedData
-							},
+							data: { labels: chartLabels, datasets: datasets },
 						});
 
 						const groupedData = IILgroupByMillCode(itemGroupNames, colors , result['dash_chart_for_item_group_for_donut']);
@@ -2694,100 +2693,44 @@
 						}
 
 						const IILchartData = {
-							labels: groupedData.labels, // Set the labels directly here
-							datasets: [
-								{
-									data: groupedData.data, // Extract total_weight values for each mill
-									backgroundColor: groupedData.backgroundColor, // Assign background colors
-								}
-							]
+							labels: groupedData.labels,
+							datasets: [{
+								data: groupedData.data,
+								backgroundColor: groupedData.backgroundColor,
+							}]
 						};
 
-						// Create the doughnut chart
 						IILmonthlyTonageChart = new Chart(IILMonthlyTonage, {
 							type: 'doughnut',
 							data: IILchartData,
-						});						
-
-						var rows = '';
-						var totalWeight = 0; // Initialize total
-
-						$.each(result['CRC'], function (index, value) {
-							var weight = value['ttl_weight'] ? parseFloat(value['ttl_weight']) : 0; // Convert to a number
-							totalWeight += weight; // Add to total
-							rows += `<tr>
-								<td>${value['company_name'] ? value['company_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
 						});
 
-						// Append a row for the total
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td> <!-- Format to 2 decimal places -->
-						</tr>`;
-
-						$('#CRCSaleTable').html(rows);
-
-						rows = '';
-						totalWeight = 0;
-
-						$.each(result['HRS'], function (index, value) {
-							var weight = value['ttl_weight'] ? parseFloat(value['ttl_weight']) : 0;
-							totalWeight += weight;
+						// Function to render table with total
+						function renderTable(tableId, data) {
+							let rows = '', totalWeight = 0;
+							$.each(data, function(index, value) {
+								let weight = value['ttl_weight'] ? parseFloat(value['ttl_weight']) : 0;
+								totalWeight += weight;
+								rows += `<tr>
+									<td>${value['company_name'] || ''}</td>
+									<td>${weight || ''}</td>
+								</tr>`;
+							});
 							rows += `<tr>
-								<td>${value['company_name'] ? value['company_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
+								<td><strong>Total</strong></td>
+								<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
 							</tr>`;
-						});
+							$(`#${tableId}`).html(rows);
+						}
 
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
-						</tr>`;
-
-						$('#HRSSaleTable').html(rows);
-
-						rows = '';
-						totalWeight = 0;
-
-						$.each(result['ECO'], function (index, value) {
-							var weight = value['ttl_weight'] ? parseFloat(value['ttl_weight']) : 0;
-							totalWeight += weight;
-							rows += `<tr>
-								<td>${value['company_name'] ? value['company_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
-						</tr>`;
-
-						$('#ECOSaleTable').html(rows);
-
-						rows = '';
-						totalWeight = 0;
-
-						$.each(result['COSMO'], function (index, value) {
-							var weight = value['ttl_weight'] ? parseFloat(value['ttl_weight']) : 0;
-							totalWeight += weight;
-							rows += `<tr>
-								<td>${value['company_name'] ? value['company_name'] : ''}</td>
-								<td>${weight ? weight : ''}</td>
-							</tr>`;
-						});
-
-						rows += `<tr>
-							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${totalWeight.toFixed(2)}</strong></td>
-						</tr>`;
-
-						$('#COSMOSaleTable').html(rows);
+						renderTable('CRCSaleTable', result['CRC']);
+						renderTable('HRSSaleTable', result['HRS']);
+						renderTable('ECOSaleTable', result['ECO']);
+						renderTable('COSMOSaleTable', result['COSMO']);
 					},
 					error: function() {
-						alert("Error loading IIL data");
+						$('#CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
+							.html('<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>');
 					}
 				});
 
