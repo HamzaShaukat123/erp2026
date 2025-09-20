@@ -8,6 +8,8 @@ use App\Models\purchase_ageing;
 use App\Models\unadjusted_sales_ageing_jv2;
 use App\Models\unadjusted_purchase_ageing_jv2;
 use App\Models\salesageing_jv2_account_differ;
+use App\Models\sales_days;
+use App\Models\ac;
 
 class DashboardUnAdjustedVouchersTabController extends Controller
 {
@@ -48,6 +50,16 @@ class DashboardUnAdjustedVouchersTabController extends Controller
             ->orderBy('jv_date')
             ->get(['jv2_id', 'prefix','ac_name', 'SumDebit','jv_date','pur_age_amount','remaining_amount']);
 
+        $editedsale = sales_days::leftjoin('ac', 'ac.ac_code', '=', 'sales_days.account_name')
+            ->select('sales_days.*', 'ac.ac_name as ac_nam', 'ac.remarks as ac_remarks')
+            ->where('bill_amount', '<>', 0)
+            ->where('remaining_amount', '<', 0)
+            ->orderBy('bill_date', 'asc')
+            ->orderBy('sale_prefix', 'asc')
+            ->get();
+
+
+
 
 
         return response()->json([
@@ -55,7 +67,8 @@ class DashboardUnAdjustedVouchersTabController extends Controller
             'salesageing_jv2_account_differ' => $salesageing_jv2_account_differ,
             'purchase_ageing' => $purchase_ageing,
             'unadjusted_sales_ageing_jv2' => $unadjusted_sales_ageing_jv2,
-            'unadjusted_purchase_ageing_jv2' => $unadjusted_purchase_ageing_jv2
+            'unadjusted_purchase_ageing_jv2' => $unadjusted_purchase_ageing_jv2,
+            'editedsale' => $editedsale
         ]);
     }
 

@@ -1684,6 +1684,60 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
+													<h2 class="card-title">Edited Sale Please Check Voucher</h2>
+												</header>
+												<div class="card-body scrollable-div">
+													
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Date</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Invoice</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
+															</tr>
+														</thead>
+														<tbody id="EditedSaleACTable">
+															
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+										<div class="col-12 col-md-6 mb-3">
+											<section class="card">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+
+													<h2 class="card-title">Edited Purchase Please Check Voucher</h2>
+												</header>
+												<div class="card-body scrollable-div">
+													
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
+															</tr>
+														</thead>
+														<tbody id="EditedPurACTable">
+															
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+
+										<div class="col-12 col-md-6 mb-3">
+											<section class="card">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+
 													<h2 class="card-title">Wrong Sales Ageing Voucher</h2>
 												</header>
 												<div class="card-body scrollable-div">
@@ -3006,6 +3060,16 @@
 					table.deleteRow(0);
 				}
 
+				var table = document.getElementById('EditedSaleACTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('EditedPurACTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
 				var table = document.getElementById('WrongSaleACTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
@@ -3070,7 +3134,21 @@
 							</tr>`;
 						});
 						$('#WrongPurTable').html(purchaseRows);
+						
+						// For Edited  Sale
+						var editedsalesacRows = '';
+							$.each(result['editedsale'], function (index, value) {
+								editedsalesacRows += `<tr>
+								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+								<td>${value['ac2'] ? value['ac2'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
 
+								</tr>`;
+							});
+						$('#EditedSaleACTable').html(editedsalesacRows);
+					
+						
 						// For wrong Ac Sale Ageing
 						var wrongsalesacRows = '';
 						$.each(result['salesageing_jv2_account_differ'], function (index, value) {
