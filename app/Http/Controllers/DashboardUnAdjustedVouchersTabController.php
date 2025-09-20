@@ -9,6 +9,7 @@ use App\Models\unadjusted_sales_ageing_jv2;
 use App\Models\unadjusted_purchase_ageing_jv2;
 use App\Models\salesageing_jv2_account_differ;
 use App\Models\sales_days;
+use App\Models\pur_days;
 use App\Models\ac;
 
 class DashboardUnAdjustedVouchersTabController extends Controller
@@ -59,6 +60,14 @@ class DashboardUnAdjustedVouchersTabController extends Controller
             ->get();
 
 
+        $editedpur = pur_days::leftjoin('ac', 'ac.ac_code', '=', 'pur_days.account_name')
+            ->select('pur_days.*', 'ac.ac_name  as ac_nam', 'ac.remarks as ac_remarks')
+            ->where('bill_amount', '<>', 0)
+            ->where('remaining_amount', '<', 0)
+            ->orderBy('bill_date','asc')
+            ->orderBy('sale_prefix','asc')
+            ->get();
+
 
 
 
@@ -68,7 +77,8 @@ class DashboardUnAdjustedVouchersTabController extends Controller
             'purchase_ageing' => $purchase_ageing,
             'unadjusted_sales_ageing_jv2' => $unadjusted_sales_ageing_jv2,
             'unadjusted_purchase_ageing_jv2' => $unadjusted_purchase_ageing_jv2,
-            'editedsale' => $editedsale
+            'editedsale' => $editedsale,
+            'editedpur' => $editedpur
         ]);
     }
 

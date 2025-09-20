@@ -1718,7 +1718,8 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Date</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Invoice</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
 															</tr>
@@ -3141,12 +3142,25 @@
 								editedsalesacRows += `<tr>
 								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
 								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
-								<td>${value['ac2'] ? value['ac2'] : ''}</td>
+								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
 								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
 
 								</tr>`;
 							});
 						$('#EditedSaleACTable').html(editedsalesacRows);
+
+						// For Edited  Pur
+						var editedpuracRows = '';
+							$.each(result['editedpur'], function (index, value) {
+								editedpuracRows += `<tr>
+								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YYYY') : ''}</td>
+								<td>${(value['sale_prefix'] ? value['sale_prefix'] : '')}${(value['Sal_inv_no'] ? value['Sal_inv_no'] : '')}</td>
+								<td>${value['ac_nam'] ? value['ac_nam'] : ''}</td>
+								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+
+								</tr>`;
+							});
+						$('#EditedPurACTable').html(editedpuracRows);
 					
 						
 						// For wrong Ac Sale Ageing
