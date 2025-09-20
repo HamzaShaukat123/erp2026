@@ -2898,28 +2898,32 @@
 					type: "GET",
 					url: '/dashboard-tabs/annual',
 					data: { from: fromMonth, to: toMonth },
+					beforeSend: function() {
+						// Show "Loading..." in both tables
+						$('#AnnualSaleTable, #AnnualPurTable')
+							.html('<tr><td colspan="3" class="text-center">Loading...</td></tr>');
+					},
 					success: function(result) {
-						var rows = '';
-						var netamount = 0; // Initialize total for sales
-						var totalWeightSales = 0; // Rename to avoid conflict
-
 						// Process sales data
-						$.each(result['annual_sale'], function (index, value) {
+						var rows = '';
+						var netamountSale = 0;
+						var totalWeightSales = 0;
+
+						$.each(result['annual_sale'], function(index, value) {
 							var amount = value['total_dr_amount'] ? parseFloat(parseFloat(value['total_dr_amount']).toFixed(0)) : 0;
 							var weight = value['total_weight'] ? parseFloat(value['total_weight']) : 0;
-							netamount += amount;
+							netamountSale += amount;
 							totalWeightSales += weight;
 							rows += `<tr>
-								<td>${value['sale_type'] ? value['sale_type'] : ''}</td>
+								<td>${value['sale_type'] || ''}</td>
 								<td>${amount ? amount.toFixed(0) : ''}</td>
 								<td>${weight ? weight.toFixed(2) : ''}</td>
 							</tr>`;
 						});
 
-						// Append the total row for sales
 						rows += `<tr>
 							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${netamount.toFixed(0)}</strong></td>
+							<td class="text-danger"><strong>${netamountSale.toFixed(0)}</strong></td>
 							<td class="text-danger"><strong>${totalWeightSales.toFixed(2)}</strong></td>
 						</tr>
 						<tr>
@@ -2930,34 +2934,29 @@
 							</td>
 						</tr>`;
 						$('#AnnualSaleTable').html(rows);
+						document.getElementById('numberInWordsSale').innerHTML = convertCurrencyToWords(netamountSale);
 
-						// Convert netamount to words
-						var words = convertCurrencyToWords(netamount);
-						document.getElementById('numberInWordsSale').innerHTML = words;
-
-						// Reset rows for purchases
+						// Process purchase data
 						rows = '';
-						var netamount = 0; // Initialize total for purchases
-						var totalWeightPurchases = 0; // Rename to avoid conflict
+						var netamountPur = 0;
+						var totalWeightPur = 0;
 
-						// Process purchases data
-						$.each(result['annual_pur'], function (index, value) {
+						$.each(result['annual_pur'], function(index, value) {
 							var amount = value['total_cr_amount'] ? parseFloat(parseFloat(value['total_cr_amount']).toFixed(0)) : 0;
 							var weight = value['total_weight'] ? parseFloat(value['total_weight']) : 0;
-							netamount += amount;
-							totalWeightPurchases += weight;
+							netamountPur += amount;
+							totalWeightPur += weight;
 							rows += `<tr>
-								<td>${value['pur_type'] ? value['pur_type'] : ''}</td>
+								<td>${value['pur_type'] || ''}</td>
 								<td>${amount ? amount.toFixed(0) : ''}</td>
 								<td>${weight ? weight.toFixed(2) : ''}</td>
 							</tr>`;
 						});
 
-						// Append the total row for purchases
 						rows += `<tr>
 							<td><strong>Total</strong></td>
-							<td class="text-danger"><strong>${netamount.toFixed(0)}</strong></td>
-							<td class="text-danger"><strong>${totalWeightPurchases.toFixed(2)}</strong></td>
+							<td class="text-danger"><strong>${netamountPur.toFixed(0)}</strong></td>
+							<td class="text-danger"><strong>${totalWeightPur.toFixed(2)}</strong></td>
 						</tr>
 						<tr>
 							<td colspan="3">
@@ -2965,20 +2964,17 @@
 								<span id="numberInWords" style="color:#17365D; text-decoration: underline; font-size: 20px;"></span>
 							</strong>
 							</td>
-
 						</tr>`;
 
 						$('#AnnualPurTable').html(rows);
-
-						// Convert netamount to words
-						var words = convertCurrencyToWords(netamount);
-						document.getElementById('numberInWords').innerHTML = words;
-
+						document.getElementById('numberInWords').innerHTML = convertCurrencyToWords(netamountPur);
 					},
 					error: function() {
-						alert("Error loading Annual data");
+						$('#AnnualSaleTable, #AnnualPurTable')
+							.html('<tr><td colspan="3" class="text-center text-danger">Error loading Annual data</td></tr>');
 					}
 				});
+
 			}
 			else if(tabId=="#UV"){
 
@@ -3150,41 +3146,48 @@
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/over-days',
+					beforeSend: function() {
+						// Show "Loading..." in both tables
+						$('#ODSalesInvTable, #ODPurInvTable')
+							.html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+					},
 					success: function(result) {
 						// For Sales Ageing
 						var salesRows = '';
-						$.each(result['dash_over_days_sales'], function (index, value) {
+						$.each(result['dash_over_days_sales'], function(index, value) {
 							salesRows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['sale_prefix'] ? value['sale_prefix'] : ''} ${value['Sal_inv_no'] ? value['Sal_inv_no'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['sale_prefix'] || ''} ${value['Sal_inv_no'] || ''}</td>
 								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YY') : ''}</td>
 								<td>${value['bill_amount'] ? value['bill_amount'].toFixed(0) : ''}</td>
 								<td>${value['ttl_jv_amt'] ? value['ttl_jv_amt'].toFixed(0) : ''}</td>
 								<td>${value['remaining_amount'] ? value['remaining_amount'].toFixed(0) : ''}</td>
-								<td>${value['days_cross'] ? value['days_cross'] : ''}</td>
+								<td>${value['days_cross'] || ''}</td>
 							</tr>`;
 						});
 						$('#ODSalesInvTable').html(salesRows);
 
 						// For Purchase Ageing
 						var purchaseRows = '';
-						$.each(result['dash_over_days_pur'], function (index, value) {
+						$.each(result['dash_over_days_pur'], function(index, value) {
 							purchaseRows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['sale_prefix'] ? value['sale_prefix'] : ''} ${value['Sal_inv_no'] ? value['Sal_inv_no'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['sale_prefix'] || ''} ${value['Sal_inv_no'] || ''}</td>
 								<td>${value['bill_date'] ? moment(value['bill_date']).format('D-M-YY') : ''}</td>
 								<td>${value['bill_amount'] ? value['bill_amount'].toFixed(0) : ''}</td>
 								<td>${value['ttl_jv_amt'] ? value['ttl_jv_amt'].toFixed(0) : ''}</td>
 								<td>${value['remaining_amount'] ? value['remaining_amount'].toFixed(0) : ''}</td>
-								<td>${value['days_cross'] ? value['days_cross'] : ''}</td>
+								<td>${value['days_cross'] || ''}</td>
 							</tr>`;
 						});
 						$('#ODPurInvTable').html(purchaseRows);
 					},
 					error: function() {
-						alert("Error loading Over Days data");
+						$('#ODSalesInvTable, #ODPurInvTable')
+							.html('<tr><td colspan="7" class="text-center text-danger">Error loading Over Days data</td></tr>');
 					}
 				});
+
 
 			}
 			else if(tabId=="#OVER_DUES"){
@@ -3199,38 +3202,44 @@
 					table.deleteRow(0);
 				}
 
-				$.ajax({
-					type: "GET",
-					url: '/dashboard-tabs/over-dues',
-					success: function(result) {
-						// For Sales Ageing
-						var salesRows = '';
-						$.each(result['dash_over_dues_recv'], function (index, value) {
-							salesRows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['credit_limit'] ? value['credit_limit'].toFixed(0) : ''}</td>
-								<td>${value['Bal'] ? value['Bal'].toFixed(0) : ''}</td>
-								<td>${value['over_dues'] ? value['over_dues'].toFixed(0) : ''}</td>
-							</tr>`;
-						});
-						$('#ODRecvAccTable').html(salesRows);
+			$.ajax({
+				type: "GET",
+				url: '/dashboard-tabs/over-dues',
+				beforeSend: function() {
+					// Show "Loading..." in both tables
+					$('#ODRecvAccTable, #ODPayAccTable')
+						.html('<tr><td colspan="4" class="text-center">Loading...</td></tr>');
+				},
+				success: function(result) {
+					// For Sales Ageing (Receivables)
+					var salesRows = '';
+					$.each(result['dash_over_dues_recv'], function(index, value) {
+						salesRows += `<tr>
+							<td>${value['ac_name'] || ''}</td>
+							<td>${value['credit_limit'] ? value['credit_limit'].toFixed(0) : ''}</td>
+							<td>${value['Bal'] ? value['Bal'].toFixed(0) : ''}</td>
+							<td>${value['over_dues'] ? value['over_dues'].toFixed(0) : ''}</td>
+						</tr>`;
+					});
+					$('#ODRecvAccTable').html(salesRows);
 
-						// For Purchase Ageing
-						var purchaseRows = '';
-						$.each(result['dash_over_dues_pay'], function (index, value) {
-							purchaseRows += `<tr>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['credit_limit'] ? value['credit_limit'].toFixed(0) : ''}</td>
-								<td>${value['Bal'] ? value['Bal'].toFixed(0) : ''}</td>
-								<td>${value['over_dues'] ? value['over_dues'].toFixed(0) : ''}</td>
-							</tr>`;
-						});
-						$('#ODPayAccTable').html(purchaseRows);
-					},
-					error: function() {
-						alert("Error loading Over Dues data");
-					}
-				});
+					// For Purchase Ageing (Payables)
+					var purchaseRows = '';
+					$.each(result['dash_over_dues_pay'], function(index, value) {
+						purchaseRows += `<tr>
+							<td>${value['ac_name'] || ''}</td>
+							<td>${value['credit_limit'] ? value['credit_limit'].toFixed(0) : ''}</td>
+							<td>${value['Bal'] ? value['Bal'].toFixed(0) : ''}</td>
+							<td>${value['over_dues'] ? value['over_dues'].toFixed(0) : ''}</td>
+						</tr>`;
+					});
+					$('#ODPayAccTable').html(purchaseRows);
+				},
+				error: function() {
+					$('#ODRecvAccTable, #ODPayAccTable')
+						.html('<tr><td colspan="4" class="text-center text-danger">Error loading Over Dues data</td></tr>');
+				}
+			});
 
 			}
 			else if(tabId=="#PDC"){
@@ -3247,37 +3256,43 @@
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/pdc',
+					beforeSend: function() {
+						// Show "Loading..." in both PDC tables
+						$('#RecPDCTable, #PaidPDCTable').html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+					},
 					success: function(result) {
-						// For Sales Ageing
+						// For PDC Receivables
 						var salesRows = '';
-						$.each(result['dash_pdc_recv'], function (index, value) {
+						$.each(result['dash_pdc_recv'], function(index, value) {
 							salesRows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['pdc_id'] ? value['pdc_id'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
 								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['remarks'] ? value['remarks'] : ''} ${value['bankname'] ? value['bankname'] : ''} ${value['instrumentnumber'] ? value['instrumentnumber'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
 								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
 							</tr>`;
 						});
 						$('#RecPDCTable').html(salesRows);
 
-						// For Purchase Ageing
+						// For PDC Payables
 						var purchaseRows = '';
-						$.each(result['dash_pdc_pay'], function (index, value) {
+						$.each(result['dash_pdc_pay'], function(index, value) {
 							purchaseRows += `<tr>
-								<td>${value['prefix'] ? value['prefix'] : ''} ${value['pdc_id'] ? value['pdc_id'] : ''}</td>
+								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
 								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
-								<td>${value['remarks'] ? value['remarks'] : ''} ${value['bankname'] ? value['bankname'] : ''} ${value['instrumentnumber'] ? value['instrumentnumber'] : ''}</td>
+								<td>${value['ac_name'] || ''}</td>
+								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
 								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
 							</tr>`;
 						});
 						$('#PaidPDCTable').html(purchaseRows);
 					},
 					error: function() {
-						alert("Error loading PDC data");
+						$('#RecPDCTable, #PaidPDCTable')
+							.html('<tr><td colspan="5" class="text-center text-danger">Error loading PDC data</td></tr>');
 					}
 				});
+
 
 			}
 
