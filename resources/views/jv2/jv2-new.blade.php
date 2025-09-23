@@ -3,19 +3,27 @@
 		<section class="body">
 			@include('../layouts.pageheader')
 			<div class="inner-wrapper cust-pad">
-				<section role="main" class="content-body" style="margin:0px">
+				<section role="main" class="content-body" style="margin:0px;padding:10px 10px !important">
 					<form method="post" action="{{ route('store-jv2') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';" id="addForm">
 						@csrf
 						<div class="col-12 mb-3">								
 							<section class="card">
-								<header class="card-header" style="display: flex;justify-content: space-between;">
-									<h2 class="card-title">New Journal Voucher 2</h2>
-									<div class="card-actions">
-										<button type="button" class="btn btn-danger modal-with-zoom-anim ws-normal mb-2" onclick="getpdc()" href="#getpdc"> <i class="fas fa-plus"></i> Get PDC </button>
-										
-										<button type="button" class="btn btn-primary mb-2" onclick="addNewRow()"> <i class="fas fa-plus"></i> Add New Row </button>
+								<header class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding:10px;">
+									<h2 class="card-title" style="margin:0;">New Journal Voucher 2</h2>
+									<div class="card-actions" style="display: flex; gap: 8px;">
+										<button type="button" 
+												class="btn btn-danger modal-with-zoom-anim ws-normal mb-0" 
+												onclick="getpdc()" href="#getpdc">
+											<i class="fas fa-plus"></i> Get PDC
+										</button>
+										<button type="button" 
+												class="btn btn-primary mb-0" 
+												onclick="addNewRow()">
+											<i class="fas fa-plus"></i> Add New Row
+										</button>
 									</div>
 								</header>
+
 
 								<div class="card-body">
 									<div class="row form-group">
