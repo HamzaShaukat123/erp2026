@@ -748,7 +748,7 @@
                             } else if (v['entry_of'] === 'JV1') {
                                 html += "<td><a href='/vouchers/show/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] || "") + (v['auto_lager'] || "") + "</a></td>";
                             } else if (v['entry_of'] === 'JV2') {
-                                html += "<td><a href='/vouchers2/print/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] || "") + (v['auto_lager'] || "") + "</a></td>";
+                                html += "<td><a href='/vouchers2/show/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] || "") + (v['auto_lager'] || "") + "</a></td>";
                             } else {
                                 html += "<td>" + (v['entry_of'] || "") + " " + (v['prefix'] || "") + "</td>";
                             }
@@ -909,7 +909,7 @@
                             } else if (v['entry_of'] === 'JV1') {
                                 html += "<td><a href='/vouchers/show/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] ? v['prefix'] : "") + (v['auto_lager'] ? v['auto_lager'] : "") + "</a></td>";
                             } else if (v['entry_of'] === 'JV2') {
-                                html += "<td><a href='/vouchers2/print/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] ? v['prefix'] : "") + (v['auto_lager'] ? v['auto_lager'] : "") + "</a></td>";
+                                html += "<td><a href='/vouchers2/show/" + v['auto_lager'] + "' target='_blank'>" + (v['prefix'] ? v['prefix'] : "") + (v['auto_lager'] ? v['auto_lager'] : "") + "</a></td>";
                             } else {
                                 html += "<td>" + (v['entry_of'] ? v['entry_of'] : "") + " " + (v['prefix'] ? v['prefix'] : "") + "</td>";
                             }
