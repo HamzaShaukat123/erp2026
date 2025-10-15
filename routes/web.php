@@ -61,6 +61,7 @@
         Route::get('/purchase1/show/{id}', [App\Http\Controllers\PurchaseController::class, 'show'])->name('show-purchases1');
         Route::post('/purchase1/show/update', [App\Http\Controllers\PurchaseController::class, 'UpdateSalesAgainst'])->name('update-sale-against-pur1');
         Route::get('/vouchers/show/{id}', [App\Http\Controllers\JV1Controller::class, 'show'])->name('show-jv1');
+        Route::get('/vouchers2/show/{id}', [App\Http\Controllers\JV2Controller::class, 'show'])->name('show-jv2');
         Route::get('/tbad_dabs/show/{id}', [App\Http\Controllers\TBadDabsController::class, 'show'])->name('show-tbad-dabs');
         Route::get('/tstock_in/tstock_in_invoice/view/{id}', [App\Http\Controllers\TStockInController::class, 'show'])->name('show-tstock-in-invoice');
         Route::get('/tstock_out/tstock_out/view/{id}', [App\Http\Controllers\TStockOutController::class, 'show'])->name('show-tstock-out-invoice');

@@ -177,6 +177,77 @@ class JV2Controller extends Controller
     }
 
 
+
+   public function show(string $id)
+    {
+        // Main JV2 header info
+        $jv2 = lager0::where('lager0.jv_no', $id)
+            ->select(
+                'lager0.jv_no',
+                'lager0.jv_date',
+                'lager0.narration',
+                DB::raw('COALESCE(dc.total_debit, 0) AS total_debit'),
+                DB::raw('COALESCE(dc.total_credit, 0) AS total_credit'),
+                DB::raw("GROUP_CONCAT(DISTINCT CONCAT(sales_ageing.sales_prefix, sales_ageing.sales_id) SEPARATOR ' ; ') AS merged_sales_ids"),
+                DB::raw("GROUP_CONCAT(DISTINCT CONCAT(purchase_ageing.sales_prefix, purchase_ageing.sales_id) SEPARATOR ' ; ') AS merged_purchase_ids"),
+                'sales_ageing.status as sales_status',
+                'purchase_ageing.status as purchase_status',
+                'jv2_accountname.account_names',
+                'sales_ac.ac_name AS sales_account_name',
+                'purchase_ac.ac_name AS purchase_account_name'
+            )
+            ->leftJoin(
+                DB::raw('(SELECT auto_lager, SUM(debit) AS total_debit, SUM(credit) AS total_credit FROM lager GROUP BY auto_lager) AS dc'),
+                'lager0.jv_no', '=', 'dc.auto_lager'
+            )
+            ->leftJoin('sales_ageing', function ($join) {
+                $join->on('lager0.jv_no', '=', 'sales_ageing.jv2_id')
+                    ->where('sales_ageing.voch_prefix', 'JV2-');
+            })
+            ->leftJoin('purchase_ageing', function ($join) {
+                $join->on('lager0.jv_no', '=', 'purchase_ageing.jv2_id')
+                    ->where('purchase_ageing.voch_prefix', 'JV2-');
+            })
+            ->leftJoin('jv2_accountname', 'lager0.jv_no', '=', 'jv2_accountname.auto_lager')
+            ->leftJoin('ac as sales_ac', 'sales_ac.ac_code', '=', 'sales_ageing.acc_name')
+            ->leftJoin('ac as purchase_ac', 'purchase_ac.ac_code', '=', 'purchase_ageing.acc_name')
+            ->groupBy(
+                'lager0.jv_no',
+                'lager0.jv_date',
+                'lager0.narration',
+                'dc.total_debit',
+                'dc.total_credit',
+                'sales_ageing.status',
+                'purchase_ageing.status',
+                'jv2_accountname.account_names',
+                'sales_ac.ac_name',
+                'purchase_ac.ac_name'
+            )
+            ->first();
+
+            // JV2 line items (entries)
+        
+            $entries = DB::table('lager')
+                ->join('ac', 'ac.ac_code', '=', 'lager.account_cod') // ✅ fixed join column
+                ->where('lager.auto_lager', $id)
+                ->select(
+                    'ac.ac_name as account_name',
+                    'lager.remarks',
+                    'lager.bankname',
+                    'lager.instrumentnumber',
+                    'lager.slip',
+                    'lager.debit',
+                    'lager.credit'
+                )
+            ->get();
+
+
+        return view('jv2.jv2-show', compact('jv2', 'entries'));
+    }
+
+
+
+
     public function create(Request $request)
     {
         $acc = AC::where('status', 1)->orderBy('ac_name', 'asc')->get();
