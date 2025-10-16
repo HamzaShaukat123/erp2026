@@ -172,7 +172,7 @@
 							<div class="text-end">
 								<a onclick="window.location='{{ route('all-sale2invoices-paginate') }}'" class="btn btn-primary mt-2 mb-2"> <i class="fas fa-arrow-left"></i> Back</a>
 							
-								<a href="{{ route('edit-sales2', $pur->Sale_inv_no) }}" class="btn btn-warning mt-2"> <i class="fas fa-edit"></i> Edit</a>
+								<a href="{{ route('edit-sales2', $pur->Sal_inv_no) }}" class="btn btn-warning mt-2 mb-2"> <i class="fas fa-edit"></i> Edit</a>
 								<a class="btn btn-danger mt-2 mb-2 mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setPrintId({{$pur->Sal_inv_no}})" href="#printModal"><i class="fas fa-print"></i> Print</a>
 							</div>
 
