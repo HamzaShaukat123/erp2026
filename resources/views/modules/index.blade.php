@@ -33,11 +33,11 @@
                                                     <td>{{$row->slug}}</td>
                                                     <td class="actions">
                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getModuleDetails({{$row->id}})" href="#updateModal">
-                                                          <i class="fas fa-pencil-alt"></i>
+                                                          <i class="fas fa-pencil-alt text-success"></i>
                                                         </a>
                                                          <!-- <span class="separator"> | </span>
                                                         <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->id}})" href="#deleteModal">
-                                                         <i class="far fa-trash-alt" style="color:red"></i>
+                                                         <i class="far fa-trash-alt text-danger" style="color:red"></i>
                                                         </a> -->
                                                     </td>
 

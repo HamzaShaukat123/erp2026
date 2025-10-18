@@ -29,10 +29,10 @@
                                                     <td>{{$row->group_cod}}</td>
                                                     <td>{{$row->group_name}}</td>
                                                     <td class="actions text-end">
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getDetails({{$row->group_cod}})" href="#updateModal"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getDetails({{$row->group_cod}})" href="#updateModal"><i class="fas fa-pencil-alt text-success"></i></a>
                                                         @if(session('user_role')==1)
                                                         <span class="separator"> | </span>
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->group_cod}})" href="#deleteModal"><i class="far fa-trash-alt" style="color:red"></i></a>
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->group_cod}})" href="#deleteModal"><i class="far fa-trash-alt text-danger" style="color:red"></i></a>
                                                         @endif
                                                     </td>
                                                 </tr>

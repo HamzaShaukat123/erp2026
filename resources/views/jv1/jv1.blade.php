@@ -69,18 +69,33 @@
                                                             <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-danger" onclick="setAttId({{$row->auto_lager}})" href="#addAttModal"> <i class="fas fa-paperclip"> </i></a>
                                                         </td>
                                                         <td class="actions">
-                                                            <a class="mb-1 mt-1 me-1" href="{{ route('show-jv1', $row->auto_lager) }}">
-                                                                <i class="fas fa-eye"></i>
+                                                            <!-- View -->
+                                                            <a class="mb-1 mt-1 me-1" href="{{ route('show-jv1', $row->auto_lager) }}" title="View JV1">
+                                                                <i class="fas fa-eye text-primary"></i>
                                                             </a>
                                                             <span class="separator"> | </span>
-                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal modal-with-form" onclick="getJVSDetails({{$row->auto_lager}})" href="#updateModal">
-                                                                <i class="fas fa-pencil-alt"></i>
+                                                             <!-- Edit -->
+                                                                <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal modal-with-form"
+                                                                onclick="getJVSDetails({{ $row->auto_lager }})"
+                                                                href="#updateModal" title="Edit JV1">
+                                                                    <i class="fas fa-pencil-alt text-success"></i>
+                                                                </a>
+                                                            <span class="separator"> | </span>    
+                                                            
+                                                            <!-- Payment Return Adjustment (Ageing) -->
+                                                            <a class="mb-1 mt-1 me-1" href="" title="Edit Ageing">
+                                                                <i class="fas fa-exchange-alt text-info"></i>
                                                             </a>
-                                                            @if(session('user_role')==1)
-                                                            <span class="separator"> | </span>
-                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->auto_lager}})" href="#deleteModal">
-                                                                <i class="far fa-trash-alt" style="color:red"></i>
-                                                            </a>
+
+                                                            @if(session('user_role') == 1)
+                                                                <span class="separator"> | </span>
+
+                                                                <!-- Delete -->
+                                                                <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"
+                                                                onclick="setId({{ $row->auto_lager }})"
+                                                                href="#deleteModal" title="Delete JV1">
+                                                                    <i class="far fa-trash-alt text-danger"></i>
+                                                                </a>
                                                             @endif
                                                         </td>
 
@@ -404,7 +419,7 @@
                     var html="<tr>";
                     html+= "<td>"+v['att_path']+"</td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 mr-2 me-1 text-danger' href='/vouchers/download/"+v['att_id']+"'><i class='fas fa-download'></i></a></td>"
-                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/vouchers/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/vouchers/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                     // html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+v['att_id']+")'><i class='fas fa-trash'></i></a></td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-success' href='#' onclick='inducedItems("+v['pdc_id']+")'><i class='fas fa-check'></i></a></td>";
 

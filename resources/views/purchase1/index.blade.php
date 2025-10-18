@@ -87,16 +87,16 @@
                                                     @endif
                                                     <td class="actions">
                                                         <a href="{{ route('show-purchases1',$row->pur_id) }}" class="">
-                                                            <i class="fas fa-eye"></i>
+                                                            <i class="fas fa-eye text-primary"></i>
                                                         </a>
                                                         <span class="separator"> | </span>
                                                         <a href="{{ route('edit-purchases1',$row->pur_id) }}" class="">
-                                                            <i class="fas fa-pencil-alt"></i>
+                                                            <i class="fas fa-pencil-alt text-success"></i>
                                                         </a>
                                                         @if(session('user_role')==1)
                                                         <span class="separator"> | </span>
                                                         <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->pur_id}})" href="#deleteModal">
-                                                            <i class="far fa-trash-alt" style="color:red"></i>
+                                                            <i class="far fa-trash-alt text-danger" style="color:red"></i>
                                                         </a>
                                                         @endif
                                                     </td>
@@ -250,7 +250,7 @@ $(document).ready(function() {
                     var html="<tr>";
                     html+= "<td>"+v['att_path']+"</td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 mr-2 me-1 text-danger' href='/purchase1/download/"+v['att_id']+"'><i class='fas fa-download'></i></a></td>"
-                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/purchase1/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/purchase1/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+v['att_id']+")'><i class='fas fa-trash'></i></a></td>"
                     html+="</tr>";
                     $('#pur1_attachements').append(html);

@@ -45,12 +45,12 @@
                                                     <td>{{$row->weight_sum}}</td>
                                                     <td><a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getAttachements({{$row->Sale_inv_no}})" href="#attModal">View</a></td>
                                                     <td class="actions">
-                                                        <a href="{{ route('show-weight',$row->Sale_inv_no) }}" class=""><i class="fas fa-eye"></i></a>
+                                                        <a href="{{ route('show-weight',$row->Sale_inv_no) }}" class=""><i class="fas fa-eye text-primary"></i></a>
                                                         <span class="separator"> | </span>
-                                                        <a href="{{ route('edit-weight',$row->Sale_inv_no) }}" class=""><i class="fas fa-pencil-alt"></i></a>
+                                                        <a href="{{ route('edit-weight',$row->Sale_inv_no) }}" class=""><i class="fas fa-pencil-alt text-success"></i></a>
                                                         @if(session('user_role')==1)
                                                         <span class="separator"> | </span>
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->Sale_inv_no}})" href="#deleteModal"><i class="far fa-trash-alt" style="color:red"></i></a>
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->Sale_inv_no}})" href="#deleteModal"><i class="far fa-trash-alt text-danger" style="color:red"></i></a>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -150,7 +150,7 @@
                     var html="<tr>";
                     html+= "<td>"+v['att_path']+"</td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 mr-2 me-1 text-danger' href='/weight/download/"+v['att_id']+"'><i class='fas fa-download'></i></a></td>"
-                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/weight/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/weight/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+v['att_id']+")'><i class='fas fa-trash'></i></a></td>"
                     html+="</tr>";
                     $('#quotation_attachements').append(html);

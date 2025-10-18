@@ -34,7 +34,7 @@
                                                         <td>{{$row->shortcode}}</td>
                                                         <td>{{$row->user_count}}</td>
                                                         <td class="actions">
-                                                            <a href="{{ route('edit-role', $row->id) }}" class="mb-1 mt-1 me-1"><i class="fas fa-pencil-alt"></i></a>
+                                                            <a href="{{ route('edit-role', $row->id) }}" class="mb-1 mt-1 me-1"><i class="fas fa-pencil-alt text-success"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

@@ -70,7 +70,7 @@
                                                         <td><a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getAttachements({{$row->id}})" href="#attModal">View</a></td>
                                                         @if($row->status==1)
                                                         <td class="actions">
-                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal modal-with-form" onclick="getUserDetails({{$row->id}})" href="#updateModal"><i class="fas fa-pencil-alt"></i></a>
+                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal modal-with-form" onclick="getUserDetails({{$row->id}})" href="#updateModal"><i class="fas fa-pencil-alt text-success"></i></a>
                                                             <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-primary" href="#updateCred" onclick="setUserCredID({{$row->id}},'{{$row->username}}')" ><i class="fa fa-user-lock"></i></a>
                                                             <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-danger" href="#deactivateUser" onclick="setDeactivateID({{$row->id}})"><i class="fa fa-times"></i></a>
                                                         </td>
@@ -595,7 +595,7 @@
                         html+= "<td>Profile Picture</td>"
                         html+= "<td>"+v['picture']+"</td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-danger' href='/user/att/download/"+id+"'><i class='fas fa-download'></i></a></td>"
-                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+id+")'><i class='fas fa-trash'></i></a></td>"
                         html+="</tr>";
                         $('#acc_attachements').append(html);
@@ -605,7 +605,7 @@
                         html+= "<td>CNIC Front</td>"
                         html+= "<td>"+v['cnic_front']+"</td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-danger' href='/user/att/download/"+id+"'><i class='fas fa-download'></i></a></td>"
-                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+id+")'><i class='fas fa-trash'></i></a></td>"
                         html+="</tr>";
                         $('#acc_attachements').append(html);
@@ -615,7 +615,7 @@
                         html+= "<td>CNIC Back</td>"
                         html+= "<td>"+v['cnic_back']+"</td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-danger' href='/user/att/download/"+id+"'><i class='fas fa-download'></i></a></td>"
-                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                        html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/user/att/view/"+id+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                         html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+id+")'><i class='fas fa-trash'></i></a></td>"
                         html+="</tr>";
                         $('#acc_attachements').append(html);

@@ -68,13 +68,13 @@
                                                         <span class="separator"> | </span>
 
                                                         <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getComplainsDetails({{$row->id}})" href="#updateModal">
-                                                          <i class="fas fa-pencil-alt"></i>
+                                                          <i class="fas fa-pencil-alt text-success"></i>
                                                         </a>
                                                         @if(session('user_role')==1)
                                                         <span class="separator"> | </span>
 
                                                         <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->id}})" href="#deleteModal">
-                                                            <i class="far fa-trash-alt" style="color:red"></i>
+                                                            <i class="far fa-trash-alt text-danger" style="color:red"></i>
                                                         </a>
                                                         @endif
                                                     </td>
@@ -344,7 +344,7 @@
                     var html="<tr>";
                     html+= "<td>"+v['att_path']+"</td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 mr-2 me-1 text-danger' href='/complains/download/"+v['att_id']+"'><i class='fas fa-download'></i></a></td>"
-                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/complains/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye'></i></a></td>"
+                    html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='/complains/view/"+v['att_id']+"' target='_blank'><i class='fas fa-eye text-primary'></i></a></td>"
                     html+= "<td class='text-center'><a class='mb-1 mt-1 me-1 text-primary' href='#' onclick='deleteFile("+v['att_id']+")'><i class='fas fa-trash'></i></a></td>"
                     html+="</tr>";
                     $('#complains_attachements').append(html);
