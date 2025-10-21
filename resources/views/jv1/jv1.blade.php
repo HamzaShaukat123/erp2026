@@ -79,16 +79,10 @@
                                                                 onclick="getJVSDetails({{ $row->auto_lager }})"
                                                                 href="#updateModal" title="Edit JV1">
                                                                     <i class="fas fa-pencil-alt text-success"></i>
-                                                                </a>
-                                                            <span class="separator"> | </span>    
-                                                            
-                                                            <!-- Payment Return Adjustment (Ageing) -->
-                                                            <a class="mb-1 mt-1 me-1" href="" title="Edit Ageing">
-                                                                <i class="fas fa-exchange-alt text-info"></i>
-                                                            </a>
+                                                           
 
                                                             @if(session('user_role') == 1)
-                                                                <span class="separator"> | </span>
+                                                            <span class="separator"> | </span>
 
                                                                 <!-- Delete -->
                                                                 <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"
