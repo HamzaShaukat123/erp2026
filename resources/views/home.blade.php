@@ -3024,7 +3024,7 @@
 					url: '/dashboard-tabs/uv',
 					beforeSend: function() {
 						// Show loading in all tables
-						$('#UVSaleTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#UVSaleTable').html(`<tr><td colspan="8" style="text-align:center;">Loading...</td></tr>`);
 						$('#UVPurTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
 						$('#WrongSaleTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
 						$('#WrongPurTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
