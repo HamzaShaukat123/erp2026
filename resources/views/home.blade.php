@@ -1583,6 +1583,8 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Voucher Amount</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Adjusted Amount</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Unadjusted Amount</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Return Amount</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Remaining Amount</font></font></th>
 															</tr>
 														</thead>
 														<tbody id="UVSaleTable">
@@ -3041,9 +3043,11 @@
 								<td>${value['SumCredit'] ? value['SumCredit'] : ''}</td>
 								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
 								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+								<td>${value['rtn_amount'] ? value['rtn_amount'] : ''}</td>
+								<td>${value['remaining_amount_after_rtn'] ? value['remaining_amount_after_rtn'] : ''}</td>
 							</tr>`;
 						});
-						$('#UVSaleTable').html(UVsalesRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+						$('#UVSaleTable').html(UVsalesRows || `<tr><td colspan="8" style="text-align:center;">No records found</td></tr>`);
 
 						// For UV Purchase Ageing
 						var UVpurchaseRows = '';

@@ -8,6 +8,8 @@ use NumberFormatter;
 use App\Models\jv1_att;
 use App\Models\jvsingel;
 use App\Models\pdc;
+use App\Models\unadjusted_sales_ageing_jv2;
+use App\Models\unadjusted_purchase_ageing_jv2;
 use App\Traits\SaveImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -30,7 +32,15 @@ class JV1Controller extends Controller
                 ->get();
         $acc = AC::where('status', 1)->orderBy('ac_name', 'asc')->get();
 
-        return view('jv1.jv1',compact('jv1','acc'));
+        $jv2_id_sale = unadjusted_sales_ageing_jv2::where('remaining_amount', '!=', 0)
+            ->orderBy('jv2_id', 'asc')
+        ->get();
+
+        $jv2_id_pur = unadjusted_purchase_ageing_jv2::where('remaining_amount', '!=', 0)
+            ->orderBy('jv2_id', 'asc')
+        ->get();
+
+        return view('jv1.jv1',compact('jv1','acc','jv2_id_sale','jv2_id_pur'));
     }
 
     public function show(string $id)
@@ -127,6 +137,8 @@ class JV1Controller extends Controller
             $jv1->amount = $request->amount ?? 0;
             $jv1->date = $request->date ?? null;
             $jv1->remarks = $request->remarks ?? null;
+            $jv1->jv2_id_sale = $request->jv2_id_sale ?? null;
+            $jv1->jv2_id_pur = $request->jv2_id_pur ?? null;
             $jv1->save();
         } else 
         {
@@ -148,6 +160,8 @@ class JV1Controller extends Controller
             $jv1->amount = $request->amount ?? 0;
             $jv1->date = $request->date ?? null;
             $jv1->remarks = $request->remarks ?? null;
+            $jv1->jv2_id_sale = $request->jv2_id_sale ?? null;
+            $jv1->jv2_id_pur = $request->jv2_id_pur ?? null;
             $jv1->save();
         }
         
@@ -195,6 +209,15 @@ class JV1Controller extends Controller
         if ($request->has('update_remarks') && $request->update_remarks OR empty($request->update_remarks))  {
             $jv1->remarks=$request->update_remarks;
         }
+        if ($request->has('update_jv2_id_sale') && $request->update_jv2_id_sale OR empty($request->update_jv2_id_sale))  {
+            $jv1->jv2_id_sale=$request->update_jv2_id_sale;
+        }
+        
+        if ($request->has('update_jv2_id_pur') && $request->update_jv2_id_pur OR empty($request->update_jv2_id_pur))  {
+            $jv1->jv2_id_pur=$request->update_jv2_id_pur;
+        }
+        
+        
     
         jvsingel::where('auto_lager', $request->update_auto_lager)->update([
             'ac_dr_sid'=>$jv1->ac_dr_sid,
@@ -202,6 +225,8 @@ class JV1Controller extends Controller
             'amount'=>$jv1->amount,
             'date'=>$jv1->date,
             'remarks'=>$jv1->remarks,
+            'jv2_id_sale'=>$jv1->jv2_id_sale,
+            'jv2_id_pur'=>$jv1->jv2_id_pur,
             'updated_by' => session('user_id'),
         ]);
 

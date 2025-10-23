@@ -32,6 +32,7 @@
                                                 <option value="3">by Account Credti</option>
                                                 <option value="4">by Remarks</option>
                                                 <option value="5">by Amount</option>
+                                                <option value="6">by JV2-IDs</option>
                                             </select>
                                             <input type="text" class="form-control" id="columnSearch" placeholder="Search By Column"/>
                                         </div>
@@ -46,6 +47,7 @@
                                                     <th width="15%">Account Credit</th>
                                                     <th width="30%">Remarks</th>
                                                     <th>Amount</th>
+                                                    <th>JV2-IDs</th>
                                                     <th>Att.</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,6 +65,13 @@
                                                         @else
                                                             <td><strong style="font-size:15px">{{ number_format($row->amount, 0, '.', ',') }}</strong></td>
                                                         @endif
+
+                                                        <td>
+                                                            {{ $row->jv2_id_sale ? 'JV2-' . $row->jv2_id_sale : '' }}
+                                                            {{ $row->jv2_id_sale && $row->jv2_id_pur ? '/' : '' }}
+                                                            {{ $row->jv2_id_pur ? 'JV2-' . $row->jv2_id_pur : '' }}
+                                                        </td>
+
                                                         <td style="vertical-align: middle;">
                                                             <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-dark" onclick="getAttachements({{$row->auto_lager}})" href="#attModal"><i class="fa fa-eye"> </i></a>
                                                             <span class="separator"> | </span>
@@ -153,8 +162,32 @@
                             </div>  
                             <div class="col-lg-12 mb-2">
                                 <label>Remarks</label>
-                                <textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" id="update_remarks" name="update_remarks"> </textarea>                            </div>
+                                <textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" id="update_remarks" name="update_remarks"> </textarea>
                             </div>
+
+                            
+                            <div class="col-lg-6 mb-2">
+                                <label>Unadjusted Sales Ageing Voucher</label>
+                                <input type="checkbox" id="ignore_sale_jv2">
+                                <select data-plugin-selecttwo class="form-control select2-js" name ="update_jv2_id_sale" id="update_jv2_id_sale">
+                                    <option value="" disabled selected>Select JV2-ID</option>
+                                    @foreach($jv2_id_sale as $key => $row1)	
+                                        <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <label>Unadjusted Purchase Ageing Voucher</label>
+                                <input type="checkbox" id="ignore_pur_jv2">
+                                <select data-plugin-selecttwo class="form-control select2-js" name ="update_jv2_id_pur" id="update_jv2_id_pur">
+                                    <option value="" disabled selected>Select JV2-ID</option>
+                                    @foreach($jv2_id_pur as $key => $row2)	
+                                        <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                           
                         </div>
                     
                     <footer class="card-footer">
@@ -256,8 +289,30 @@
                             </div>  
                             <div class="col-lg-12 mb-2">
                                 <label>Remarks</label>
-                                <textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" name="remarks"> </textarea>                            </div>
+                                <textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" name="remarks"> </textarea>       
                             </div>
+                            
+                                <div class="col-lg-6 mb-2">
+                                    <label>Unadjusted Sales Ageing Voucher</label>
+                                     
+                                    <select data-plugin-selecttwo class="form-control select2-js" name ="jv2_id_sale">
+                                        <option value="" disabled selected>Select JV2-ID</option>
+                                        @foreach($jv2_id_sale as $key => $row1)	
+                                            <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 mb-2">
+                                    <label>Unadjusted Purchase Ageing Voucher</label>
+                                    <select data-plugin-selecttwo class="form-control select2-js" name ="jv2_id_pur">
+                                        <option value="" disabled selected>Select JV2-ID</option>
+                                        @foreach($jv2_id_pur as $key => $row2)	
+                                            <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            
                         </div>
                         <footer class="card-footer">
                             <div class="row">
@@ -389,6 +444,25 @@
         });
     });
 
+
+    $('#ignore_sale_jv2').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#update_jv2_id_sale').val(null).trigger('change').prop('disabled', true);
+        } else {
+            $('#update_jv2_id_sale').prop('disabled', false);
+        }
+    });
+
+
+    $('#ignore_pur_jv2').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#update_jv2_id_pur').val(null).trigger('change').prop('disabled', true);
+        } else {
+            $('#update_jv2_id_pur').prop('disabled', false);
+        }
+    });
+
+
     function setId(id){
         $('#deleteID').val(id);
     }
@@ -441,6 +515,8 @@
                 $('#update_amount').val(result['amount']);
                 $('#update_date').val(result['date']);
                 $('#update_remarks').val(result['remarks']);
+                $('#update_jv2_id_sale').val(result['jv2_id_sale']).trigger('change');
+                $('#update_jv2_id_pur').val(result['jv2_id_pur']).trigger('change');
             },
             error: function(){
                 alert("error");
