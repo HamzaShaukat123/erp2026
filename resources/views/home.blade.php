@@ -1741,7 +1741,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Wrong Sales Ageing Voucher</h2>
+													<h2 class="card-title">Wrong Account Selected In Sales Ageing Voucher</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1749,8 +1749,8 @@
 														<thead class="sticky-tbl-header">
 															<tr>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name In Voucher</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name In Sales Ageing</font></font></th>
 															</tr>
 														</thead>
 														<tbody id="WrongSaleACTable">
@@ -1768,7 +1768,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Wrong Purchase Ageing Voucher</h2>
+													<h2 class="card-title">Wrong Account Selected In Purchase Ageing Voucher</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1776,8 +1776,8 @@
 														<thead class="sticky-tbl-header">
 															<tr>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">JV2-ID</font></font></th>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Pur-ID</font></font></th>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name In Voucher</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name In Purchase Ageing</font></font></th>
 															</tr>
 														</thead>
 														<tbody id="WrongPurACTable">
@@ -1787,6 +1787,7 @@
 												</div>
 											</section>
 										</div>
+
 									</div>
 								</div>
 
@@ -3031,6 +3032,7 @@
 						$('#EditedSaleACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
 						$('#EditedPurACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
 						$('#WrongSaleACTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
+						$('#WrongPurACTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
 					},
 					success: function(result) {
 						// For UV Sales Ageing
@@ -3067,7 +3069,8 @@
 						var salesRows = '';
 						$.each(result['sales_ageing'], function (index, value) {
 							salesRows += `<tr>
-								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+							
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
 								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
 								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
 							</tr>`;
@@ -3078,7 +3081,7 @@
 						var purchaseRows = '';
 						$.each(result['purchase_ageing'], function (index, value) {
 							purchaseRows += `<tr>
-								<td>${value['jv2_id'] ? value['jv2_id'] : ''}</td>
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
 								<td>${value['sales_prefix'] ? value['sales_prefix'] : ''} ${value['sales_id'] ? value['sales_id'] : ''}</td>
 								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
 							</tr>`;
@@ -3111,22 +3114,26 @@
 
 						// For wrong Ac Sale Ageing
 						var wrongsalesacRows = '';
-						$.each(result['salesageing_jv2_account_differ'], function (index, value) {
+						$.each(result['vw_sale_lager_ageing_mismatch'], function (index, value) {
 							wrongsalesacRows += `<tr>
-								<td>${value['voch_prefix'] ? value['voch_prefix'] : ''} ${value['jv2_id'] ? value['jv2_id'] : ''}</td>
-								<td>
-									${value['acc2'] ? value['acc2'] : ''} 
-									${value['acc2'] && value['acc1'] ? ' / ' : ''} 
-									${value['acc1'] ? value['acc1'] : ''}
-								</td>
-								<td>
-									${value['credit'] ? value['credit'] : ''} 
-									${value['credit'] && value['amount'] ? ' / ' : ''} 
-									${value['amount'] ? value['amount'] : ''}
-								</td>
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+								<td>${value['acc2'] ? value['acc2'] : ''}</td>
+								<td>${value['acc1'] ? value['acc1'] : ''}</td>
 							</tr>`;
 						});
 						$('#WrongSaleACTable').html(wrongsalesacRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
+
+
+						// For wrong Ac Pur Ageing
+						var wrongpuracRows = '';
+						$.each(result['vw_purchase_lager_ageing_mismatch'], function (index, value) {
+							wrongpuracRows += `<tr>
+								<td><a href='/vouchers2/edit/${value['jv2_id']}' target='_blank'>${value['jv2_id'] ? value['jv2_id'] : ''}</a></td>
+								<td>${value['acc2'] ? value['acc2'] : ''}</td>
+								<td>${value['acc1'] ? value['acc1'] : ''}</td>
+							</tr>`;
+						});
+						$('#WrongPurACTable').html(wrongpuracRows || `<tr><td colspan="3" style="text-align:center;">No records found</td></tr>`);
 					},
 					error: function() {
 						alert("Error loading UV data");
