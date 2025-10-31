@@ -50,11 +50,11 @@ class DashboardUnAdjustedVouchersTabController extends Controller
             ->orderBy('jv_date')
             ->get(['jv2_id', 'prefix','ac_name', 'SumCredit','jv_date','pur_age_amount','remaining_amount','remaining_amount_after_rtn','rtn_amount']);
 
-        $unadjusted_purchase_ageing_jv2 = unadjusted_purchase_ageing_jv2::where('unadjusted_purchase_ageing_jv2.remaining_amount', '!=', 0)
+        $unadjusted_purchase_ageing_jv2 = unadjusted_purchase_ageing_jv2::where('unadjusted_purchase_ageing_jv2.remaining_amount_after_rtn', '!=', 0)
             ->whereNotIn('unadjusted_purchase_ageing_jv2.account_cod', [25, 11])
             ->where('unadjusted_purchase_ageing_jv2.SumDebit', '!=', 0)
             ->orderBy('jv_date')
-            ->get(['jv2_id', 'prefix','ac_name', 'SumDebit','jv_date','pur_age_amount','remaining_amount']);
+            ->get(['jv2_id', 'prefix','ac_name', 'SumDebit','jv_date','pur_age_amount','remaining_amount','remaining_amount_after_rtn','rtn_amount']);
 
         $editedsale = sales_days::leftjoin('ac', 'ac.ac_code', '=', 'sales_days.account_name')
             ->select('sales_days.*', 'ac.ac_name as ac_nam', 'ac.remarks as ac_remarks')

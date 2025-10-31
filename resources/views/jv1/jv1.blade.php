@@ -183,7 +183,7 @@
                                 <select data-plugin-selecttwo class="form-control select2-js" name ="update_jv2_id_pur" id="update_jv2_id_pur">
                                     <option value="" disabled selected>Select JV2-ID</option>
                                     @foreach($jv2_id_pur as $key => $row2)	
-                                        <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                        <option value="{{ $row2->jv2_id }}"> {{ $row2->prefix }}{{ $row2->jv2_id }}  ({{ $row2->ac_name }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -308,7 +308,7 @@
                                     <select data-plugin-selecttwo class="form-control select2-js" name ="jv2_id_pur">
                                         <option value="" disabled selected>Select JV2-ID</option>
                                         @foreach($jv2_id_pur as $key => $row2)	
-                                            <option value="{{ $row1->jv2_id }}"> {{ $row1->prefix }}{{ $row1->jv2_id }}  ({{ $row1->ac_name }})</option>
+                                            <option value="{{ $row2->jv2_id }}"> {{ $row2->prefix }}{{ $row2->jv2_id }}  ({{ $row2->ac_name }})</option>
                                         @endforeach
                                     </select>
                                 </div>

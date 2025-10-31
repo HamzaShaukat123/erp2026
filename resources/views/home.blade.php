@@ -1615,6 +1615,8 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Voucher Amount</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Adjusted Amount</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Unadjusted Amount</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Return Amount</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Remaining Amount</font></font></th>
 															</tr>
 														</thead>
 														<tbody id="UVPurTable">
@@ -3026,7 +3028,7 @@
 					beforeSend: function() {
 						// Show loading in all tables
 						$('#UVSaleTable').html(`<tr><td colspan="8" style="text-align:center;">Loading...</td></tr>`);
-						$('#UVPurTable').html(`<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`);
+						$('#UVPurTable').html(`<tr><td colspan="8" style="text-align:center;">Loading...</td></tr>`);
 						$('#WrongSaleTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
 						$('#WrongPurTable').html(`<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>`);
 						$('#EditedSaleACTable').html(`<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>`);
@@ -3061,9 +3063,11 @@
 								<td>${value['SumDebit'] ? value['SumDebit'] : ''}</td>
 								<td>${value['pur_age_amount'] ? value['pur_age_amount'] : ''}</td>
 								<td>${value['remaining_amount'] ? value['remaining_amount'] : ''}</td>
+								<td>${value['rtn_amount'] ? value['rtn_amount'] : ''}</td>
+								<td>${value['remaining_amount_after_rtn'] ? value['remaining_amount_after_rtn'] : ''}</td>
 							</tr>`;
 						});
-						$('#UVPurTable').html(UVpurchaseRows || `<tr><td colspan="6" style="text-align:center;">No records found</td></tr>`);
+						$('#UVPurTable').html(UVpurchaseRows || `<tr><td colspan="8" style="text-align:center;">No records found</td></tr>`);
 
 						// For deleted Sale Ageing
 						var salesRows = '';
