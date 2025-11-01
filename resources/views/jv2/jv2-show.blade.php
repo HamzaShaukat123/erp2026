@@ -22,25 +22,40 @@
 								</header>
 
 								<div class="bill-info">
-									<div class="row">
+									<div class="row align-items-center">
+										<!-- Date -->
 										<div class="col-md-7">
 											<div class="bill-to">
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Date: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{\Carbon\Carbon::parse($jv2->jv_date)->format('d-m-y')}}</span>
+												<h4 class="h6 mb-0 text-dark font-weight-semibold d-flex align-items-center">
+													<span style="color:#17365D;">Date:&nbsp;</span>
+													<span style="font-weight:400; color:black;">
+														{{ \Carbon\Carbon::parse($jv2->jv_date)->format('d-m-y') }}
+													</span>
 												</h4>
 											</div>
 										</div>
+
+										<!-- Narration & Attachment Link -->
 										<div class="col-md-5">
-											<div class="bill-data">
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Narration: &nbsp</span>
-													<span style="font-weight:400;color:black" class="value"> {{$jv2->narration}}</span>
+											<div class="bill-data d-flex justify-content-between align-items-center">
+												<h4 class="h6 mb-0 text-dark font-weight-semibold mb-1">
+													<span style="color:#17365D;">Narration:&nbsp;</span>
+													<span style="font-weight:400; color:black;">
+														{{ $jv2->narration }}
+													</span>
 												</h4>
+
+												<a href="#attModal"
+												onclick="getAttachements({{ $jv2->jv_no }})"
+												class="modal-with-zoom-anim text-primary"
+												style="font-size:13px; text-decoration:underline;">
+												Show Attachment
+												</a>
 											</div>
 										</div>
 									</div>
 								</div>
+
 
 								<table class="table table-responsive-md table-striped invoice-items" style="font-size: 18px;">
 									<thead>
@@ -101,6 +116,41 @@
 			</div>
 			</div>
 		</section>
+
+
+		<div id="attModal" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
+            <section class="card">
+                <header class="card-header">
+                    <h2 class="card-title">All Attachements</h2>
+                </header>
+                <div class="card-body">
+                    <div class="modal-wrapper">
+
+                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                            <thead>
+                                <tr>
+                                    <th>Attachement Path</th>
+                                    <th>Download</th>
+                                    <th>View</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jv2_attachements">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-end">
+                            <button class="btn btn-default modal-dismiss">Cancel</button>
+                        </div>
+                    </div>
+                </footer>
+            </section>
+        </div>
+
         @include('../layouts.footerlinks')
 	</body>
 
@@ -110,6 +160,38 @@
 		var netAmount = <?php echo json_encode($jv2->amount); ?>;
 		var words = convertCurrencyToWords(netAmount);
 		document.getElementById('numberInWords').innerHTML = words;
+
+
+
+		
+		function getAttachements(id) {
+			var table = document.getElementById('jv2_attachements');
+			while (table.rows.length > 0) {
+				table.deleteRow(0);
+			}
+
+			$.ajax({
+				type: "GET",
+				url: "/vouchers2/attachements",
+				data: { id: id },
+				success: function(result) {
+					$.each(result, function(k, v) {
+						var html = "<tr>";
+						html += "<td>" + v['att_path'] + "</td>";
+						html += "<td class='text-center'><a class='mb-1 mt-1 text-danger' href='/vouchers2/download/" + v['att_id'] + "'><i class='fas fa-download'></i></a></td>";
+						html += "<td class='text-center'><a class='mb-1 mt-1 text-primary' href='/vouchers2/view/" + v['att_id'] + "' target='_blank'><i class='fas fa-eye'></i></a></td>";
+						html += "<td class='text-center'><a class='mb-1 mt-1 text-primary' href='#' onclick='deleteFile(" + v['att_id'] + ")'><i class='fas fa-trash'></i></a></td>";
+						html += "</tr>";
+						$('#jv2_attachements').append(html);
+					});
+				},
+				error: function() {
+					alert("Error fetching attachments.");
+				}
+			});
+		}
+
+
 
 	</script>
 	
