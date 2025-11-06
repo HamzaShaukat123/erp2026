@@ -88,7 +88,7 @@
                                                                 onclick="getJVSDetails({{ $row->auto_lager }})"
                                                                 href="#updateModal" title="Edit JV1">
                                                                     <i class="fas fa-pencil-alt text-success"></i>
-                                                           
+                                                                </a>
 
                                                             @if(session('user_role') == 1)
                                                             <span class="separator"> | </span>
