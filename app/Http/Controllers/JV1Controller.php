@@ -47,15 +47,25 @@ class JV1Controller extends Controller
     {
         // Retrieve the record with joined debit and credit account details
         $jv1 = jvsingel::where('jvsingel.auto_lager', $id)
-                ->join('ac as d_ac', 'd_ac.ac_code', '=', 'jvsingel.ac_dr_sid')
-                ->join('ac as c_ac', 'c_ac.ac_code', '=', 'jvsingel.ac_cr_sid')
-                ->select('jvsingel.*', 
-                'd_ac.ac_name as debit_account', 
-                'c_ac.ac_name as credit_account')
-                ->first();
+            ->join('ac as d_ac', 'd_ac.ac_code', '=', 'jvsingel.ac_dr_sid')
+            ->join('ac as c_ac', 'c_ac.ac_code', '=', 'jvsingel.ac_cr_sid')
+            ->select('jvsingel.*', 
+            'd_ac.ac_name as debit_account', 
+            'c_ac.ac_name as credit_account')
+        ->first();
+
+        $acc = AC::where('status', 1)->orderBy('ac_name', 'asc')->get();
+
+        $jv2_id_sale = unadjusted_sales_ageing_jv2::where('remaining_amount', '!=', 0)
+            ->orderBy('jv2_id', 'asc')
+        ->get();
+
+        $jv2_id_pur = unadjusted_purchase_ageing_jv2::where('remaining_amount', '!=', 0)
+            ->orderBy('jv2_id', 'asc')
+        ->get();
+
+        return view('jv1.jv1-show',compact('jv1','acc','jv2_id_sale','jv2_id_pur'));
     
-        // Point to the correct Blade view file: show.blade.php
-        return view('jv1.jv1-show', compact('jv1'));
     }
     
     public function store(Request $request)
@@ -179,6 +189,9 @@ class JV1Controller extends Controller
         
         // Redirect if no induced flag is set
         return redirect()->route('all-jv1');
+
+        
+
     }
     
     public function update(Request $request)
@@ -244,7 +257,11 @@ class JV1Controller extends Controller
             }
         }
 
-        return redirect()->route('all-jv1');
+        // return redirect()->route('all-jv1');
+
+        // After updating the JV1 record and handling attachments
+        return redirect()->route('show-jv1', ['id' => $jv1->auto_lager]);
+
     }
 
     public function addAtt(Request $request)
