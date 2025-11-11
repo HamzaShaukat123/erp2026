@@ -165,7 +165,7 @@
 												<div class="row form-group mb-2">
 													<div class="col-3 mb-2">
 														<label class="col-form-label">Account Name</label>
-														<select data-plugin-selecttwo class="form-control select2-js" id="customer_name" name="customer_name" onchange="getPendingInvoices()" required>
+														<select data-plugin-selecttwo class="form-control select2-js" id="customer_name" name="customer_name" onchange="getPendingInvoices()" disabled required>
 															<option value="0" selected>Select Account</option>
 															@foreach($acc as $key1 => $row1)	
 																<option value="{{$row1->ac_code}}">{{$row1->ac_name}}</option>
@@ -175,7 +175,7 @@
 
 													<div class="col-3 mb-2">
 														<label class="col-form-label">Unadjusted Amount</label>
-														<input type="number" id="sales_unadjusted_amount" name="sales_unadjusted_amount" value="0" class="form-control" step="any">
+														<input type="number" id="sales_unadjusted_amount" name="sales_unadjusted_amount" value="0" class="form-control" disabled step="any">
 													</div>
 
 													<div class="col-3 mb-2">
@@ -298,7 +298,7 @@
 																<i class="bx bx-refresh" style="font-size:20px;color:red;"></i>
 															</a>
 														</label>
-														<select data-plugin-selecttwo class="form-control select2-js" name="pur_customer_name" id="pur_customer_name" onchange="getPurPendingInvoices()" required>
+														<select data-plugin-selecttwo class="form-control select2-js" name="pur_customer_name" id="pur_customer_name" onchange="getPurPendingInvoices()" required disabled>
 															<option value="0" disabled selected>Select Account</option>
 															@foreach($acc as $key1 => $row1)	
 																<option value="{{ $row1->ac_code }}">{{ $row1->ac_name }}</option>
@@ -308,7 +308,7 @@
 
 													<div class="col-3 mb-2">
 														<label class="col-form-label">Unadjusted Amount</label>
-														<input type="number" id="pur_unadjusted_amount" name="pur_unadjusted_amount" value="0" class="form-control" step="any">
+														<input type="number" id="pur_unadjusted_amount" name="pur_unadjusted_amount" value="0" class="form-control" disabled step="any">
 													</div>
 
 													<div class="col-3 mb-2">
