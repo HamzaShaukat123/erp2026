@@ -242,7 +242,46 @@ class JV2Controller extends Controller
             ->get();
 
 
-        return view('jv2.jv2-show', compact('jv2', 'entries'));
+
+            // Retrieve the main JV2 record.
+        $jv2 = lager0::where('jv_no', $id)->firstOrFail();
+        
+        // Get the related JV2 items.
+        $jv2_items = lager::where('auto_lager', $id)->get();
+        
+        // Fetch active accounts ordered by name.
+        $acc = AC::where('status', 1)->orderBy('ac_name', 'asc')->get();
+        
+        // Join sales_ageing with vw_union_sale_1_2_opbal.
+        $sales_ageing = sales_ageing::where('jv2_id', $id)
+            ->where('voch_prefix', 'JV2-')
+            ->join('vw_union_sale_1_2_opbal', function ($join) {
+                $join->on('vw_union_sale_1_2_opbal.prefix', '=', 'sales_ageing.sales_prefix')
+                     ->whereColumn('vw_union_sale_1_2_opbal.Sal_inv_no', 'sales_ageing.sales_id');
+            })
+            ->select('sales_ageing.*', 'vw_union_sale_1_2_opbal.*')
+            ->get();
+    
+        // Set $sales_ageing to null if the collection is empty.
+        $sales_ageing = $sales_ageing->isEmpty() ? null : $sales_ageing;
+    
+        // Fetch the related purchase ageing records.
+    
+        $purchase_ageing = purchase_ageing::where('jv2_id', $id)
+        ->where('voch_prefix', 'JV2-')
+        ->join('vw_union_pur_1_2_opbal', function ($join) {
+            $join->on('vw_union_pur_1_2_opbal.prefix', '=', 'purchase_ageing.sales_prefix')
+                 ->whereColumn('vw_union_pur_1_2_opbal.Sal_inv_no', 'purchase_ageing.sales_id');
+        })
+        ->select('purchase_ageing.*', 'vw_union_pur_1_2_opbal.*')
+        ->get();
+
+       
+
+        $purchase_ageing = $purchase_ageing->isEmpty() ? null : $purchase_ageing;
+
+
+        return view('jv2.jv2-show', compact('acc', 'jv2', 'jv2_items', 'sales_ageing', 'purchase_ageing', 'entries'));
     }
 
 
