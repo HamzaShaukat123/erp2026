@@ -784,14 +784,13 @@
                             : '';
 
                         $('#gl_acc').html(
-                            selectedAccId + ' - ' + selectedAcc +
-                            ' <span style="color: green; display: inline-block; width: 200px; text-align: right;"> Balance = ' +
-                            '<span style="color: green;">' +
-                            balance.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) +
-                            '</span>' +
-                            '</span>' +
-                            ' <span style="color:#17365D; margin-left:20px;">Phone: ' + phoneNo + '</span>'
-                        );
+    selectedAccId + ' - ' + selectedAcc +
+    ' <span style="color: green; margin-left:15px;">Balance = ' +
+    balance.toLocaleString('en-US') +
+    '</span>' +
+    ' <span style="color:#17365D; margin-left:20px;">Phone: ' + phoneNo + '</span>'
+);
+
 
                         // Now add the total row
                         var netAmount = balance;
