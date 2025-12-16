@@ -443,7 +443,7 @@
 		$('#total_quantity_show').val(totalQuantity);
 		
 		netTotal();
-		CalculateRowWeight(();
+		CalculateRowWeight();
 	}
 
 	function netTotal(){
