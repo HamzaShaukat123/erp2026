@@ -312,6 +312,7 @@
         Route::get('/coa/print', [App\Http\Controllers\COAController::class, 'print'])->name('print-acc');
         Route::get('/coa/excel', [App\Http\Controllers\COAController::class, 'chartExcel'])->name('chart-excel');
         Route::get('/items/excel', [App\Http\Controllers\ItemsController::class, 'item1Excel'])->name('item1-excel');
+        Route::get('/item2/excel', [App\Http\Controllers\Item2Controller::class, 'item2Excel'])->name('item2-excel');
         Route::get('/purchase2/generatePDF/{id}', [App\Http\Controllers\Purchase2Controller::class, 'generatePDF'])->name('print-purc2-invoice');
         Route::get('/purchase1/generatePDF/{id}', [App\Http\Controllers\PurchaseController::class, 'generatePDF'])->name('print-purc1-invoice');
         Route::get('/vouchers2/print/{id}', [App\Http\Controllers\JV2Controller::class, 'print'])->name('print-jv2');
