@@ -5,13 +5,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-
+use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
 use ZipArchive;
 use Carbon\Carbon;
 use App\Models\AC;
 use App\Models\ac_att;
 use App\Models\ac_group;
+use App\Exports\ChartOfAccountExport;
 use App\Models\ac_area;
 use App\Models\ac_city;
 use App\Traits\SaveImage;
@@ -224,6 +225,38 @@ class COAController extends Controller
     {
         $acc_atts = ac_att::where('ac_code', $request->id)->get();
         return $acc_atts;
+    }
+
+
+    public function chartExcel(Request $request)
+    {
+        $AC = AC::select(
+                'ac_code',
+                'ac_name',
+                'rec_able',
+                'pay_able',
+                'opp_date',
+                'remarks',
+                'address',
+                'city',
+                'area',
+                'phone_no',
+                'group_cod',
+                'AccountType',
+                'credit_limit',
+                'days_limit',
+                'created_by',
+                'created_at',
+                'updated_at',
+                'status',
+                'updated_by'
+            )
+            ->orderBy('ac_code')
+            ->get();
+
+        $filename = 'Chart_Of_Account_Report_' . now()->format('d-m-Y') . '.xlsx';
+
+        return Excel::download(new ChartOfAccountExport($AC), $filename);
     }
 
     public function print()

@@ -310,6 +310,7 @@
     Route::middleware(['checkPermission:print'])->group(function (){
 
         Route::get('/coa/print', [App\Http\Controllers\COAController::class, 'print'])->name('print-acc');
+        Route::get('/coa/excel', [App\Http\Controllers\COAController::class, 'chartExcel'])->name('chart-excel');
         Route::get('/purchase2/generatePDF/{id}', [App\Http\Controllers\Purchase2Controller::class, 'generatePDF'])->name('print-purc2-invoice');
         Route::get('/purchase1/generatePDF/{id}', [App\Http\Controllers\PurchaseController::class, 'generatePDF'])->name('print-purc1-invoice');
         Route::get('/vouchers2/print/{id}', [App\Http\Controllers\JV2Controller::class, 'print'])->name('print-jv2');

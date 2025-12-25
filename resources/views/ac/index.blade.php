@@ -13,6 +13,7 @@
                                     <div class="card-actions">
                                         <button type="button" class="modal-with-form btn btn-primary" href="#addModal"> <i class="fas fa-plus">  </i>  New Account</button>
                                         <button type="button" class="btn btn-danger" onclick="printReport()"> <i class="fas fa-print">  </i>  Report</button>
+                                        <button type="button" class="btn btn-success" onclick="downloadExcel('gl')"> <i class="fa fa-file-excel"></i> Excel</button>  
                                     </div>
                                 </header>
                                 <div class="card-body">
@@ -560,7 +561,13 @@
     function printReport(){
         window.location.href = "{{ route('print-acc')}}";
     }
-
+    
+    function downloadExcel(type) {
+        if (type === 'gl') {
+            window.location.href = "{{ route('chart-excel') }}";
+        }
+    }
+    
     function deleteFile(fileId) {
         if (!confirm('Are you sure you want to delete this file?')) {
             return;
