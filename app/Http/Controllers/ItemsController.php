@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Item_entry;
 use App\Models\Item_Groups;
+use App\Exports\ItemEntry1Export;
 use Illuminate\Support\Facades\Validator;
 
 class ItemsController extends Controller
@@ -143,6 +145,36 @@ class ItemsController extends Controller
     {
         $item_details = Item_entry::where('it_cod', $request->id)->get();
         return $item_details;
+    }
+
+    public function item1Excel(Request $request)
+    {
+        $Item_entry = Item_entry::select(
+                'it_cod',
+                'item_name',
+                'item_group',
+                'item_remark',
+                'opp_qty',
+                'OPP_qty_cost',
+                'pur_rate_date',
+                'sale_rate_date',
+                'sales_price',
+                'opp_date',
+                'stock_level', 
+                'labourprice', 
+                'qty',
+                'created_by',
+                'updated_by',
+                'created_at',
+                'updated_at',
+                'status'
+            )
+            ->orderBy('it_cod')
+            ->get();
+
+        $filename = 'Item_Entry_Report_' . now()->format('d-m-Y') . '.xlsx';
+
+        return Excel::download(new ItemEntry1Export($Item_entry), $filename);
     }
     
 }
