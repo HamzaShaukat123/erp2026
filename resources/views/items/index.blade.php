@@ -13,7 +13,7 @@
                                     <form class="text-end" action="{{ route('create-item') }}" method="GET">
                                         <button type="button" class="btn btn-primary mt-2 modal-with-zoom-anim ws-normal modal-with-form" href="#createModal"> <i class="fas fa-plus" ></i> New Item (Single) </button>
                                         <button type="submit" class="btn btn-danger mt-2"> <i class="fas fa-plus"></i>  New Item (Multiple) </button>
-                                        <button type="button" class="btn btn-success mt-2" onclick="downloadExcel('gl')"> <i class="fa fa-file-excel"></i> Excel</button> 
+                                        <button type="button" class="btn btn-success mt-2" onclick="downloadExcel('item1')"> <i class="fa fa-file-excel"></i> Excel</button> 
                                     </form>
                                 </header>
                                 <div class="card-body">
