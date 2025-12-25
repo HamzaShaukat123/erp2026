@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ItemEntry1Export;
+use App\Exports\ItemEntry2Export;
 use App\Models\Item_entry2;
 use App\Models\Item_Groups;
 use Illuminate\Support\Facades\Validator;
