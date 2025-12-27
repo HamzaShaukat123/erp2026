@@ -102,8 +102,16 @@ class Purchase2Controller extends Controller
         $items = Item_entry2::all();
         $item_group = Item_Groups::all();
         $item_group = Item_Groups::whereBetween('item_group_cod', [1, 6])->get();
-        $coa = AC::all();
-        return view('purchase2.create',compact('items','coa','item_group'));
+        // $coa = AC::all();
+        $coa = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
+        $coa2 = AC::where('AccountType', 1)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
+        return view('purchase2.create',compact('items','coa','coa2','item_group'));
     }
 
     
@@ -243,15 +251,35 @@ class Purchase2Controller extends Controller
             }
         }
 
-        return redirect()->route('all-purchases2-paginate');
+        return redirect()->route('show-purchases2', $pur_2_id['Sale_inv_no']);
+
+
+
+        // if ($request->action === 'add_new') {
+        //     // Save invoice and open a new blank form
+        //     return redirect()
+        //         ->route('new-purchases2')
+        //         ->with('success', 'Invoice added successfully. You can add a new one now.');
+        // } else {
+        //     // Just save and go back to list
+        //     return redirect()
+        //         ->route('all-purchases2-paginate')
+        //         ->with('success', 'Invoice added successfully.');
+        // }
+
+          
     }
 
+    
     public function edit($id)
     {
         $item_group = Item_Groups::all();
         $items = Item_entry2::orderBy('item_name', 'asc')->get();
-        $coa = AC::orderBy('ac_name', 'asc')->get();
-
+        // $coa = AC::orderBy('ac_name', 'asc')->get();
+        $coa = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+        
         $pur2 = tpurchase::where('tpurchase.Sale_inv_no',$id)
         ->leftjoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
         ->select(

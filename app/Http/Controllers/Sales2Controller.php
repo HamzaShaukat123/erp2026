@@ -92,10 +92,18 @@ class Sales2Controller extends Controller
     public function create(Request $request)
     {
         $items = Item_entry2::orderBy('item_name', 'asc')->get();
-        $coa = AC::orderBy('ac_name', 'asc')->get();
+        // $coa = AC::orderBy('ac_name', 'asc')->get();
+        $coa = AC::where('AccountType', 1)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
+        $coa2 = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
         $item_group = Item_Groups::all();
         
-        return view('sale2.create',compact('items','coa','item_group'));
+        return view('sale2.create',compact('items','coa','coa2','item_group'));
     }
 
     public function store(Request $request)
@@ -231,7 +239,10 @@ class Sales2Controller extends Controller
     {
         $item_group = Item_Groups::all();
         $items = Item_entry2::orderBy('item_name', 'asc')->get();
-        $coa = AC::orderBy('ac_name', 'asc')->get();
+        // $coa = AC::orderBy('ac_name', 'asc')->get();
+        $coa = AC::where('AccountType', 1)
+        ->orderBy('ac_name', 'asc')
+        ->get();
 
         $pur2 = tsales::where('tsales.Sal_inv_no',$id)
         ->select(

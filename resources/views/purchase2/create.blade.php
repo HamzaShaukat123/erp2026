@@ -58,7 +58,7 @@
 												<label class="col-form-label">Customer Name<span style="color: red;"><strong>*</strong></span></label>
 												<select data-plugin-selecttwo class="form-control select2-js"  name="disp_account_name" required>
 													<option value="" disabled selected>Select Customer Account</option>
-													@foreach($coa as $key => $row)	
+													@foreach($coa2 as $key => $row)	
 														<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
 													@endforeach
 												</select>

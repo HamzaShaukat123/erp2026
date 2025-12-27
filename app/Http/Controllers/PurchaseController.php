@@ -66,7 +66,10 @@ class PurchaseController extends Controller
     public function create(Request $request)
     {
         $items = Item_entry::orderBy('item_name', 'asc')->get();
-        $coa = AC::orderBy('ac_name', 'asc')->get();
+        // $coa = AC::orderBy('ac_name', 'asc')->get();
+        $coa = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
 
         return view('purchase1.create',compact('items','coa'));
         
@@ -158,7 +161,10 @@ class PurchaseController extends Controller
     public function edit($id)
     {
         $items = Item_entry::all();
-        $acc = AC::all();
+        // $acc = AC::all();
+        $acc = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
         $pur = purchase::where('purchase.pur_id',$id)->first();
         $pur_items = purchase_2::where('purchase_2.pur_cod',$id)->get();
 
