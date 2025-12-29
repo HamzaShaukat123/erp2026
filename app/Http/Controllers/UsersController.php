@@ -216,86 +216,86 @@ class UsersController extends Controller
             // Authentication passed
             $user = Auth::user();
 
-            // $agent = new Agent();
-            // $browserName = $agent->browser();  
-            // $browserVersion = $agent->version($browserName);
+            $agent = new Agent();
+            $browserName = $agent->browser();  
+            $browserVersion = $agent->version($browserName);
 
-            // $userLocation = $this->getUserLocation(); // Fetch user location details
-            // $locationData = (array) $userLocation->getData();
+            $userLocation = $this->getUserLocation(); // Fetch user location details
+            $locationData = (array) $userLocation->getData();
 
-            // $user_devices = user_devices::where('user_id', $user->id)->get();
+            $user_devices = user_devices::where('user_id', $user->id)->get();
 
-            // $isDeviceRegistered = false;
+            $isDeviceRegistered = false;
 
-            // foreach ($user_devices as $device) {
-            //     if (Hash::check($request->browser_id, $device->device_id)) {
-            //         $isDeviceRegistered = true;
-            //         break;
-            //     }
-            // }
+            foreach ($user_devices as $device) {
+                if (Hash::check($request->browser_id, $device->device_id)) {
+                    $isDeviceRegistered = true;
+                    break;
+                }
+            }
 
-            // // Handle OTP if provided
-            // if($request->otp) {
-            //     $currentTimestamp = Carbon::now(); // Get current timestamp using Carbon
+            // Handle OTP if provided
+            if($request->otp) {
+                $currentTimestamp = Carbon::now(); // Get current timestamp using Carbon
     
-            //     $user_otp = login_otps::where('user_id', $user->id)
-            //         ->where('created_at', '>=', $currentTimestamp->subMinutes(10))
-            //         ->orderBy('id','desc') // Ensure created_at is within the last 10 minutes
-            //         ->first();
+                $user_otp = login_otps::where('user_id', $user->id)
+                    ->where('created_at', '>=', $currentTimestamp->subMinutes(10))
+                    ->orderBy('id','desc') // Ensure created_at is within the last 10 minutes
+                    ->first();
     
-            //     // If OTP is valid, register device
-            //     if (Hash::check($request->otp, $user_otp->otp)) {
-            //         user_devices::create([
-            //             'user_id' => $user->id,
-            //             'device_id' => Hash::make($request->browser_id), // Use $request->browser_id directly
-            //             'device_name' => $user->id,
-            //             'browser' => $agent->browser()."(".$agent->version($browserName).")",
-            //             'date' => Carbon::today(),                    
-            //         ]);
-            //     } else {
-            //         Auth::logout();
-            //         return back()->withErrors([
-            //             'error' => 'Invalid OTP. Please Contact Administration',
-            //             'not_registered' => 'Device not registered. OTP sent.',
-            //         ]);
-            //     }
-            // }
+                // If OTP is valid, register device
+                if (Hash::check($request->otp, $user_otp->otp)) {
+                    user_devices::create([
+                        'user_id' => $user->id,
+                        'device_id' => Hash::make($request->browser_id), // Use $request->browser_id directly
+                        'device_name' => $user->id,
+                        'browser' => $agent->browser()."(".$agent->version($browserName).")",
+                        'date' => Carbon::today(),                    
+                    ]);
+                } else {
+                    Auth::logout();
+                    return back()->withErrors([
+                        'error' => 'Invalid OTP. Please Contact Administration',
+                        'not_registered' => 'Device not registered. OTP sent.',
+                    ]);
+                }
+            }
 
-            // else if(!$isDeviceRegistered){
+            else if(!$isDeviceRegistered){
 
-            //     $otp = rand(100000, 999999); // Generate a 6-digit 
-            //     $ip=$locationData['ip'];
-            //     $city=$locationData['city'];
-            //     $region=$locationData['region'];
-            //     $country=$locationData['country'];
-            //     $location=$locationData['location'];
+                $otp = rand(100000, 999999); // Generate a 6-digit 
+                $ip=$locationData['ip'];
+                $city=$locationData['city'];
+                $region=$locationData['region'];
+                $country=$locationData['country'];
+                $location=$locationData['location'];
 
-            //     $data = [
-            //         'otp' => $otp,
-            //         'browser' => $browserName,
-            //         'version' => $browserVersion,
-            //         'ip' => $ip,
-            //         'city' => $city,
-            //         'region' => $region,
-            //         'country' => $country,
-            //         'location' => $location,
-            //         'username' => $user->name,
-            //     ];
+                $data = [
+                    'otp' => $otp,
+                    'browser' => $browserName,
+                    'version' => $browserVersion,
+                    'ip' => $ip,
+                    'city' => $city,
+                    'region' => $region,
+                    'country' => $country,
+                    'location' => $location,
+                    'username' => $user->name,
+                ];
 
-            //     $otp_email = $this->sendEmail($data); // Implement email sending functionality
+                $otp_email = $this->sendEmail($data); // Implement email sending functionality
                 
-            //     if ($otp_email == 0) {
-            //         login_otps::create([
-            //             'user_id' => $user->id,
-            //             'otp' => Hash::make($otp),
-            //         ]);
-            //     }
+                if ($otp_email == 0) {
+                    login_otps::create([
+                        'user_id' => $user->id,
+                        'otp' => Hash::make($otp),
+                    ]);
+                }
 
-            //     Auth::logout(); // Logout the user
-            //     return back()->withErrors([
-            //         'not_registered' => 'Device not registered. OTP sent.',
-            //     ]);
-            // }
+                Auth::logout(); // Logout the user
+                return back()->withErrors([
+                    'not_registered' => 'Device not registered. OTP sent.',
+                ]);
+            }
 
             // Regenerate session to ensure security
             $request->session()->regenerate();
