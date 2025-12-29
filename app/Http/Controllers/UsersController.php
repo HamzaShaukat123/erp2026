@@ -366,6 +366,7 @@ class UsersController extends Controller
     {
         Mail::to(['memonfabrication@hotmail.com', 'saad.shaukat123@gmail.com','memon.fabrication@gmail.com'])->send(new SendMail($data));
         return 0;
+
     }
 
     public function getUserLocation()
