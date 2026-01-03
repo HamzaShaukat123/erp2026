@@ -558,7 +558,7 @@ class Purchase2Controller extends Controller
             $query->where('sales_against', '')
                   ->orWhereNull('sales_against')
                   ->where('tpurchase.status',1)
-                  ->where('tpurchase.Cash_pur_name_ac', '!=', 24);
+                  ->where('tpurchase.Cash_pur_name_ac', '!=', 32);
 
         })
         ->join('ac', 'ac.ac_code', '=', 'tpurchase.account_name')
@@ -575,7 +575,7 @@ class Purchase2Controller extends Controller
             $query->where('sales_against', '')
                   ->orWhereNull('sales_against')
                   ->where('tpurchase.status',1)
-                  ->where('tpurchase.Cash_pur_name_ac',24);
+                  ->where('tpurchase.Cash_pur_name_ac',32);
 
         })
         ->join('ac', 'ac.ac_code', '=', 'tpurchase.account_name')
