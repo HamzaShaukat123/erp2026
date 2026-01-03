@@ -107,7 +107,7 @@ class Purchase2Controller extends Controller
         ->orderBy('ac_name', 'asc')
         ->get();
 
-        $coa2 = AC::where('AccountType', 1)
+        $coa2 = AC::where('AccountType', [1, 20])
         ->orderBy('ac_name', 'asc')
         ->get();
 
