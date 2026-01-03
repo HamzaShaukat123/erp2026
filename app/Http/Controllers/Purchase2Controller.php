@@ -100,7 +100,7 @@ class Purchase2Controller extends Controller
    public function create(Request $request)
     {
         $items = Item_entry2::all();
-        $item_group = Item_Groups::all();
+        // $item_group = Item_Groups::all();
         $item_group = Item_Groups::whereBetween('item_group_cod', [1, 6])->get();
         // $coa = AC::all();
         $coa = AC::where('AccountType', 7)
