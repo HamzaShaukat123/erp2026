@@ -76,7 +76,7 @@
 													disabled
 												>
 													<option value="" disabled selected>Select Account</option>
-													@foreach($coa as $key => $row)	
+													@foreach($coa2 as $key => $row)	
 														<option value="{{$row->ac_code}}" {{ $pur2->company_name == $row->ac_code ? 'selected' : '' }}>
 															{{$row->ac_name}}
 														</option>

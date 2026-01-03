@@ -97,7 +97,7 @@ class Sales2Controller extends Controller
         ->orderBy('ac_name', 'asc')
         ->get();
 
-        $coa2 = AC::where('AccountType', 7)
+        $coa2 = AC::whereIn('AccountType', [7, 20])
         ->orderBy('ac_name', 'asc')
         ->get();
 
@@ -244,6 +244,10 @@ class Sales2Controller extends Controller
         ->orderBy('ac_name', 'asc')
         ->get();
 
+        $coa2 = AC::whereIn('AccountType', [7, 20])
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
         $pur2 = tsales::where('tsales.Sal_inv_no',$id)
         ->select(
             'tsales.Sal_inv_no','tsales.sa_date','tsales.pur_ord_no', 'tsales.company_name','tsales.Sales_Remarks','tsales.pur_against',
@@ -257,7 +261,7 @@ class Sales2Controller extends Controller
 
         $pur2_item = tsales_2::where('tsales_2.sales_inv_cod',$id)->get();
 
-        return view('sale2.edit',compact('pur2','pur2_item','items','coa','item_group'));
+        return view('sale2.edit',compact('pur2','pur2_item','items','coa','coa2','item_group'));
     }
 
     public function update(Request $request){
