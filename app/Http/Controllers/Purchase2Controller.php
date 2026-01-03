@@ -273,10 +273,15 @@ class Purchase2Controller extends Controller
     
     public function edit($id)
     {
-        $item_group = Item_Groups::all();
+        
+        $item_group = Item_Groups::whereIn('item_group_cod', [1,2,4,5, 6])->get();
         $items = Item_entry2::orderBy('item_name', 'asc')->get();
         // $coa = AC::orderBy('ac_name', 'asc')->get();
         $coa = AC::where('AccountType', 7)
+        ->orderBy('ac_name', 'asc')
+        ->get();
+
+        $coa2 = AC::whereIn('AccountType', [1, 20])
         ->orderBy('ac_name', 'asc')
         ->get();
         
@@ -296,7 +301,7 @@ class Purchase2Controller extends Controller
 
         $pur2_item = tpurchase_2::where('tpurchase_2.sales_inv_cod',$id)->get();
 
-        return view('purchase2.edit',compact('pur2','pur2_item','items','coa','item_group'));
+        return view('purchase2.edit',compact('pur2','pur2_item','items','coa','coa2','item_group'));
     }
 
     public function update(Request $request){
