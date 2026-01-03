@@ -101,15 +101,13 @@ class Purchase2Controller extends Controller
     {
         $items = Item_entry2::all();
         $item_group = Item_Groups::all();
-        $item_group = Item_Groups::whereIn('item_group_cod', [1, 3, 4, 5, 6])
-        ->get();
-
+        $item_group = Item_Groups::whereBetween('item_group_cod', [1, 6])->get();
         // $coa = AC::all();
         $coa = AC::where('AccountType', 7)
         ->orderBy('ac_name', 'asc')
         ->get();
 
-        $coa2 = AC::where('AccountType', [1, 20])
+        $coa2 = AC::where('AccountType', [20])
         ->orderBy('ac_name', 'asc')
         ->get();
 
