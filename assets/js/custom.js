@@ -163,80 +163,160 @@ function convertTens(number) {
     return tens[number] || "";
 }
 
-// Session expiration logic
-const timeoutWarning = 28 * 60 * 1000; // 28 mint in milliseconds
-const timeoutRedirect = 30 * 60 * 1000; // 30 mint in milliseconds
 
-let warningTimeout;
-let redirectTimeout;
+
+
+
+
+// ================= SESSION TIMEOUT LOGIC =================
+
+const timeoutWarning = 28 * 60 * 1000;   // 28 minutes
+const timeoutRedirect = 30 * 60 * 1000;  // 30 minutes
+
+let warningTimeout = null;
+let redirectTimeout = null;
 
 // Reset session activity timer
 function resetTimer() {
-    // Clear any existing timeouts
-    clearTimeout(warningTimeout);
-    clearTimeout(redirectTimeout);
+    if (warningTimeout) clearTimeout(warningTimeout);
+    if (redirectTimeout) clearTimeout(redirectTimeout);
 
-    // Set new timeouts
-    warningTimeout = setTimeout(showModal, timeoutWarning); // Warning modal
-    redirectTimeout = setTimeout(expireSession, timeoutRedirect); // Expire session
-}       
-
-// Show warning modal
-function showModal() {
-    $('#timeoutModal').show(); // Display the modal
+    warningTimeout = setTimeout(showModal, timeoutWarning);
+    redirectTimeout = setTimeout(expireSession, timeoutRedirect);
 }
 
+// Show warning modal (prevent duplicate show)
+function showModal() {
+    if (!$('#timeoutModal').is(':visible')) {
+        $('#timeoutModal').show();
+    }
+}
+
+// Expire session
 function expireSession() {
     fetch('/logout', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-        },
-    }).then(response => {
-        if (response.ok) {
-            window.location.href = '/login'; // Redirect to login page after successful logout
-        } else {
-            console.error('Logout failed:', response);
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
         }
-    }).catch(err => console.error('Session Timeout logout failed:', err));
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/login';
+        }
+    })
+    .catch(err => console.error('Session Timeout logout failed:', err));
 }
 
-// Keep session alive after user confirms activity
-$('#continueSession').on('click', function() {
+// Continue session
+$('#continueSession').on('click', function () {
     fetch('/keep-alive', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
         }
     })
     .then(() => {
-        $('#timeoutModal').hide(); // Hide the warning modal
-        resetTimer(); // Restart the timers
+        $('#timeoutModal').hide();
+        resetTimer();
     })
-    .catch(err => console.error('Failed to keep session alive:', err));
+    .catch(err => console.error('Keep alive failed:', err));
 });
 
-// Logout manually from the warning modal
-$('#logoutSession').on('click', function() {
-    fetch('/logout', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-        },
-    }).then(response => {
-        if (response.ok) {
-            window.location.href = '/login'; // Redirect to login page after successful logout
-        } else {
-            console.error('Logout failed:', response);
-        }
-    }).catch(err => console.error('Session Timeout logout failed:', err));
+// Logout from modal
+$('#logoutSession').on('click', function () {
+    expireSession();
 });
 
-// Monitor user activity to reset the timer
-$(document).on('mousemove keypress click scroll', resetTimer);
+// Track user activity
+$(document).on('mousemove keydown click scroll', function () {
+    resetTimer();
+});
 
-// Initialize the session activity timer when the page loads
+// Start timer on page load
 resetTimer();
+
+// =========================================================
+
+
+// // Session expiration logic
+// const timeoutWarning = 28 * 60 * 1000; // 28 mint in milliseconds
+// const timeoutRedirect = 30 * 60 * 1000; // 30 mint in milliseconds
+
+// let warningTimeout;
+// let redirectTimeout;
+
+// // Reset session activity timer
+// function resetTimer() {
+//     // Clear any existing timeouts
+//     clearTimeout(warningTimeout);
+//     clearTimeout(redirectTimeout);
+
+//     // Set new timeouts
+//     warningTimeout = setTimeout(showModal, timeoutWarning); // Warning modal
+//     redirectTimeout = setTimeout(expireSession, timeoutRedirect); // Expire session
+// }       
+
+// // Show warning modal
+// function showModal() {
+//     $('#timeoutModal').show(); // Display the modal
+// }
+
+// function expireSession() {
+//     fetch('/logout', {
+//         method: 'POST',
+//         headers: {
+//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
+//         },
+//     }).then(response => {
+//         if (response.ok) {
+//             window.location.href = '/login'; // Redirect to login page after successful logout
+//         } else {
+//             console.error('Logout failed:', response);
+//         }
+//     }).catch(err => console.error('Session Timeout logout failed:', err));
+// }
+
+// // Keep session alive after user confirms activity
+// $('#continueSession').on('click', function() {
+//     fetch('/keep-alive', {
+//         method: 'POST',
+//         headers: {
+//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
+//         }
+//     })
+//     .then(() => {
+//         $('#timeoutModal').hide(); // Hide the warning modal
+//         resetTimer(); // Restart the timers
+//     })
+//     .catch(err => console.error('Failed to keep session alive:', err));
+// });
+
+// // Logout manually from the warning modal
+// $('#logoutSession').on('click', function() {
+//     fetch('/logout', {
+//         method: 'POST',
+//         headers: {
+//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
+//         },
+//     }).then(response => {
+//         if (response.ok) {
+//             window.location.href = '/login'; // Redirect to login page after successful logout
+//         } else {
+//             console.error('Logout failed:', response);
+//         }
+//     }).catch(err => console.error('Session Timeout logout failed:', err));
+// });
+
+// // Monitor user activity to reset the timer
+// $(document).on('mousemove keypress click scroll', resetTimer);
+
+// // Initialize the session activity timer when the page loads
+// resetTimer();
 
 
 $('#changePasswordForm').on('submit', function(e){
