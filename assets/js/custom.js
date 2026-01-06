@@ -163,189 +163,193 @@ function convertTens(number) {
     return tens[number] || "";
 }
 
+/* ===========================
+   CONFIGURATION
+=========================== */
+const timeoutWarning  = 1 * 60 * 1000; // 1 minute (change as needed)
+const timeoutRedirect = 2 * 60 * 1000; // 2 minutes (change as needed)
 
-
-
-
-
-// ================= SESSION TIMEOUT LOGIC =================
-
-const timeoutWarning = 28 * 60 * 1000;   // 28 minutes
-const timeoutRedirect = 30 * 60 * 1000;  // 30 minutes
-
-let warningTimeout = null;
+/* ===========================
+   VARIABLES
+=========================== */
+let warningTimeout  = null;
 let redirectTimeout = null;
 
-// Reset session activity timer
-function resetTimer() {
-    if (warningTimeout) clearTimeout(warningTimeout);
-    if (redirectTimeout) clearTimeout(redirectTimeout);
+/* ===========================
+   SHARED BROADCAST CHANNEL
+=========================== */
+const activityChannel = new BroadcastChannel('session_activity');
 
-    warningTimeout = setTimeout(showModal, timeoutWarning);
-    redirectTimeout = setTimeout(expireSession, timeoutRedirect);
+/* ===========================
+   RESET TIMER (USER ACTIVE)
+=========================== */
+function resetTimer() {
+    const now = Date.now();
+
+    // Save activity time
+    localStorage.setItem('lastActivityTime', now);
+
+    // Notify other tabs
+    activityChannel.postMessage({
+        type: 'activity',
+        timestamp: now
+    });
+
+    initializeTimers();
 }
 
-// Show warning modal (prevent duplicate show)
+/* ===========================
+   INITIALIZE / RE-CALCULATE
+=========================== */
+function initializeTimers() {
+    clearTimeout(warningTimeout);
+    clearTimeout(redirectTimeout);
+
+    const lastActivityTime = parseInt(localStorage.getItem('lastActivityTime') || Date.now());
+    const now = Date.now();
+    const timeElapsed = now - lastActivityTime;
+
+    if (timeElapsed >= timeoutRedirect) {
+        expireSession();
+        return;
+    }
+
+    if (timeElapsed >= timeoutWarning) {
+        const remaining = timeoutRedirect - timeElapsed;
+
+        warningTimeout  = setTimeout(showModal, 0);
+        redirectTimeout = setTimeout(expireSession, remaining);
+        return;
+    }
+
+    warningTimeout  = setTimeout(showModal, timeoutWarning - timeElapsed);
+    redirectTimeout = setTimeout(expireSession, timeoutRedirect - timeElapsed);
+}
+
+/* ===========================
+   SHOW WARNING (ACTIVE TAB ONLY)
+=========================== */
 function showModal() {
-    if (!$('#timeoutModal').is(':visible')) {
-        $('#timeoutModal').show();
+    if (document.visibilityState === 'visible') {
+        $('#timeoutModal').fadeIn();
     }
 }
 
-// Expire session
+/* ===========================
+   EXPIRE SESSION
+=========================== */
 function expireSession() {
     fetch('/logout', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content')
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         }
     })
-    .then(response => {
-        if (response.ok) {
-            window.location.href = '/login';
-        }
-    })
-    .catch(err => console.error('Session Timeout logout failed:', err));
+    .then(() => window.location.href = '/login')
+    .catch(err => console.error('Session expire error:', err));
 }
 
-// Continue session
+/* ===========================
+   CONTINUE SESSION BUTTON
+=========================== */
 $('#continueSession').on('click', function () {
     fetch('/keep-alive', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute('content')
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         }
     })
     .then(() => {
         $('#timeoutModal').hide();
         resetTimer();
-    })
-    .catch(err => console.error('Keep alive failed:', err));
+    });
 });
 
-// Logout from modal
-$('#logoutSession').on('click', function () {
-    expireSession();
+/* ===========================
+   LOGOUT BUTTON
+=========================== */
+$('#logoutSession').on('click', expireSession);
+
+/* ===========================
+   RECEIVE ACTIVITY FROM TABS
+=========================== */
+activityChannel.onmessage = (event) => {
+    if (event.data.type === 'activity') {
+        localStorage.setItem('lastActivityTime', event.data.timestamp);
+        initializeTimers();
+    }
+};
+
+/* ===========================
+   TAB VISIBILITY CHANGE
+=========================== */
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        initializeTimers();
+    }
 });
 
-// Track user activity
-$(document).on('mousemove keydown click scroll', function () {
-    resetTimer();
+/* ===========================
+   USER ACTIVITY LISTENER
+=========================== */
+let throttle;
+$(document).on('mousemove keypress click scroll', function () {
+    clearTimeout(throttle);
+    throttle = setTimeout(resetTimer, 300);
 });
 
-// Start timer on page load
+/* ===========================
+   START ON PAGE LOAD
+=========================== */
 resetTimer();
+initializeTimers();
 
-// =========================================================
+document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+    // Prevent the default form submission
+    event.preventDefault();
 
+    const newPassword = document.getElementById('new_password').value;
+    const confirmPassword = document.getElementById('confirm_new_password').value;
+    const currentPassword = document.getElementById('current_password').value;
 
-// // Session expiration logic
-// const timeoutWarning = 28 * 60 * 1000; // 28 mint in milliseconds
-// const timeoutRedirect = 30 * 60 * 1000; // 30 mint in milliseconds
+    // Basic validation to ensure all fields are filled
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('All fields are required.');
+        return false; // Stop execution
+    }
 
-// let warningTimeout;
-// let redirectTimeout;
-
-// // Reset session activity timer
-// function resetTimer() {
-//     // Clear any existing timeouts
-//     clearTimeout(warningTimeout);
-//     clearTimeout(redirectTimeout);
-
-//     // Set new timeouts
-//     warningTimeout = setTimeout(showModal, timeoutWarning); // Warning modal
-//     redirectTimeout = setTimeout(expireSession, timeoutRedirect); // Expire session
-// }       
-
-// // Show warning modal
-// function showModal() {
-//     $('#timeoutModal').show(); // Display the modal
-// }
-
-// function expireSession() {
-//     fetch('/logout', {
-//         method: 'POST',
-//         headers: {
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-//         },
-//     }).then(response => {
-//         if (response.ok) {
-//             window.location.href = '/login'; // Redirect to login page after successful logout
-//         } else {
-//             console.error('Logout failed:', response);
-//         }
-//     }).catch(err => console.error('Session Timeout logout failed:', err));
-// }
-
-// // Keep session alive after user confirms activity
-// $('#continueSession').on('click', function() {
-//     fetch('/keep-alive', {
-//         method: 'POST',
-//         headers: {
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-//         }
-//     })
-//     .then(() => {
-//         $('#timeoutModal').hide(); // Hide the warning modal
-//         resetTimer(); // Restart the timers
-//     })
-//     .catch(err => console.error('Failed to keep session alive:', err));
-// });
-
-// // Logout manually from the warning modal
-// $('#logoutSession').on('click', function() {
-//     fetch('/logout', {
-//         method: 'POST',
-//         headers: {
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-//         },
-//     }).then(response => {
-//         if (response.ok) {
-//             window.location.href = '/login'; // Redirect to login page after successful logout
-//         } else {
-//             console.error('Logout failed:', response);
-//         }
-//     }).catch(err => console.error('Session Timeout logout failed:', err));
-// });
-
-// // Monitor user activity to reset the timer
-// $(document).on('mousemove keypress click scroll', resetTimer);
-
-// // Initialize the session activity timer when the page loads
-// resetTimer();
-
-
-$('#changePasswordForm').on('submit', function(e){
-    e.preventDefault();
-    var currentPassword=$('#current_passowrd').val();
+    // CSRF Token setup
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
+    // AJAX request to validate current password
     $.ajax({
         type: 'GET',
         url: '/validate-user-password/',
-        data: {
-            'password':currentPassword,
-        },
-        success: function(response){
-            console.log(response);
-            if(response==1){
-                var form = document.getElementById('changePasswordForm');
-                form.submit();
+        data: { 'password': currentPassword },
+        success: function (response) {
+            if (response == 1) {
+                // Check if newPassword matches confirmPassword
+                if (newPassword !== confirmPassword) {
+                    alert('New Password and Confirm New Password do not match.');
+                    return false; // Stop execution
+                } else {
+                    // Submit the form programmatically if everything is valid
+                    const form = document.getElementById('changePasswordForm');
+                    form.submit();
+                }
+            } else if (response == 0) {
+                alert("Current Password is not correct.");
             }
-            else{
-                alert("Current Password is not Correct")
-            }
         },
-        error: function(){
-            alert("error");
+        error: function () {
+            alert("An error occurred while validating the current password.");
         }
     });
-});	
+
+    // Return false to prevent form submission by default
+    return false;
+});
