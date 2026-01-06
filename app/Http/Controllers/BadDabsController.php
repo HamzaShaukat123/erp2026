@@ -15,7 +15,6 @@ use App\Models\bad_dabs_2;
 use App\Services\myPDF;
 
 
-
 class BadDabsController extends Controller
 {
     /**
