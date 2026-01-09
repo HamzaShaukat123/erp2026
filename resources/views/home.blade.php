@@ -605,6 +605,35 @@
 												</div>
 											</section>
 										</div>
+
+										<div class="col-12 col-md-6 mb-3 d-flex">
+											<section class="card flex-fill">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+													<h2 class="card-title">Bill Not Received</h2>
+												</header>
+												<div class="card-body scrollable-div">
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th>Invoice#</th>
+																<th class="text-center">Date</th>
+																<th>Bill#</th>
+																<th>Name Of Person</th>
+																<th>Bill Amount</th>
+																<th>Received Amount</th>
+																<th>Balance Amount</th>
+															</tr>
+														</thead>
+														<tbody id="BillNotRECVDTable" class="table-body-scroll">
+															<!-- Table rows will be populated dynamically -->
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
 									</div>
 								</div>
 								
