@@ -612,7 +612,7 @@
 													<div class="card-actions">
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
-													<h2 class="card-title">Bill Not Received</h2>
+													<h2 class="card-title">Purchase Not Paid</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													<table class="table table-responsive-md table-striped mb-0">
@@ -627,7 +627,7 @@
 																<th>Balance Amount</th>
 															</tr>
 														</thead>
-														<tbody id="BillNotRECVDTable" class="table-body-scroll">
+														<tbody id="PurNotPaidTable" class="table-body-scroll">
 															<!-- Table rows will be populated dynamically -->
 														</tbody>
 													</table>
