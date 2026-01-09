@@ -166,8 +166,9 @@ function convertTens(number) {
 /* ===========================
    CONFIGURATION
 =========================== */
-const timeoutWarning  = 1 * 60 * 1000; // 1 minute (change as needed)
-const timeoutRedirect = 2 * 60 * 1000; // 2 minutes (change as needed)
+
+const timeoutWarning  = 28 * 60 * 1000; // 28 minute (change as needed)
+const timeoutRedirect = 30 * 60 * 1000; // 30 minutes (change as needed)
 
 /* ===========================
    VARIABLES
