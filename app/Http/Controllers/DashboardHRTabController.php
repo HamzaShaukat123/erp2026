@@ -21,25 +21,25 @@ class DashboardHRTabController extends Controller
 
         $steelex = pur_pipe_summary_of_party_by_mill::leftjoin('ac','ac.ac_code','=','pur_pipe_summary_of_party_by_mill.account_name')
         ->where('dat',$request->month)
-        ->whereIn('company_code', [86, 296])
+        ->whereIn('company_code', [8, 9])
         ->orderBy('weight', 'desc')
         ->get();
 
         $spm = pur_pipe_summary_of_party_by_mill::leftjoin('ac','ac.ac_code','=','pur_pipe_summary_of_party_by_mill.account_name')
         ->where('dat',$request->month)
-        ->where('company_code',82)
+        ->where('company_code',10)
         ->orderBy('weight', 'desc')
         ->get();
 
         $mehboob = pur_pipe_summary_of_party_by_mill::leftjoin('ac','ac.ac_code','=','pur_pipe_summary_of_party_by_mill.account_name')
         ->where('dat',$request->month)
-        ->where('company_code',73)
+        ->where('company_code',11)
         ->orderBy('weight', 'desc')
         ->get();
 
         $godown = sale_pipe_summary_of_party_by_mill::leftjoin('ac','ac.ac_code','=','sale_pipe_summary_of_party_by_mill.account_name')
         ->where('dat',$request->month)
-        ->where('company_code',24)
+        ->where('company_code',32)
         ->orderBy('weight', 'desc')
         ->get();
 
