@@ -163,80 +163,147 @@ function convertTens(number) {
     return tens[number] || "";
 }
 
-// Session expiration logic
-const timeoutWarning = 28 * 60 * 1000; // 28 mint in milliseconds
-const timeoutRedirect = 30 * 60 * 1000; // 30 mint in milliseconds
-let warningTimeout;
-let redirectTimeout;
+/* ===========================
+   CONFIGURATION
+=========================== */
 
-// Reset session activity timer
+const timeoutWarning  = 28 * 60 * 1000; // 28 minute (change as needed)
+const timeoutRedirect = 30 * 60 * 1000; // 30 minutes (change as needed)
+
+/* ===========================
+   VARIABLES
+=========================== */
+let warningTimeout  = null;
+let redirectTimeout = null;
+
+/* ===========================
+   SHARED BROADCAST CHANNEL
+=========================== */
+const activityChannel = new BroadcastChannel('session_activity');
+
+/* ===========================
+   RESET TIMER (USER ACTIVE)
+=========================== */
 function resetTimer() {
-    // Clear any existing timeouts
+    const now = Date.now();
+
+    // Save activity time
+    localStorage.setItem('lastActivityTime', now);
+
+    // Notify other tabs
+    activityChannel.postMessage({
+        type: 'activity',
+        timestamp: now
+    });
+
+    initializeTimers();
+}
+
+/* ===========================
+   INITIALIZE / RE-CALCULATE
+=========================== */
+function initializeTimers() {
     clearTimeout(warningTimeout);
     clearTimeout(redirectTimeout);
 
-    // Set new timeouts
-    warningTimeout = setTimeout(showModal, timeoutWarning); // Warning modal
-    redirectTimeout = setTimeout(expireSession, timeoutRedirect); // Expire session
-}       
+    const lastActivityTime = parseInt(localStorage.getItem('lastActivityTime') || Date.now());
+    const now = Date.now();
+    const timeElapsed = now - lastActivityTime;
 
-// Show warning modal
-function showModal() {
-    $('#timeoutModal').show(); // Display the modal
+    if (timeElapsed >= timeoutRedirect) {
+        expireSession();
+        return;
+    }
+
+    if (timeElapsed >= timeoutWarning) {
+        const remaining = timeoutRedirect - timeElapsed;
+
+        warningTimeout  = setTimeout(showModal, 0);
+        redirectTimeout = setTimeout(expireSession, remaining);
+        return;
+    }
+
+    warningTimeout  = setTimeout(showModal, timeoutWarning - timeElapsed);
+    redirectTimeout = setTimeout(expireSession, timeoutRedirect - timeElapsed);
 }
 
-// Expire session due to inactivity
+/* ===========================
+   SHOW WARNING (ACTIVE TAB ONLY)
+=========================== */
+function showModal() {
+    if (document.visibilityState === 'visible') {
+        $('#timeoutModal').fadeIn();
+    }
+}
+
+/* ===========================
+   EXPIRE SESSION
+=========================== */
 function expireSession() {
     fetch('/logout', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-        },
-    }).then(response => {
-        if (response.ok) {
-            window.location.href = '/login'; // Redirect to login page after successful logout
-        } else {
-            console.error('Logout failed:', response);
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         }
-    }).catch(err => console.error('Session Timeout logout failed:', err));
+    })
+    .then(() => window.location.href = '/login')
+    .catch(err => console.error('Session expire error:', err));
 }
 
-// Keep session alive after user confirms activity
-$('#continueSession').on('click', function() {
+/* ===========================
+   CONTINUE SESSION BUTTON
+=========================== */
+$('#continueSession').on('click', function () {
     fetch('/keep-alive', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         }
     })
     .then(() => {
-        $('#timeoutModal').hide(); // Hide the warning modal
-        resetTimer(); // Restart the timers
-    })
-    .catch(err => console.error('Failed to keep session alive:', err));
+        $('#timeoutModal').hide();
+        resetTimer();
+    });
 });
 
-// Logout manually from the warning modal
-$('#logoutSession').on('click', function() {
-    fetch('/logout', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Get CSRF token from meta tag
-        },
-    }).then(response => {
-        if (response.ok) {
-            window.location.href = '/login'; // Redirect to login page after successful logout
-        } else {
-            console.error('Logout failed:', response);
-        }
-    }).catch(err => console.error('Session Timeout logout failed:', err));
+/* ===========================
+   LOGOUT BUTTON
+=========================== */
+$('#logoutSession').on('click', expireSession);
+
+/* ===========================
+   RECEIVE ACTIVITY FROM TABS
+=========================== */
+activityChannel.onmessage = (event) => {
+    if (event.data.type === 'activity') {
+        localStorage.setItem('lastActivityTime', event.data.timestamp);
+        initializeTimers();
+    }
+};
+
+/* ===========================
+   TAB VISIBILITY CHANGE
+=========================== */
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        initializeTimers();
+    }
 });
 
-// Monitor user activity to reset the timer
-$(document).on('mousemove keypress click scroll', resetTimer);
+/* ===========================
+   USER ACTIVITY LISTENER
+=========================== */
+let throttle;
+$(document).on('mousemove keypress click scroll', function () {
+    clearTimeout(throttle);
+    throttle = setTimeout(resetTimer, 300);
+});
 
-// Initialize the session activity timer when the page loads
+/* ===========================
+   START ON PAGE LOAD
+=========================== */
 resetTimer();
+initializeTimers();
 
 document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
     // Prevent the default form submission
