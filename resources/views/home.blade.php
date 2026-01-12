@@ -2553,9 +2553,9 @@
 							let invoiceLink = '';
 
 							if (value.pur_prefix === 'Pur-') {
-								invoiceLink = `/purchase/purchaseinvoice/view/${value.Pur_inv_no}`;
+								invoiceLink = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
 							} else if (value.pur_prefix === 'PP-') {
-								invoiceLink = `/purchase2/show/${value.Pur_inv_no}`;
+								invoiceLink = `/purchase2/show/${value.Sal_inv_no}`;
 							}
 
 							purRows += `
@@ -2563,7 +2563,7 @@
 									<td>
 										${invoiceLink ? `
 											<a href="${invoiceLink}" target="_blank">
-												${(value.pur_prefix || '')}${(value.Pur_inv_no || '')}
+												${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
 											</a>
 										` : ''}
 									</td>
