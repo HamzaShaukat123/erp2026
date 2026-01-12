@@ -52,7 +52,7 @@ class DashboardBillNotRecievedTabController extends Controller
         )
         ->leftJoin('purchase', function($join) {
             $join->on('pur_not_paid.sale_prefix', '=', 'purchase.prefix')
-                 ->on('pur_not_paid.Sal_inv_no', '=', 'purchase.pur_id ');
+                 ->on('pur_not_paid.Sal_inv_no', '=', 'purchase.pur_id');
         })
         ->leftJoin('tpurchase', function($join) {
             $join->on('pur_not_paid.sale_prefix', '=', 'tpurchase.prefix')
