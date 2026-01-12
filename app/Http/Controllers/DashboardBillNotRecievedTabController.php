@@ -50,7 +50,7 @@ class DashboardBillNotRecievedTabController extends Controller
             'tpurchase.Cash_name',
             'tpurchase.pur_ord_no as tsales_pur_ord_no'
         )
-        ->leftJoin('purcahse', function($join) {
+        ->leftJoin('purchase', function($join) {
             $join->on('pur_not_paid.sale_prefix', '=', 'purchase.prefix')
                  ->on('pur_not_paid.Sal_inv_no', '=', 'purchase.Sal_inv_no');
         })
