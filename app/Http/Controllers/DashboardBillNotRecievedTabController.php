@@ -46,7 +46,7 @@ class DashboardBillNotRecievedTabController extends Controller
             'pur_not_paid.ttl_jv_amt',
             'pur_not_paid.remaining_amount',
             'purchase.pur_bill_no as sales_pur_ord_no',
-            'pur_not_paid.pur_remarks',
+            'purchase.pur_remarks as pur_remarks',
             'purchase.cash_saler_name as Cash_pur_name',
             'tpurchase.Cash_pur_name as Cash_name',
             'tpurchase.pur_ord_no as tsales_pur_ord_no'
