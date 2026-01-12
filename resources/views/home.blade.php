@@ -2542,20 +2542,30 @@
 						$('#BillNotRECVDTable').html(billRows);
 
 
-						/* =========================
+									
+						/* =====================================================
 						PURCHASE NOT PAID TABLE
-						==========================*/
+						====================================================== */
 						let purRows = '';
 
 						$.each(result.pur_not_paid || [], function (index, value) {
 
+							let invoiceLink = '';
+
+							if (value.pur_prefix === 'Pur-') {
+								invoiceLink = `/purchase/purchaseinvoice/view/${value.Pur_inv_no}`;
+							} else if (value.pur_prefix === 'PP-') {
+								invoiceLink = `/purchase2/show/${value.Pur_inv_no}`;
+							}
+
 							purRows += `
 								<tr>
-									<tr>
 									<td>
-										<a href="${invoiceLink}" target="_blank">
-											${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
-										</a>
+										${invoiceLink ? `
+											<a href="${invoiceLink}" target="_blank">
+												${(value.pur_prefix || '')}${(value.Pur_inv_no || '')}
+											</a>
+										` : ''}
 									</td>
 
 									<td class="text-center">
@@ -2563,16 +2573,16 @@
 									</td>
 
 									<td>
-										${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}
+										${value.pur_ord_no || ''}
 									</td>
 
 									<td>
-										${value.Cash_pur_name || ''} ${value.Cash_name || ''}
+										${value.Cash_pur_name || ''}
 									</td>
 
-									<td>${value.bill_amount || ''}</td>
-									<td>${value.ttl_jv_amt || ''}</td>
-									<td>${value.remaining_amount || ''}</td>
+									<td class="text-end">${value.bill_amount || 0}</td>
+									<td class="text-end">${value.ttl_jv_amt || 0}</td>
+									<td class="text-end">${value.remaining_amount || 0}</td>
 								</tr>
 							`;
 						});
@@ -2587,7 +2597,9 @@
 
 						$('#PurNotPaidTable').html(purRows);
 					},
+
 					error: function () {
+
 						const errorRow = `
 							<tr>
 								<td colspan="7" class="text-center text-danger">
