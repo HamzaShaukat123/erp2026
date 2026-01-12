@@ -2476,27 +2476,28 @@
 				$.ajax({
 					type: "GET",
 					url: '/dashboard-tabs/bill-not',
-
 					beforeSend: function () {
+
 						const loadingRow = `
 							<tr>
 								<td colspan="7" class="text-center">Loading...</td>
 							</tr>
 						`;
+
 						$('#BillNotRECVDTable').html(loadingRow);
 						$('#PurNotPaidTable').html(loadingRow);
 					},
-
 					success: function (result) {
 
 						/* =========================
 						BILL NOT RECEIVED TABLE
-						========================== */
+						==========================*/
 						let billRows = '';
 
 						$.each(result.bill_not_recvd || [], function (index, value) {
 
 							let invoiceLink = '';
+
 							if (value.sale_prefix === 'Sal-') {
 								invoiceLink = `/sales/saleinvoice/view/${value.Sal_inv_no}`;
 							} else if (value.sale_prefix === 'SP-') {
@@ -2506,14 +2507,26 @@
 							billRows += `
 								<tr>
 									<td>
-										${invoiceLink ? `<a href="${invoiceLink}" target="_blank">${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}</a>` : ''}
+										<a href="${invoiceLink}" target="_blank">
+											${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
+										</a>
 									</td>
-									<td class="text-center">${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}</td>
-									<td>${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}</td>
-									<td>${value.Cash_pur_name || ''} ${value.Cash_name || ''}</td>
-									<td>${value.bill_amount || 0}</td>
-									<td>${value.ttl_jv_amt || 0}</td>
-									<td>${value.remaining_amount || 0}</td>
+
+									<td class="text-center">
+										${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}
+									</td>
+
+									<td>
+										${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}
+									</td>
+
+									<td>
+										${value.Cash_pur_name || ''} ${value.Cash_name || ''}
+									</td>
+
+									<td>${value.bill_amount || ''}</td>
+									<td>${value.ttl_jv_amt || ''}</td>
+									<td>${value.remaining_amount || ''}</td>
 								</tr>
 							`;
 						});
@@ -2525,62 +2538,62 @@
 								</tr>
 							`;
 						}
-						$('#BillNotRECVDTable').html(billRows);
 
-						/* =========================
-						PURCHASE NOT PAID TABLE
-						========================== */
-						let purRows = '';
+					$('#BillNotRECVDTable').html(billRows);
 
-						$.each(result.pur_not_paid || [], function (index, value) {
 
-							let invoiceLink2 = '';
-							if (value.sale_prefix === 'Pur-') {
-								invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
-							} else if (value.sale_prefix === 'PP-') {
-								invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
-							}
+					/* =========================
+					PURCHASE NOT PAID TABLE
+					========================== */
+					let purRows = '';
 
-							purRows += `
-								<tr>
-									<td>
-										${invoiceLink2 ? `<a href="${invoiceLink2}" target="_blank">${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}</a>` : ''}
-									</td>
-									<td class="text-center">${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}</td>
-									<td>${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}</td>
-									<td>${value.Cash_pur_name || ''} ${value.Cash_name || ''} ${value.remarks || ''}</td>
-									<td class="text-end">${value.bill_amount || 0}</td>
-									<td class="text-end">${value.ttl_jv_amt || 0}</td>
-									<td class="text-end">${value.remaining_amount || 0}</td>
-								</tr>
-							`;
-						});
+					$.each(result.pur_not_paid || [], function (index, value) {
 
-						if (!purRows) {
-							purRows = `
-								<tr>
-									<td colspan="7" class="text-center">No Data Found</td>
-								</tr>
-							`;
+						let invoiceLink2 = '';
+						if (value.sale_prefix === 'Pur-') {
+							invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
+						} else if (value.sale_prefix === 'PP-') {
+							invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
 						}
-						$('#PurNotPaidTable').html(purRows);
 
-					}, // <-- close success properly
-
-					error: function () {
-						const errorRow = `
+						purRows += `
 							<tr>
-								<td colspan="7" class="text-center text-danger">Error loading data</td>
+								<td>
+									${invoiceLink2 ? `<a href="${invoiceLink2}" target="_blank">${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}</a>` : ''}
+								</td>
+								<td class="text-center">${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}</td>
+								<td>${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}</td>
+								<td>${value.Cash_pur_name || ''} ${value.Cash_name || ''} ${value.remarks || ''}</td>
+								<td class="text-end">${value.bill_amount || 0}</td>
+								<td class="text-end">${value.ttl_jv_amt || 0}</td>
+								<td class="text-end">${value.remaining_amount || 0}</td>
 							</tr>
 						`;
-						$('#BillNotRECVDTable').html(errorRow);
-						$('#PurNotPaidTable').html(errorRow);
+					});
+
+					if (!purRows) {
+						purRows = `
+							<tr>
+								<td colspan="7" class="text-center">No Data Found</td>
+							</tr>
+						`;
 					}
+					$('#PurNotPaidTable').html(purRows);
 
-				}); // end $.ajax
-			}
+				}, // <-- close success properly
 
+				error: function () {
+					const errorRow = `
+						<tr>
+							<td colspan="7" class="text-center text-danger">Error loading data</td>
+						</tr>
+					`;
+					$('#BillNotRECVDTable').html(errorRow);
+					$('#PurNotPaidTable').html(errorRow);
+				}
 
+			}); // end $.ajax
+		}
 			else if(tabId=="#HR"){
 				var table = document.getElementById('SteelexSaleTable');
 				while (table.rows.length > 0) {
