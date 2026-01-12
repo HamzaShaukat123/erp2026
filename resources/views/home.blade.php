@@ -2580,9 +2580,9 @@
 										${value.Cash_pur_name || ''}
 									</td>
 
-									<td class="text-end">${value.bill_amount || 0}</td>
-									<td class="text-end">${value.ttl_jv_amt || 0}</td>
-									<td class="text-end">${value.remaining_amount || 0}</td>
+									<td>${value.bill_amount || 0}</td>
+									<td>${value.ttl_jv_amt || 0}</td>
+									<td>${value.remaining_amount || 0}</td>
 								</tr>
 							`;
 						});
