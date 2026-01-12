@@ -2550,19 +2550,19 @@
 
 						$.each(result.pur_not_paid || [], function (index, value) {
 
-							let invoiceLink = '';
+							let invoiceLink2 = '';
 
 							if (value.pur_prefix === 'Pur-') {
-								invoiceLink = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
+								invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
 							} else if (value.pur_prefix === 'PP-') {
-								invoiceLink = `/purchase2/show/${value.Sal_inv_no}`;
+								invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
 							}
 
 							purRows += `
 								<tr>
 									<td>
-										${invoiceLink ? `
-											<a href="${invoiceLink}" target="_blank">
+										${invoiceLink2 ? `
+											<a href="${invoiceLink2}" target="_blank">
 												${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
 											</a>
 										` : ''}
