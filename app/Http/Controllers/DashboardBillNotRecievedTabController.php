@@ -51,18 +51,18 @@ class DashboardBillNotRecievedTabController extends Controller
             'tpurchase.Cash_pur_name as Cash_name',
             'tpurchase.pur_ord_no as tsales_pur_ord_no'
         )
-        ->leftJoin('purchase', function($join) {
+        ->leftJoin('purchase', function ($join) {
             $join->on('pur_not_paid.sale_prefix', '=', 'purchase.prefix')
-                 ->on('pur_not_paid.Sal_inv_no', '=', 'purchase.pur_id');
+                ->on('pur_not_paid.Sal_inv_no', '=', 'purchase.pur_id');
         })
-        ->leftJoin('tpurchase', function($join) {
+        ->leftJoin('tpurchase', function ($join) {
             $join->on('pur_not_paid.sale_prefix', '=', 'tpurchase.prefix')
-                 ->on('pur_not_paid.Sal_inv_no', '=', 'tpurchase.Sale_inv_no');
+                ->on('pur_not_paid.Sal_inv_no', '=', 'tpurchase.Sale_inv_no');
         })
         ->where('pur_not_paid.remaining_amount', '<>', 0)
-        ->where('pur_not_paid.account_name', '=', 7)
+        ->where('pur_not_paid.account_name', 7)
         ->get();
-    
+
 
 
 

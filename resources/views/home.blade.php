@@ -2542,60 +2542,62 @@
 						$('#BillNotRECVDTable').html(billRows);
 
 
-									
-						/* =====================================================
-						PURCHASE NOT PAID TABLE
-						====================================================== */
-						let purRows = '';
+					/* =====================================================
+					PURCHASE NOT PAID TABLE
+					====================================================== */
+					let purRows = '';
 
-						$.each(result.pur_not_paid || [], function (index, value) {
+					$.each(result.pur_not_paid || [], function (index, value) {
 
-							let invoiceLink2 = '';
+						let invoiceLink2 = '';
 
-							if (value.pur_prefix === 'Pur-') {
-								invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
-							} else if (value.pur_prefix === 'PP-') {
-								invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
-							}
-
-							purRows += `
-								<tr>
-									<td>
-										${invoiceLink2 ? `
-											<a href="${invoiceLink2}" target="_blank">
-												${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
-											</a>
-										` : ''}
-									</td>
-
-									<td class="text-center">
-										${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}
-									</td>
-									<td>
-										${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}
-									</td>
-
-									<td>
-										${value.Cash_pur_name || ''} ${value.Cash_name || ''}${value.remarks || ''}
-									</td>
-
-									<td>${value.bill_amount || 0}</td>
-									<td>${value.ttl_jv_amt || 0}</td>
-									<td>${value.remaining_amount || 0}</td>
-								</tr>
-							`;
-						});
-
-						if (!purRows) {
-							purRows = `
-								<tr>
-									<td colspan="7" class="text-center">No Data Found</td>
-								</tr>
-							`;
+						// USE sale_prefix (matches query)
+						if (value.sale_prefix === 'Pur-') {
+							invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
+						} else if (value.sale_prefix === 'PP-') {
+							invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
 						}
 
-						$('#PurNotPaidTable').html(purRows);
-					},
+						purRows += `
+							<tr>
+								<td>
+									${invoiceLink2 ? `
+										<a href="${invoiceLink2}" target="_blank">
+											${(value.sale_prefix || '')}${(value.Sal_inv_no || '')}
+										</a>
+									` : ''}
+								</td>
+
+								<td class="text-center">
+									${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}
+								</td>
+
+								<td>
+									${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}
+								</td>
+
+								<td>
+									${value.Cash_pur_name || ''} 
+									${value.Cash_name || ''} 
+									${value.remarks || ''}
+								</td>
+
+								<td class="text-end">${value.bill_amount || 0}</td>
+								<td class="text-end">${value.ttl_jv_amt || 0}</td>
+								<td class="text-end">${value.remaining_amount || 0}</td>
+							</tr>
+						`;
+					});
+
+					if (!purRows) {
+						purRows = `
+							<tr>
+								<td colspan="7" class="text-center">No Data Found</td>
+							</tr>
+						`;
+					}
+
+					$('#PurNotPaidTable').html(purRows);
 
 					error: function () {
 
