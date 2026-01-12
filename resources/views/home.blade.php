@@ -2576,7 +2576,7 @@
 									</td>
 
 									<td>
-										${value.Cash_pur_name || ''} ${value.Cash_name || ''}${value.pur_remarks || ''}
+										${value.Cash_pur_name || ''} ${value.Cash_name || ''}${value.remarks || ''}
 									</td>
 
 									<td>${value.bill_amount || 0}</td>
