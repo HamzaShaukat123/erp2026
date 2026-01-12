@@ -2571,13 +2571,12 @@
 									<td class="text-center">
 										${value.bill_date ? moment(value.bill_date).format('D-M-YY') : ''}
 									</td>
-
 									<td>
-										${value.pur_ord_no || ''}
+										${value.sales_pur_ord_no || ''} ${value.tsales_pur_ord_no || ''}
 									</td>
 
 									<td>
-										${value.Cash_pur_name || ''}
+										${value.Cash_pur_name || ''} ${value.Cash_name || ''}
 									</td>
 
 									<td>${value.bill_amount || 0}</td>
