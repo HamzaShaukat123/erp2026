@@ -2551,7 +2551,7 @@
 
 						let invoiceLink2 = '';
 						if (value.sale_prefix === 'Pur-') {
-							invoiceLink2 = `/purchase/purchaseinvoice/view/${value.Sal_inv_no}`;
+							invoiceLink2 = `/purchase1/show/${value.Sal_inv_no}`;
 						} else if (value.sale_prefix === 'PP-') {
 							invoiceLink2 = `/purchase2/show/${value.Sal_inv_no}`;
 						}
