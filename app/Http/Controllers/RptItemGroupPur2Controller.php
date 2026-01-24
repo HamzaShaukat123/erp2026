@@ -15,7 +15,7 @@ class RptItemGroupPur2Controller extends Controller
         $pur2_account_item_group_info = pur2_account_item_group_info::where('item_group_code',$request->acc_id)
         ->whereBetween('sa_date', [$request->fromDate, $request->toDate])
         ->orderBy('sa_date', 'asc')
-        ->get(['prefix', 'Sale_inv_no','sa_date', 'ac_name', 'weight','qty', 'price', 'remarks','length','percent','item_name']);
+        ->get(['prefix', 'Sale_inv_no','sa_date', 'ac_name', 'weight','qty', 'price','length','percent','item_name']);
 
         return $pur2_account_item_group_info;
     }
