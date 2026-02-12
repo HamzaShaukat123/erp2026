@@ -3366,6 +3366,7 @@
 
 			}
 			else if(tabId=="#PDC"){
+
 				var table = document.getElementById('RecPDCTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
@@ -3380,44 +3381,79 @@
 					type: "GET",
 					url: '/dashboard-tabs/pdc',
 					beforeSend: function() {
-						// Show "Loading..." in both PDC tables
-						$('#RecPDCTable, #PaidPDCTable').html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+						$('#RecPDCTable, #PaidPDCTable')
+						.html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
 					},
 					success: function(result) {
-						// For PDC Receivables
+
+						// =========================
+						// PDC RECEIVABLES
+						// =========================
 						var salesRows = '';
+						var totalRecv = 0;
+
 						$.each(result['dash_pdc_recv'], function(index, value) {
+
+							var amount = value['amount'] ? parseFloat(value['amount']) : 0;
+							totalRecv += amount;
+
 							salesRows += `<tr>
 								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
 								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
 								<td>${value['ac_name'] || ''}</td>
 								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
-								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
+								<td class="text-end">${amount.toFixed(0)}</td>
 							</tr>`;
 						});
+
+						// Add Total Row
+						salesRows += `
+							<tr class="fw-bold">
+								<td colspan="4" class="text-end">Total:</td>
+								<td class="text-end">${totalRecv.toFixed(0)}</td>
+							</tr>
+						`;
+
 						$('#RecPDCTable').html(salesRows);
 
-						// For PDC Payables
+
+						// =========================
+						// PDC PAYABLES
+						// =========================
 						var purchaseRows = '';
+						var totalPay = 0;
+
 						$.each(result['dash_pdc_pay'], function(index, value) {
+
+							var amount = value['amount'] ? parseFloat(value['amount']) : 0;
+							totalPay += amount;
+
 							purchaseRows += `<tr>
 								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
 								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
 								<td>${value['ac_name'] || ''}</td>
 								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
-								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
+								<td class="text-end">${amount.toFixed(0)}</td>
 							</tr>`;
 						});
+
+						// Add Total Row
+						purchaseRows += `
+							<tr class="fw-bold">
+								<td colspan="4" class="text-end">Total:</td>
+								<td class="text-end">${totalPay.toFixed(0)}</td>
+							</tr>
+						`;
+
 						$('#PaidPDCTable').html(purchaseRows);
 					},
 					error: function() {
 						$('#RecPDCTable, #PaidPDCTable')
-							.html('<tr><td colspan="5" class="text-center text-danger">Error loading PDC data</td></tr>');
+						.html('<tr><td colspan="5" class="text-center text-danger">Error loading PDC data</td></tr>');
 					}
 				});
-
-
 			}
+
 
 
 		}
