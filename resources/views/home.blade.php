@@ -3408,7 +3408,7 @@
 
 						// Add Total Row
 						salesRows += `
-							<tr class="fw-bold">
+							<tr class="fw-bold text-danger">
 								<td colspan="4" class="text-end">Total:</td>
 								<td class="text-end">${totalRecv.toFixed(0)}</td>
 							</tr>
@@ -3439,7 +3439,7 @@
 
 						// Add Total Row
 						purchaseRows += `
-							<tr class="fw-bold">
+							<tr class="fw-bold text-danger">
 								<td colspan="4" class="text-end">Total:</td>
 								<td class="text-end">${totalPay.toFixed(0)}</td>
 							</tr>
