@@ -62,7 +62,7 @@
 										<h3 class="amount text-dark"><strong>Post Dated Cheques</strong></h3>
 										@if(isset($pdc) && isset($pdc->Total_Balance))
 											<h2 class="amount m-0 text-primary actual-data">
-												<strong data-value="{{ $pdc->Total_Balance }}">0</strong>
+												<strong data-value="{{ $pdc->Total_Balance }}">0</strong> / <strong data-value="{{ $pdc->Total_Balance }}">0</strong>
 												<span class="title text-end text-dark h6"> PKR</span>
 											</h2>
 											<h2 class="amount m-0 text-primary masked-data"><strong>******</strong></h2>
