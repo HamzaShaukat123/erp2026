@@ -74,7 +74,7 @@
 										</h2>
 
 										<h2 class="amount m-0 text-primary masked-data">
-											<strong>****** / ******</strong>
+											<strong>******</strong>
 										</h2>
 
 
