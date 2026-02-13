@@ -42,7 +42,7 @@ class HomeController extends Controller
             $long_term_loan = dash_sub_head::where('sub',24)->first();
     
             $pdc = dash_acc_group::where('group_cod',1)->first();
-            $bal_pdc = BalPdc::first();
+            $bal_pdc = bal_pdc::first();
             $banks = dash_acc_group::where('group_cod',2)->first();
             $cash = dash_acc_group::where('group_cod',3)->first();
             $foreign = dash_acc_group::where('group_cod',4)->first();
