@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\dash_sub_head;
 use App\Models\dash_month_sale;
+use App\Models\bal_pdc;
 use App\Models\dash_month_purchase;
 use App\Models\dash_acc_group;
 use App\Models\users;
@@ -41,6 +42,7 @@ class HomeController extends Controller
             $long_term_loan = dash_sub_head::where('sub',24)->first();
     
             $pdc = dash_acc_group::where('group_cod',1)->first();
+            $bal_pdc = BalPdc::first();
             $banks = dash_acc_group::where('group_cod',2)->first();
             $cash = dash_acc_group::where('group_cod',3)->first();
             $foreign = dash_acc_group::where('group_cod',4)->first();
@@ -61,7 +63,7 @@ class HomeController extends Controller
     
             $coa = AC::where('status', 1)->get();
     
-            return view('home', compact('receivables','payables','short_term_loan','long_term_loan','pdc','banks','cash','foreign','login_users','last_month_purchase','last_month_sale','dash_pur_2_summary_monthly_companywise','coa'));
+            return view('home', compact('receivables','payables','short_term_loan','long_term_loan','pdc','bal_pdc','banks','cash','foreign','login_users','last_month_purchase','last_month_sale','dash_pur_2_summary_monthly_companywise','coa'));
         }
         else{
             $coa = AC::where('status', 1)->get();

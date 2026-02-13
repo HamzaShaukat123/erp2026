@@ -74,6 +74,20 @@
 											<h2 class="amount m-0 text-primary masked-data"><strong>******</strong></h2>
 										@endif
 
+										@if(isset($bal_pdc) && isset($bal_pdc->bal_pdc))
+											<h2 class="amount m-0 text-primary actual-data">
+												<strong data-value="{{ $bal_pdc->bal_pdc }}">0</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+											</h2>
+											<h2 class="amount m-0 text-primary masked-data"><strong>******</strong></h2>
+										@else
+											<h2 class="amount m-0 text-primary actual-data">
+												<strong data-value="0">0</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+											</h2>
+											<h2 class="amount m-0 text-primary masked-data"><strong>******</strong></h2>
+										@endif
+
 										<div class="summary-footer">
 											<a class="text-primary text-uppercase" href="#">View Details</a>
 										</div>
