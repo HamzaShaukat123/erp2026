@@ -60,29 +60,43 @@
 								<section class="card card-featured-left card-featured-primary">
 									<div class="card-body icon-container data-container" style="background-image: url('/assets/img/cheque-icon.png'); ">
 										<h3 class="amount text-dark"><strong>Post Dated Cheques</strong></h3>
-										@php
-											$totalBalance = isset($pdc) && isset($pdc->Total_Balance) ? $pdc->Total_Balance : 0;
-											$balPdc = isset($bal_pdc) && isset($bal_pdc->bal_pdc) ? $bal_pdc->bal_pdc : 0;
-										@endphp
 
-										<h2 class="amount m-0 text-primary actual-data">
-											<strong data-value="{{ $totalBalance }}">{{ $totalBalance }}</strong>
-											<span class="title text-end text-dark h6"> PKR</span>
-											/
-											<strong data-value="{{ $balPdc }}">{{ $balPdc }}</strong>
-											<span class="title text-end text-dark h6"> PKR</span>
-										</h2>
+										@if((isset($pdc) && isset($pdc->Total_Balance)) || (isset($bal_pdc) && isset($bal_pdc->bal_pdc)))
+											<h2 class="amount m-0 text-primary actual-data">
+												<strong data-value="{{ isset($pdc->Total_Balance) ? $pdc->Total_Balance : 0 }}">
+													0
+												</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+												/
+												<strong data-value="{{ isset($bal_pdc->bal_pdc) ? $bal_pdc->bal_pdc : 0 }}">
+													0
+												</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+											</h2>
 
-										<h2 class="amount m-0 text-primary masked-data">
-											<strong>******</strong>
-										</h2>
+											<h2 class="amount m-0 text-primary masked-data">
+												<strong>******</strong>
+											</h2>
+										@else
+											<h2 class="amount m-0 text-primary actual-data">
+												<strong data-value="0">0</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+												/
+												<strong data-value="0">0</strong>
+												<span class="title text-end text-dark h6"> PKR</span>
+											</h2>
 
+											<h2 class="amount m-0 text-primary masked-data">
+												<strong>******</strong>
+											</h2>
+										@endif
 
 										<div class="summary-footer">
 											<a class="text-primary text-uppercase" href="#">View Details</a>
 										</div>
 									</div>
 								</section>
+
 
 								<section class="card card-featured-left card-featured-primary mt-3">
 									<div class="card-body icon-container data-container" style="background-image: url('/assets/img/rec-icon.png'); ">
