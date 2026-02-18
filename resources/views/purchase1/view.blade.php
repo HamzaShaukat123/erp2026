@@ -30,7 +30,7 @@
 											<div class="bill-to">
 												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
 													<span style="color:#17365D">Invoice Date: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{\Carbon\Carbon::parse($pur->sa_date)->format('d-m-y')}}</span>
+													<span style="font-weight:400;color:black" class="value"> {{\Carbon\Carbon::parse($pur->pur_date)->format('d-m-y')}}</span>
 												</h4>
 
 												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
