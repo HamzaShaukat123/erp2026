@@ -917,6 +917,7 @@ class Sales2Controller extends Controller
         
         // Close and output PDF
         $pdf->Output($purchase['ac_name'].'_'.$purchase['prefix'].$purchase['Sal_inv_no'].'.pdf', 'I');
+        exit;
 
     }
 
