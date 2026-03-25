@@ -832,5 +832,7 @@ class Purchase2Controller extends Controller
         
         // Close and output PDF
         $pdf->Output('Purchase Invoice_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
+        
     }
 }

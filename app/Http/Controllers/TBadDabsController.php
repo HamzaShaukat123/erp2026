@@ -300,6 +300,7 @@ $pdf->Cell(42, 5, $total_less, 1, 'R'); // Use the same font style
 
        // Close and output PDF
     $pdf->Output('TBad Dabs_'. $tbad_dabs['bad_dabs_id'] . '.pdf', 'I');
+    exit;
 }
 
 }

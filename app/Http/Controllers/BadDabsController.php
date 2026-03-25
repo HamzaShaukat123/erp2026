@@ -288,6 +288,7 @@ class BadDabsController extends Controller
     
            // Close and output PDF
         $pdf->Output('Bad Dabs_'. $bad_dabs['bad_dabs_id'] . '.pdf', 'I');
+        exit;
     }
 
 }

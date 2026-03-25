@@ -817,6 +817,7 @@ $html .= '</table>';
         
         // Close and output PDF
         $pdf->Output('Quotation_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
 
     public function onlyPriceQtyPDF($id)
@@ -1041,6 +1042,7 @@ $html .= '</table>';
         
         // Close and output PDF
         $pdf->Output('Quotation_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
 
 
@@ -1188,6 +1190,7 @@ $html .= '</table>';
     
         // Close and output PDF
         $pdf->Output('Quotation_' . $purchase['prefix'] . $purchase['Sale_inv_no'] . '.pdf', 'I');
+        exit;
     }
     
 
