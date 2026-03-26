@@ -894,7 +894,9 @@ class RptAccNameGLController extends Controller
     // ================= OUTPUT =================
     $filename = "ledger_{$account->ac_name}.pdf";
 
-    ob_end_clean(); // ✅ CRITICAL FIX
+    if (ob_get_length()) {
+    ob_end_clean();
+    }
     $pdf->Output($filename, 'I');
 }
     
