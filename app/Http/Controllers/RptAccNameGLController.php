@@ -719,8 +719,7 @@ class RptAccNameGLController extends Controller
     }
 
 
-    public function glrPDF(Request $request)
-{
+   public function glrPDF(Request $request) {
     ini_set('memory_limit', '1024M');
     set_time_limit(300);
 
@@ -731,21 +730,21 @@ class RptAccNameGLController extends Controller
         ->get();
 
     $account = $lager_much_op_bal->first();
-
     if (!$account) {
         return "No Data Found";
     }
 
     $SOD = 0;
     $SOC = 0;
-
     foreach ($lager_much_op_bal as $record) {
         $SOD += $record->SumOfDebit ?? 0;
         $SOC += $record->SumOfrec_cr ?? 0;
     }
 
     $opening_bal = $SOD - $SOC;
-    $balance = $opening_bal;
+    $balance = $opening_bal; // start with opening balance
+    $totalDebit = 0;
+    $totalCredit = 0;
 
     // ================= DATE FORMATTING =================
     $currentDate = Carbon::now()->format('d-m-y');
@@ -756,98 +755,110 @@ class RptAccNameGLController extends Controller
     $pdf = new MyPDF();
     $pdf->SetCreator(PDF_CREATOR);
     $pdf->SetAuthor('MFI');
-    $pdf->SetTitle('General Ledger');
+    $pdf->SetTitle('General Ledger R-' . htmlspecialchars($account->ac_name));
+    $pdf->SetSubject("General Ledger R");
+    $pdf->SetKeywords('General Ledger R, TCPDF, PDF');
+    $pdf->setPageOrientation('P');
     $pdf->AddPage();
     $pdf->setCellPadding(1.2);
 
     // ================= HEADER =================
-    $heading = '<h2 style="text-align:center;color:#17365D;">General Ledger R</h2>';
+    $heading = '<h1 style="font-size:20px;text-align:center;font-style:italic;text-decoration:underline;color:#17365D">General Ledger R</h1>';
     $pdf->writeHTML($heading, true, false, true, false, '');
 
-    // ================= ACCOUNT INFO =================
+    // ================= ACCOUNT INFO TABLE =================
     $html = '
-    <table border="1" width="100%">
+    <table style="border:1px solid #000; width:100%; padding:6px; border-collapse:collapse;">
         <tr>
-            <td width="70%">Account: '.$account->ac_name.'</td>
-            <td width="30%">Print: '.$currentDate.'</td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; padding:5px 10px; border-bottom:1px solid #000; width:70%;"> 
+                Account Name: <span style="color:black;">' . htmlspecialchars($account->ac_name) . '</span>
+            </td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; text-align:left; padding:5px 10px; border-bottom:1px solid #000; border-left:1px solid #000; width:30%;"> 
+                Print Date: <span style="color:black;">' . htmlspecialchars($currentDate) . '</span>
+            </td>
         </tr>
         <tr>
-            <td width="70%">Address: '.$account->address.'</td>
-            <td width="30%">From: '.$formattedFromDate.'</td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; padding:5px 10px; border-bottom:1px solid #000; width:70%;"> 
+                Address: <span style="color:black;">' . htmlspecialchars($account->address) . ' ' . htmlspecialchars($account->phone_no) . '</span>
+            </td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; text-align:left; padding:5px 10px; border-bottom:1px solid #000; border-left:1px solid #000;width:30%;"> 
+                From Date: <span style="color:black;">' . htmlspecialchars($formattedFromDate) . '</span>
+            </td>
         </tr>
         <tr>
-            <td width="70%">Remarks: '.$account->remarks.'</td>
-            <td width="30%">To: '.$formattedToDate.'</td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; padding:5px 10px; border-bottom:1px solid #000; width:70%;"> 
+                Remarks: <span style="color:black;">' . htmlspecialchars($account->remarks) . '</span>
+            </td>
+            <td style="font-size:12px; font-weight:bold; color:#17365D; text-align:left; padding:5px 10px; border-bottom:1px solid #000; border-left:1px solid #000; width:30%;"> 
+                To Date: <span style="color:black;">' . htmlspecialchars($formattedToDate) . '</span>
+            </td>
         </tr>
-    </table><br>';
-
+    </table>';
     $pdf->writeHTML($html, true, false, true, false, '');
 
     // ================= TABLE HEADER =================
     $tableHeader = '
-    <table border="1" width="100%">
-        <tr style="font-weight:bold;">
-            <th width="13%">R/No</th>
-            <th width="12%">Date</th>
-            <th width="32%">Details</th>
-            <th width="13%">Debit</th>
-            <th width="13%">Credit</th>
-            <th width="17%">Balance</th>
-        </tr>
-    </table>';
-
+    <table border="1" style="border-collapse: collapse; width:100%; text-align:center;">
+        <thead>
+            <tr>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">R/No</th>
+                <th style="width:12%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Date</th>
+                <th style="width:32%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Details</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Debit</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Credit</th>
+                <th style="width:17%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Balance</th>
+            </tr>
+        </thead>
+        <tbody>';
     $pdf->writeHTML($tableHeader, true, false, true, false, '');
 
-    // ================= OPENING BALANCE =================
+    // ================= OPENING BALANCE ROW =================
     $openingRow = '
-    <table border="1" width="100%">
-        <tr>
-            <td width="57%" align="center"><b>Opening Balance</b></td>
-            <td width="43%" align="center">'.number_format($opening_bal,0).'</td>
-        </tr>
-    </table>';
+    <tr>
+        <td style="width:13%;"></td>
+        <td style="width:12%;"></td>
+        <td style="text-align:center; font-weight:bold; padding:10px; width:32%;">+----Opening Balance----+</td>
+        <td style="width:13%;"></td>
+        <td style="width:13%;"></td>
+        <td style="text-align:center; padding:10px; width:17%;">' . number_format($opening_bal, 0) . '</td>
+    </tr>';
+    $pdf->writeHTML($openingRow, true, false, false, false, '');
 
-    $pdf->writeHTML($openingRow, true, false, true, false, '');
-
-    // ================= TRANSACTIONS (CURSOR) =================
-    $totalDebit = 0;
-    $totalCredit = 0;
-    $count = 1;
-
-    $rows = lager_much_all::where('account_cod', $request->acc_id)
+    // ================= TRANSACTIONS (CURSOR FOR BULK) =================
+    $lager_much_all = lager_much_all::where('account_cod', $request->acc_id)
         ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
         ->orderBy('jv_date')
-        ->cursor(); // ✅ MEMORY SAFE
+        ->orderBy('prefix')
+        ->orderBy('auto_lager')
+        ->cursor();
 
-    foreach ($rows as $items) {
-
-        // Balance Calculation
-        if ($items->Debit) {
+    $count = 1;
+    foreach ($lager_much_all as $items) {
+        if (!empty($items->Debit) && is_numeric($items->Debit)) {
             $balance += $items->Debit;
             $totalDebit += $items->Debit;
         }
 
-        if ($items->Credit) {
+        if (!empty($items->Credit) && is_numeric($items->Credit)) {
             $balance -= $items->Credit;
             $totalCredit += $items->Credit;
         }
 
+        $bgColor = ($count % 2 == 0) ? '#f1f1f1' : '#ffffff';
+
         $row = '
-        <table border="1" width="100%">
-            <tr>
-                <td width="13%">'.$items->prefix.$items->auto_lager.'</td>
-                <td width="12%">'.Carbon::parse($items->jv_date)->format('d-m-y').'</td>
-                <td width="32%" style="font-size:9px;">'.$items->ac2.' '.$items->Narration.'</td>
-                <td width="13%">'.number_format($items->Debit,0).'</td>
-                <td width="13%">'.number_format($items->Credit,0).'</td>
-                <td width="17%">'.number_format($balance,0).'</td>
-            </tr>
-        </table>';
+        <tr style="background-color:' . $bgColor . ';">
+            <td style="width:13%; padding:10px; text-align:center;">' . $items->prefix . $items->auto_lager . '</td>
+            <td style="width:12%; padding:10px; text-align:center;">' . Carbon::parse($items->jv_date)->format('d-m-y') . '</td>
+            <td style="width:32%; padding:10px; text-align:center; font-size:9px;">' . $items->ac2 . ' ' . $items->Narration . '</td>
+            <td style="width:13%; padding:10px; text-align:center;">' . number_format($items->Debit, 0) . '</td>
+            <td style="width:13%; padding:10px; text-align:center;">' . number_format($items->Credit, 0) . '</td>
+            <td style="width:17%; padding:10px; text-align:center;">' . number_format($balance, 0) . '</td>
+        </tr>';
 
         $pdf->writeHTML($row, true, false, false, false, '');
 
-        // Auto page break safety
-        if ($pdf->GetY() > 260) {
+        if ($pdf->GetY() > 260) { // page break safety
             $pdf->AddPage();
             $pdf->writeHTML($tableHeader, true, false, true, false, '');
         }
@@ -855,49 +866,81 @@ class RptAccNameGLController extends Controller
         $count++;
     }
 
-    // ================= TOTAL =================
+    // ================= TOTAL ROW =================
+    $num_to_words = $pdf->convertCurrencyToWords($balance);
     $totalRow = '
-    <table border="1" width="100%">
-        <tr style="font-weight:bold;background:#eee;">
-            <td width="57%">Total</td>
-            <td width="13%">'.number_format($totalDebit,0).'</td>
-            <td width="13%">'.number_format($totalCredit,0).'</td>
-            <td width="17%">'.number_format($balance,0).'</td>
-        </tr>
-    </table>';
-
-    $pdf->writeHTML($totalRow, true, false, true, false, '');
+    <tr style="background-color:#d9edf7; font-weight:bold;">
+        <td colspan="3" style="text-align:center; font-style:italic; padding:10px;">' . htmlspecialchars($num_to_words) . '</td>
+        <td style="text-align:center; padding:10px;">' . number_format($totalDebit, 0) . '</td>
+        <td style="text-align:center; padding:10px;">' . number_format($totalCredit, 0) . '</td>
+        <td style="text-align:center; padding:10px;">' . number_format($balance, 0) . '</td>
+    </tr>
+    </tbody></table>
+    <div style="height:20px;"></div>'; // gap
+    $pdf->writeHTML($totalRow, true, false, false, false, '');
 
     // ================= PDC =================
-    $pdcRows = lager_pdc::where('ac_cr_sid', $request->acc_id)
+    $lager_pdc = lager_pdc::where('ac_cr_sid', $request->acc_id)
         ->whereNull('voch_id')
         ->cursor();
 
-    $pdf->writeHTML('<br><b>Unadjusted Post Dated Cheques</b><br>', true, false, true, false, '');
+    $pdf->writeHTML('
+    <table border="1" style="border-collapse: collapse; width:100%; text-align:center; margin-top:5px;">
+        <tr style="background-color:#bfe3d0; font-weight:bold;">
+            <td colspan="8" style="text-align:center; padding:10px;">Unadjusted Post Dated Cheques</td>
+        </tr>
+        <thead>
+            <tr>
+                <th style="width:8%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Sr</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Voucher#</th>
+                <th style="width:12%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Date</th>
+                <th style="width:16%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Remarks</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Cheque#</th>
+                <th style="width:12%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Cheque Date</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Debit</th>
+                <th style="width:13%; color:#17365D; font-weight:bold; text-align:center; padding:10px;">Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+    ', true, false, true, false, '');
 
-    foreach ($pdcRows as $cheque) {
+    $count = 1;
+    $totalDebit2 = 0;
+    $totalCredit2 = 0;
+    foreach ($lager_pdc as $cheque) {
+        $bgColor = ($count % 2 == 0) ? '#f1f1f1' : '#ffffff';
+        $totalDebit2 += $cheque->Debit;
+        $totalCredit2 += $cheque->Credit;
 
         $row = '
-        <table border="1" width="100%">
-            <tr>
-                <td width="15%">'.$cheque->prefix.$cheque->pdc_id.'</td>
-                <td width="15%">'.Carbon::parse($cheque->date)->format('d-m-y').'</td>
-                <td width="30%">'.$cheque->remarks.'</td>
-                <td width="20%">'.number_format($cheque->Debit,0).'</td>
-                <td width="20%">'.number_format($cheque->Credit,0).'</td>
-            </tr>
-        </table>';
-
+        <tr style="background-color:' . $bgColor . ';">
+            <td style="width:8%; padding:10px; text-align:center;">' . $count . '</td>
+            <td style="width:13%; padding:10px; text-align:center;">' . $cheque->prefix . $cheque->pdc_id . '</td>
+            <td style="width:12%; padding:10px; text-align:center;">' . Carbon::parse($cheque->date)->format('d-m-y') . '</td>
+            <td style="width:16%; padding:10px; text-align:center; font-size:9px;">' . $cheque->remarks . ' ' . $cheque->bankname . '</td>
+            <td style="width:13%; padding:10px; text-align:center; font-size:9px;">' . $cheque->instrumentnumber . '</td>
+            <td style="width:12%; padding:10px; text-align:center;">' . Carbon::parse($cheque->chqdate)->format('d-m-y') . '</td>
+            <td style="width:13%; padding:10px; text-align:center;">' . number_format($cheque->Debit, 0) . '</td>
+            <td style="width:13%; padding:10px; text-align:center;">' . number_format($cheque->Credit, 0) . '</td>
+        </tr>';
         $pdf->writeHTML($row, true, false, false, false, '');
+        $count++;
     }
+
+    // Totals row
+    $pdf->writeHTML('
+    <tr style="background-color:#bfe3d0; font-weight:bold;">
+        <td colspan="6" style="text-align:right; padding:10px;">Total</td>
+        <td style="padding:10px; text-align:center;">' . number_format($totalDebit2, 0) . '</td>
+        <td style="padding:10px; text-align:center;">' . number_format($totalCredit2, 0) . '</td>
+    </tr></tbody></table>', true, false, false, false, '');
 
     // ================= OUTPUT =================
-    $filename = "ledger_{$account->ac_name}.pdf";
+    $filename = "general_ledger_r_of_{$account->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
 
-    if (ob_get_length()) {
-    ob_end_clean();
-    }
+    if (ob_get_length()) { ob_end_clean(); } // ✅ safe buffer clean
     $pdf->Output($filename, 'I');
+    exit;
 }
     
 
