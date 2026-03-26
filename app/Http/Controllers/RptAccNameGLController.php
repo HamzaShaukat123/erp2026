@@ -957,6 +957,9 @@ class RptAccNameGLController extends Controller
 
         // Filename and Output
         $filename = "general_ledger_r_of_{$lager_much_op_bal->first()->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
+
+
+        ob_end_clean();
         $pdf->Output($filename, 'I');
         exit;
 
