@@ -745,7 +745,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 
 														<!-- Excel Button -->
-														<!-- <a href="{{ route('steelex.purchase.export') }}"  -->
+														<a href="" 
 														class="btn btn-success btn-sm" 
 														style="margin-left:10px;">
 															<i class="fa fa-file-excel-o"></i> Excel
