@@ -743,6 +743,13 @@
 												<header class="card-header">
 													<div class="card-actions">
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+
+														<!-- Excel Button -->
+														<a href="{{ route('steelex.purchase.export') }}" 
+														class="btn btn-success btn-sm" 
+														style="margin-left:10px;">
+															<i class="fa fa-file-excel-o"></i> Excel
+														</a>
 													</div>
 
 													<h2 class="card-title">Steelex Purchase Summary</h2>
