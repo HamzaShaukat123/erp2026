@@ -373,41 +373,22 @@ class JV2Controller extends Controller
             }
         }
 
-        // if($request->has('pur_prevInvoices') && $request->pur_prevInvoices!=0)
-        // {
-        //     for($k=0;$k<$request->pur_totalInvoices;$k++)
-        //     {
-        //         if($request->pur_rec_amount[$k]>0 && $request->pur_rec_amount[$k]!==null)
-        //         {
-        //             $pur_ageing = new purchase_ageing();
-        //             $pur_ageing->created_by = session('user_id');
-        //             $pur_ageing->jv2_id=$latest_jv2['jv_no'];
-        //             $pur_ageing->amount=$request->pur_rec_amount[$k];
-        //             $pur_ageing->sales_id=$request->pur_invoice_nos[$k];
-        //             $pur_ageing->sales_prefix=$request->pur_prefix[$k];
-        //             $pur_ageing->acc_name=$request->pur_customer_name;
-        //             $pur_ageing->save();
-        //         }
-                
-        //     }
-        // }
-
-
-        if ($request->has('pur_rec_amount')) 
+        if($request->has('pur_prevInvoices') && $request->pur_prevInvoices!=0)
         {
-            foreach ($request->pur_rec_amount as $k => $recAmount) 
+            for($k=0;$k<$request->pur_totalInvoices;$k++)
             {
-                if (!empty($recAmount) && $recAmount > 0) 
+                if($request->pur_rec_amount[$k]>0 && $request->pur_rec_amount[$k]!==null)
                 {
                     $pur_ageing = new purchase_ageing();
                     $pur_ageing->created_by = session('user_id');
-                    $pur_ageing->jv2_id = $latest_jv2['jv_no'];
-                    $pur_ageing->amount = $recAmount;
-                    $pur_ageing->sales_id = $request->pur_invoice_nos[$k] ?? null;
-                    $pur_ageing->sales_prefix = $request->pur_prefix[$k] ?? null;
-                    $pur_ageing->acc_name = $request->pur_customer_name;
+                    $pur_ageing->jv2_id=$latest_jv2['jv_no'];
+                    $pur_ageing->amount=$request->pur_rec_amount[$k];
+                    $pur_ageing->sales_id=$request->pur_invoice_nos[$k];
+                    $pur_ageing->sales_prefix=$request->pur_prefix[$k];
+                    $pur_ageing->acc_name=$request->pur_customer_name;
                     $pur_ageing->save();
                 }
+                
             }
         }
         
