@@ -2247,7 +2247,7 @@
 						result[millCode].backgroundColor = 'rgba(220, 53, 69, 1)';
 					}
 					else if(item.mill_name=="STEELEX BAITUL HADID"){
-						result[millCode].backgroundColor = 'rgba(230, 180, 0, 1)';
+						result[millCode].backgroundColor = 'rgba(219, 150, 81, 1)';
 					}
 					else if(item.mill_name=="S.P.M"){
 						result[millCode].backgroundColor = 'rgba(0, 136, 204, 1)';
