@@ -219,179 +219,276 @@
  
 <script>
 
-var index = 2;
-var itemCount = Number($('#itemCount').val());
+	var index=2;
+	var itemCount = Number($('#itemCount').val());
 
-$(document).ready(function () {
+	$(document).ready(function() {
+		$(window).keydown(function(event){
+			if(event.keyCode == 13) {
+				event.preventDefault();
+				return false;
+			}
+		});
 
-    var table = document.getElementById("Tpo2Table");
-    var rowCount = table.rows.length;
+		var totalAmount=0, totalWeight=0, totalQuantity=0, netAmount=0, amount=0, weight=0, quantity=0;
 
-    itemCount = rowCount;
-    index = rowCount + 1;
+		var table = document.getElementById("Tpo2Table"); // Get the table element
+        var rowCount = table.rows.length; // Get the total number of rows
 
-    $('#itemCount').val(itemCount);
+		itemCount = rowCount;
+		index = rowCount+1;
 
-    tableTotal();
-});
+		$('#itemCount').val(itemCount);
 
-function removeRow(button) {
-    var tableRows = $("#Tpo2Table tr").length;
-    if (tableRows > 1) {
-        var row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-        index--;
-        itemCount--;
-        $('#itemCount').val(itemCount);
+		for (var j=0;j<rowCount; j++){
+
+			quantity = table.rows[j].cells[3].querySelector('input').value; // Get the value of the input field in the specified cell
+			totalQuantity = totalQuantity + Number(quantity);
+
+			weight = table.rows[j].cells[7].querySelector('input').value; // Get the value of the input field in the specified cell
+			totalWeight = totalWeight + Number(weight);
+
+			amount = table.rows[j].cells[8].querySelector('input').value; // Get the value of the input field in the specified cell
+			totalAmount = totalAmount + Number(amount);
+		}
+		FormattedTotalWeight = totalWeight.toFixed();
+		FormattedTotalQuantity = totalQuantity.toFixed();
+		FormattedTotalAmount = totalAmount.toFixed();
+
+		$('#total_quantity').val(FormattedTotalQuantity);
+		$('#total_weight').val(FormattedTotalWeight);
+		$('#totalAmount').val(FormattedTotalAmount);
+
+		var convance_charges = Number($('#convance_charges').val());
+		var labour_charges = Number($('#labour_charges').val());
+		var bill_discount = Number($('#bill_discount').val());
+
+		netAmount = totalAmount + convance_charges +  labour_charges - bill_discount;
+		FormattednetTotal = formatNumberWithCommas(netAmount);
+		document.getElementById("netTotal").innerHTML = '<span class="text-4 text-danger">'+FormattednetTotal+'</span>';
+
+		document.getElementById('toggleSwitch').addEventListener('change', toggleInputs);
+		toggleInputs();
+	});
+
+    function removeRow(button) {
+		var tableRows = $("#Tpo2Table tr").length;
+		if(tableRows>1){
+			var row = button.parentNode.parentNode;
+			row.parentNode.removeChild(row);
+			index--;	
+			itemCount = Number($('#itemCount').val());
+			itemCount = itemCount-1;
+			$('#itemCount').val(itemCount);
+		}  
+		tableTotal(); 
     }
-    tableTotal();
-}
 
-function addNewRow() {
+	function addNewRow(){
+		var lastRow =  $('#myTable tr:last');
+		latestValue=lastRow[0].cells[1].querySelector('select').value;
+		if(latestValue!=""){
+			var table = document.getElementById('myTable').getElementsByTagName('tbody')[0];
+			var newRow = table.insertRow(table.rows.length);
+			var curr_disp_to = $('#Cash_pur_name').val();
+		
+			var cell1 = newRow.insertCell(0);
+			var cell2 = newRow.insertCell(1);
+			var cell3 = newRow.insertCell(2);
+			var cell4 = newRow.insertCell(3);
+			var cell5 = newRow.insertCell(4);
+			var cell6 = newRow.insertCell(5);
+			var cell7 = newRow.insertCell(6);
+			var cell8 = newRow.insertCell(7);
+			var cell9 = newRow.insertCell(8);
+			var cell10 = newRow.insertCell(9);
+			var cell11 = newRow.insertCell(10);
+			var cell12 = newRow.insertCell(11);
 
-    var lastRow = $('#myTable tr:last');
-    let latestValue = lastRow[0].cells[1].querySelector('select').value;
 
-    if (latestValue != "") {
+			cell1.innerHTML  = '<input type="text" class="form-control" name="item_cod[]" id="item_cod'+index+'" onchange="getItemDetails('+index+','+1+')" required>';
+			cell2.innerHTML  = '<select data-plugin-selecttwo class="form-control select-js" id="item_name'+index+'"  onchange="getItemDetails('+index+','+2+')" name="item_name[]" required>'+
+									'<option value="" disabled selected>Select Account</option>'+
+									'@foreach($items as $key => $row)'+	
+                                        '<option value="{{$row->it_cod}}">{{$row->item_name}}</option>'+
+                                    '@endforeach'+
+								'</select>';
+			cell3.innerHTML  = '<input type="text" class="form-control" id="remarks'+index+'" name="remarks[]">';
+			cell4.innerHTML  = '<input type="text" class="form-control" onchange="rowTotal('+index+')" id="pur2_qty2_'+index+'" value="0" name="pur2_qty2[]" step="any" required>';
+			cell5.innerHTML  = '<input type="number" id="pur2_per_unit'+index+'" class="form-control" name="pur2_per_unit[]" value="0" step="any" required>';
+			cell6.innerHTML  = '<input type="number" id="pur2_len'+index+'" onchange="rowTotal('+index+')" class="form-control" name="pur2_len[]"  value="20" step="any" required>';
+			cell7.innerHTML  = '<input type="number" class="form-control" name="pur2_percentage[]" onchange="rowTotal('+index+')" id="pur2_percentage'+index+'" value="0" step="any" required> <input type="hidden" class="form-control" id="weight_per_piece'+index+'" name="weight_per_piece[]" onchange="CalculateRowWeight('+index+')" value="0" step="any" required>';
+			cell8.innerHTML  = '<input type="number" class="form-control" id="pur2_qty'+index+'" value="0" step="any" required disabled><input type="hidden" class="form-control" name="pur2_qty[]" id="pur2_qty_show1" value="0" step="any" required>';
+			cell9.innerHTML  = '<input type="number" id="amount'+index+'" class="form-control"  value="0" step="any" disabled>';
+			cell10.innerHTML = '<input type="date" disabled class="form-control" id="pur2_price_date'+index+'" required><input type="hidden" class="form-control" name="pur2_price_date[]" id="pur2_price_date_show'+index+'">';
+			cell11.innerHTML  = '<input type="text" class="form-control" id="dispatchto'+index+'" name="dispatchto[]" value="'+curr_disp_to+'">';
+			cell12.innerHTML = '<button type="button" onclick="removeRow(this)" class="btn btn-danger" tabindex="1"><i class="fas fa-times"></i></button>';
 
-        var table = document.getElementById('myTable').getElementsByTagName('tbody')[0];
-        var newRow = table.insertRow(table.rows.length);
-        var curr_disp_to = $('#Cash_pur_name').val();
+			index++;
 
-        newRow.innerHTML = `
-        <td><input type="text" class="form-control" name="item_cod[]" id="item_cod${index}" onchange="getItemDetails(${index},1)" required></td>
+			itemCount = Number($('#itemCount').val());
+			itemCount = itemCount+1;
+			$('#itemCount').val(itemCount);
+			$('#myTable select[data-plugin-selecttwo]').select2();
 
-        <td>
-            <select class="form-control select2-js" id="item_name${index}" name="item_name[]" onchange="getItemDetails(${index},2)" required>
-                <option value="" disabled selected>Select Item</option>
-                @foreach($items as $row)
-                <option value="{{$row->it_cod}}">{{$row->item_name}}</option>
-                @endforeach
-            </select>
-        </td>
+		 
 
-        <td><input type="text" class="form-control" id="remarks${index}" name="remarks[]"></td>
+		}
+	}
 
-        <td>
-            <input type="number" class="form-control" id="pur2_qty2_${index}" name="pur2_qty2[]" value="0" step="any" oninput="CalculateRowWeight(${index})" required>
-        </td>
+	function addNewRow_btn() {
 
-        <td>
-            <input type="number" class="form-control" id="pur2_per_unit${index}" name="pur2_per_unit[]" value="0" step="any" oninput="rowTotal(${index})" required>
-        </td>
+	addNewRow(); // Call the same function
+	// Set focus on the new item_code input field
+	document.getElementById('item_cod' + (index - 1)).focus();
 
-        <td>
-            <input type="number" class="form-control" id="pur2_len${index}" name="pur2_len[]" value="1" step="any" oninput="rowTotal(${index})" required>
-        </td>
 
-        <td>
-            <input type="number" class="form-control" id="pur2_percentage${index}" name="pur2_percentage[]" value="0" step="any" oninput="rowTotal(${index})" required>
-            <input type="hidden" id="weight_per_piece${index}" name="weight_per_piece[]" value="0">
-        </td>
+	}
 
-        <td>
-            <input type="number" class="form-control" id="pur2_qty${index}" disabled>
-            <input type="hidden" id="pur2_qty_show${index}" name="pur2_qty[]">
-        </td>
+	function getItemDetails(row_no,option){
+		var itemId;
+		if(option==1){
+			itemId = document.getElementById("item_cod"+row_no).value;
+		}
+		else if(option==2){
+			itemId = document.getElementById("item_name"+row_no).value;
+		}
+		$.ajax({
+			type: "GET",
+			url: "/item2/detail",
+			data: {id:itemId},
+			success: function(result){
+				$('#item_cod'+row_no).val(result[0]['it_cod']);
+				$('#item_name'+row_no).val(result[0]['it_cod']).select2();
+				$('#remarks'+row_no).val(result[0]['item_remark']);
+				$('#pur2_per_unit'+row_no).val(result[0]['OPP_qty_cost']);
+				$('#pur2_price_date'+row_no).val(result[0]['pur_rate_date']);
+				$('#pur2_price_date_show'+row_no).val(result[0]['pur_rate_date']);
+				$('#weight_per_piece'+row_no).val(result[0]['weight']);
+				$('#weight_per_piece'+row_no+'').trigger('change')
+				addNewRow();
+			},
+			error: function(){
+				alert("error");
+			}
+		});
+	}
 
-        <td>
-            <input type="number" class="form-control" id="amount${index}" disabled>
-        </td>
 
-        <td>
-            <input type="date" class="form-control" id="pur2_price_date${index}" disabled>
-            <input type="hidden" name="pur2_price_date[]" id="pur2_price_date_show${index}">
-        </td>
 
-        <td>
-            <input type="text" class="form-control" id="dispatchto${index}" name="dispatchto[]" value="${curr_disp_to}">
-        </td>
+	function getCOADetails(){
+		var coaId = document.getElementById("coa_name").value;
+		
+		$.ajax({
+			type: "GET",
+			url: "/coa/detail",
+			data: {id:coaId},
+			success: function(result){
+				$('#address').val(result[0]['address']);
+				$('#cash_pur_phone').val(result[0]['phone_no']);
+				$('#remarks').val(result[0]['remarks']);
+			},
+			error: function(){
+				alert("error");
+			}
+		});
+	}
 
-        <td>
-            <button type="button" onclick="removeRow(this)" class="btn btn-danger">
-                <i class="fas fa-times"></i>
-            </button>
-        </td>
-        `;
+	function rowTotal(index){
 
-        $('#myTable select').select2();
+		var pur2_qty2 = parseFloat($('#pur2_qty2_'+index+'').val());
+		var sales_price = parseFloat($('#pur2_per_unit'+index+'').val());   
+		var discount = parseFloat($('#pur2_percentage'+index+'').val());
+		var length = parseFloat($('#pur2_len'+index+'').val());
+		var weight_per_piece = parseFloat($('#weight_per_piece'+index+'').val());
 
-        index++;
-        itemCount++;
-        $('#itemCount').val(itemCount);
-    }
-}
+		var amount = ((pur2_qty2 * sales_price)+((pur2_qty2 * sales_price) * (discount/100))) * length;
 
-function addNewRow_btn() {
-    addNewRow();
-    document.getElementById('item_cod' + (index - 1)).focus();
-}
+		var weight = (pur2_qty2*weight_per_piece);
 
-function rowTotal(index) {
+		$('#amount'+index+'').val(amount);
+		$('#pur2_qty'+index+'').val(weight);
+		$('#pur2_qty_show'+index+'').val(weight);
 
-    let qty = parseFloat($('#pur2_qty2_' + index).val()) || 0;
-    let price = parseFloat($('#pur2_per_unit' + index).val()) || 0;
-    let discount = parseFloat($('#pur2_percentage' + index).val()) || 0;
-    let length = parseFloat($('#pur2_len' + index).val()) || 0;
-    let weight_per_piece = parseFloat($('#weight_per_piece' + index).val()) || 0;
+		tableTotal();
+	}
 
-    let amount = ((qty * price) + ((qty * price) * (discount / 100))) * length;
-    let weight = qty * weight_per_piece;
+	function tableTotal(){
+		var totalAmount=0;
+		var totalWeight=0;
+		var totalQuantity=0;
+		var tableRows = $("#Tpo2Table tr").length;
+		var table = document.getElementById('myTable').getElementsByTagName('tbody')[0];
 
-    $('#amount' + index).val(amount.toFixed(2));
-    $('#pur2_qty' + index).val(weight.toFixed(2));
-    $('#pur2_qty_show' + index).val(weight.toFixed(2));
+		for (var i = 0; i < tableRows; i++) {
+			var currentRow =  table.rows[i];
+			totalAmount = totalAmount + Number(currentRow.cells[8].querySelector('input').value);
+			totalWeight = totalWeight + Number(currentRow.cells[7].querySelector('input').value);
+			totalQuantity = totalQuantity + Number(currentRow.cells[3].querySelector('input').value);
+        }
+		FormattedTotalWeight = totalWeight.toFixed();
 
-    tableTotal();
-}
+		$('#totalAmount').val(totalAmount.toFixed());
+		$('#total_amount_show').val(totalAmount);
+		$('#total_weight').val(FormattedTotalWeight);
+		$('#total_weight_show').val(FormattedTotalWeight);
+		$('#total_quantity').val(totalQuantity);
+		$('#total_quantity_show').val(totalQuantity);
+		
+		netTotal();
+	}
 
-function CalculateRowWeight(index) {
+	function netTotal(){
+		var netTotal = 0;
+		var total = Number($('#totalAmount').val());
+		var convance_charges = Number($('#convance_charges').val());
+		var labour_charges = Number($('#labour_charges').val());
+		var bill_discount = Number($('#bill_discount').val());
 
-    let qty = parseFloat($('#pur2_qty2_' + index).val()) || 0;
-    let weight_per_piece = parseFloat($('#weight_per_piece' + index).val()) || 0;
+		netTotal = total + convance_charges + labour_charges - bill_discount;
+		netTotal = netTotal.toFixed(0);
+		FormattednetTotal = formatNumberWithCommas(netTotal);
+		document.getElementById("netTotal").innerHTML = '<span class="text-4 text-danger">'+FormattednetTotal+'</span>';
+		$('#net_amount').val(netTotal);
 
-    let weight = qty * weight_per_piece;
+		var bill_perc = ((bill_discount/total)*100).toFixed() + ' %';		
+		$('#bill_perc').val(bill_perc);
+	}
+ 
+	function formatNumberWithCommas(number) {
+    	// Convert number to string and add commas
+    	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 
-    $('#pur2_qty' + index).val(weight.toFixed(2));
-    $('#pur2_qty_show' + index).val(weight.toFixed(2));
+	function CalculateRowWeight(index){
+		var pur2_qty = $('#pur2_qty2_'+index+'').val();
+		var weight_per_piece = $('#weight_per_piece'+index+'').val();
 
-    rowTotal(index);
-}
+		rowWeight= pur2_qty*weight_per_piece;
+		$('#pur2_qty'+index+'').val(rowWeight);
+		rowTotal(index);
+	}
 
-function tableTotal() {
 
-    let totalAmount = 0;
-    let totalWeight = 0;
-    let totalQuantity = 0;
 
-    $('#Tpo2Table tr').each(function () {
-
-        let qty = parseFloat($(this).find('td:eq(3) input').val()) || 0;
-        let weight = parseFloat($(this).find('td:eq(7) input').val()) || 0;
-        let amount = parseFloat($(this).find('td:eq(8) input').val()) || 0;
-
-        totalQuantity += qty;
-        totalWeight += weight;
-        totalAmount += amount;
+	document.getElementById('edit-sale-inv').addEventListener('click', function () {
+        var inputField = document.getElementById('sale-inv-no');
+        if (inputField.disabled) {
+            inputField.disabled = false;
+            inputField.focus(); // Focus on the input when enabled
+            this.textContent = "Disable"; // Change the label to "Save" when editing
+        } else {
+            inputField.disabled = true;
+            this.textContent = "Enable"; // Change the label back to "Edit" after saving
+        }
     });
 
-    $('#total_quantity').val(totalQuantity.toFixed(0));
-    $('#total_weight').val(totalWeight.toFixed(0));
-    $('#totalAmount').val(totalAmount.toFixed(0));
 
-    netTotal();
-}
-
-function netTotal() {
-
-    let total = Number($('#totalAmount').val()) || 0;
-    let conv = Number($('#convance_charges').val()) || 0;
-    let labour = Number($('#labour_charges').val()) || 0;
-    let discount = Number($('#bill_discount').val()) || 0;
-
-    let net = total + conv + labour - discount;
-
-    $('#netTotal').html(net.toFixed(0));
-}
+	// Update the hidden input field on change of the first input field
+	document.getElementById('sale-inv-no').addEventListener('input', function() {
+        var hiddenSaleInvInput = document.getElementById('hidden-sale-inv-no');
+        hiddenSaleInvInput.value = this.value;  // Update the hidden input with the new value
+    });
+										
 
 </script>
