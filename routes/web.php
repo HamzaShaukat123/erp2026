@@ -350,9 +350,11 @@
         });
         Route::get('/download-ready-zip/{file}', [DatabaseBackupController::class, 'downloadReadyZip']);
 
-        Route::get('/backup-files', [App\Http\Controllers\DatabaseBackupController::class, 'startBackup']);
-        Route::get('/backup-download/{file}', [App\Http\Controllers\DatabaseBackupController::class, 'downloadBackup']);
+        Route::get('/backup-files', [App\Http\Controllers\DatabaseBackupController::class, 'startBackup'])
+    ->name('backup.files.start');
 
+Route::get('/backup-download/{file}', [App\Http\Controllers\DatabaseBackupController::class, 'downloadBackup'])
+    ->name('backup.files.download');
 
 
         Route::post('/logout', [App\Http\Controllers\UsersController::class, 'logout'])->name('logout');
