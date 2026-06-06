@@ -81,66 +81,118 @@ class DatabaseBackupController extends Controller
     
     
 
-    public function downloadZip()
-    {
-        // Path to the directory you want to zip
-        $directoryPath = public_path('uploads'); // Assuming 'uploads' is in the 'public' directory
+//     public function downloadZip()
+//     {
+//         // Path to the directory you want to zip
+//         $directoryPath = public_path('uploads'); // Assuming 'uploads' is in the 'public' directory
 
-        if (!is_dir($directoryPath)) {
-            return response()->json(['error' => 'The specified directory does not exist.'], 404);
-        }
+//         if (!is_dir($directoryPath)) {
+//             return response()->json(['error' => 'The specified directory does not exist.'], 404);
+//         }
 
-        // Create a temporary file to store the zip
-        $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
-        $tempPath = storage_path('app/temp');
+//         // Create a temporary file to store the zip
+//         $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
+//         $tempPath = storage_path('app/temp');
 
-        // Ensure the temp directory exists
-        if (!is_dir($tempPath)) {
-            mkdir($tempPath, 0755, true); // Create directory with proper permissions
-        }
+//         // Ensure the temp directory exists
+//         if (!is_dir($tempPath)) {
+//             mkdir($tempPath, 0755, true); // Create directory with proper permissions
+//         }
 
-        $zipFilePath = $tempPath . '/' . $zipFileName;
+//         $zipFilePath = $tempPath . '/' . $zipFileName;
 
-        // Create a new ZipArchive instance
-        $zip = new ZipArchive();
+//         // Create a new ZipArchive instance
+//         $zip = new ZipArchive();
 
-        // Open the zip file for writing
-        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
-            // Add files to the zip
-            $this->addFilesToZip($zip, $directoryPath);
+//         // Open the zip file for writing
+//         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+//             // Add files to the zip
+//             $this->addFilesToZip($zip, $directoryPath);
 
-            // Close the zip file
-            $zip->close();
+//             // Close the zip file
+//             $zip->close();
 
-            // Stream the zip file to the browser for download
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-        } else {
-            return response()->json(['error' => 'Failed to create zip file.'], 500);
-        }
+//             // Stream the zip file to the browser for download
+//             return response()->download($zipFilePath)->deleteFileAfterSend(true);
+//         } else {
+//             return response()->json(['error' => 'Failed to create zip file.'], 500);
+//         }
+//     }
+
+// /**
+//  * Recursively add files and directories to the zip
+//  */
+// protected function addFilesToZip(ZipArchive $zip, $directoryPath, $zipPath = '')
+// {
+//     // Get all files and directories inside the given directory
+//     $files = glob($directoryPath . '/*');
+
+//     foreach ($files as $file) {
+//         $localPath = $zipPath . basename($file); // The path inside the zip file
+
+//         if (is_dir($file)) {
+//             // If it's a directory, add it to the zip and recursively add its contents
+//             $zip->addEmptyDir($localPath);
+//             $this->addFilesToZip($zip, $file, $localPath . '/');
+//         } else {
+//             // If it's a file, add it to the zip
+//             if (file_exists($file)) {
+//                 $zip->addFile($file, $localPath);
+//             }
+//         }
+//     }
+// }
+
+
+public function downloadZip()
+{
+    $directoryPath = public_path('uploads');
+
+    if (!is_dir($directoryPath)) {
+        return response()->json(['error' => 'The specified directory does not exist.'], 404);
     }
 
-/**
- * Recursively add files and directories to the zip
- */
-protected function addFilesToZip(ZipArchive $zip, $directoryPath, $zipPath = '')
-{
-    // Get all files and directories inside the given directory
-    $files = glob($directoryPath . '/*');
+    // Prevent timeout for large folders
+    set_time_limit(0);
+    ini_set('memory_limit', '1024M');
+
+    $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
+    $tempPath = storage_path('app/temp');
+
+    if (!is_dir($tempPath)) {
+        mkdir($tempPath, 0755, true);
+    }
+
+    $zipFilePath = $tempPath . '/' . $zipFileName;
+
+    $zip = new ZipArchive();
+
+    if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+        return response()->json(['error' => 'Failed to create zip file.'], 500);
+    }
+
+    // FAST ITERATOR (NO RECURSION = NO TIMEOUT)
+    $files = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directoryPath, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::LEAVES_ONLY
+    );
 
     foreach ($files as $file) {
-        $localPath = $zipPath . basename($file); // The path inside the zip file
 
-        if (is_dir($file)) {
-            // If it's a directory, add it to the zip and recursively add its contents
-            $zip->addEmptyDir($localPath);
-            $this->addFilesToZip($zip, $file, $localPath . '/');
-        } else {
-            // If it's a file, add it to the zip
-            if (file_exists($file)) {
-                $zip->addFile($file, $localPath);
-            }
+        if (!$file->isDir()) {
+
+            $filePath = $file->getRealPath();
+
+            // relative path inside zip
+            $relativePath = substr($filePath, strlen($directoryPath) + 1);
+
+            $zip->addFile($filePath, $relativePath);
         }
     }
+
+    $zip->close();
+
+    return response()->download($zipFilePath)->deleteFileAfterSend(true);
 }
 
 }
