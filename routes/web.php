@@ -344,19 +344,6 @@
         Route::get('/backup-files', [App\Http\Controllers\DatabaseBackupController::class, 'downloadZip'])->name('backup.files');
 
 
-
-        Route::get('/download-temp-zip/{file}', function ($file) {$path = storage_path("app/temp/$file");if (!file_exists($path)) {abort(404);}
-            return response()->download($path)->deleteFileAfterSend(true);
-        });
-        Route::get('/download-ready-zip/{file}', [DatabaseBackupController::class, 'downloadReadyZip']);
-
-        Route::get('/backup-files', [App\Http\Controllers\DatabaseBackupController::class, 'startBackup'])
-    ->name('backup.files.start');
-
-Route::get('/backup-download/{file}', [App\Http\Controllers\DatabaseBackupController::class, 'downloadBackup'])
-    ->name('backup.files.download');
-
-
         Route::post('/logout', [App\Http\Controllers\UsersController::class, 'logout'])->name('logout');
         Route::get('/validate-user-password', [App\Http\Controllers\UsersController::class, 'getUserPassword'])->name('validate-user-password');
         Route::post('/change-user-password', [App\Http\Controllers\UsersController::class, 'updateUserPassowrd'])->name('change-user-password');
