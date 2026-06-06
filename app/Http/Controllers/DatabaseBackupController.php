@@ -148,49 +148,64 @@ class DatabaseBackupController extends Controller
 
 public function downloadZip()
 {
-    $directoryPath = public_path('uploads');
+    $sourcePath = public_path('uploads');
 
-    if (!is_dir($directoryPath)) {
-        return response()->json(['error' => 'Directory not found'], 404);
+    if (!is_dir($sourcePath)) {
+        return response()->json(['error' => 'Uploads folder not found'], 404);
     }
 
     set_time_limit(0);
 
     $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
-    $zipFilePath = storage_path('app/temp/' . $zipFileName);
+    $zipFilePath = storage_path("app/temp/$zipFileName");
 
     if (!is_dir(storage_path('app/temp'))) {
         mkdir(storage_path('app/temp'), 0755, true);
     }
 
-    // Create ZIP
-    $zip = new ZipArchive();
+    try {
 
-    if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
-        return response()->json(['error' => 'Unable to create ZIP'], 500);
-    }
+        // 🔥 FASTEST METHOD (SERVER ZIP COMMAND)
+        if (function_exists('exec')) {
 
-    $files = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($directoryPath, \RecursiveDirectoryIterator::SKIP_DOTS)
-    );
+            $command = "cd " . escapeshellarg($sourcePath) .
+                       " && zip -r " . escapeshellarg($zipFilePath) . " .";
 
-    foreach ($files as $file) {
+            exec($command);
 
-        if (!$file->isDir()) {
-            $filePath = $file->getRealPath();
-            $relativePath = substr($filePath, strlen($directoryPath) + 1);
+        } else {
 
-            $zip->addFile($filePath, $relativePath);
+            // 🔁 FALLBACK (PHP ZIP if exec disabled)
+            $zip = new \ZipArchive();
+
+            if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== TRUE) {
+                return response()->json(['error' => 'Cannot create zip file'], 500);
+            }
+
+            $files = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($sourcePath, \RecursiveDirectoryIterator::SKIP_DOTS)
+            );
+
+            foreach ($files as $file) {
+                if (!$file->isDir()) {
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($sourcePath) + 1);
+                    $zip->addFile($filePath, $relativePath);
+                }
+            }
+
+            $zip->close();
         }
+
+        // 🔽 DOWNLOAD FILE
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'error' => 'Backup failed: ' . $e->getMessage()
+        ], 500);
     }
-
-    $zip->close();
-
-    // Return download link instead of streaming
-    return response()->json([
-        'success' => true,
-        'download_url' => url('download-temp-zip/' . basename($zipFilePath))
-    ]);
 }
 
 }
