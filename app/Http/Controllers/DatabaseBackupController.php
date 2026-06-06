@@ -11,68 +11,145 @@ use Illuminate\Support\Facades\Response;
 
 class DatabaseBackupController extends Controller
 {
-    public function backupDatabase()
-    {
-        $dbHost = env('DB_HOST');
-        $dbName = env('DB_DATABASE');
-        $dbUser = env('DB_USERNAME');
-        $dbPassword = env('DB_PASSWORD');
+    // public function backupDatabase()
+    // {
+    //     $dbHost = env('DB_HOST');
+    //     $dbName = env('DB_DATABASE');
+    //     $dbUser = env('DB_USERNAME');
+    //     $dbPassword = env('DB_PASSWORD');
     
-        // try {
-        //     $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
-        //     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        //     die("Database connection successful.");
-        // } catch (PDOException $e) {
-        //     die("Database connection failed: " . $e->getMessage());
-        //     return response()->json(['error' => 'Database connection failed. ' . $e->getMessage()], 500);
-        // }
+    //     // try {
+    //     //     $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
+    //     //     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //     //     die("Database connection successful.");
+    //     // } catch (PDOException $e) {
+    //     //     die("Database connection failed: " . $e->getMessage());
+    //     //     return response()->json(['error' => 'Database connection failed. ' . $e->getMessage()], 500);
+    //     // }
 
-        $fileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
-        $headers = [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
-        ];
+    //     $fileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+    //     $headers = [
+    //         'Content-Type' => 'application/octet-stream',
+    //         'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+    //     ];
     
-        try {
-            \Log::info("Connecting to database...");
-            $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //     try {
+    //         \Log::info("Connecting to database...");
+    //         $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
+    //         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-            \Log::info("Fetching tables...");
-            $tables = $pdo->query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")->fetchAll(PDO::FETCH_COLUMN);
+    //         \Log::info("Fetching tables...");
+    //         $tables = $pdo->query("SHOW FULL TABLES WHERE Table_type = 'BASE TABLE'")->fetchAll(PDO::FETCH_COLUMN);
     
-            if (empty($tables)) {
-                \Log::error("No tables found in the database.");
-                return response()->json(['error' => 'No tables found in the database.'], 500);
-            }
+    //         if (empty($tables)) {
+    //             \Log::error("No tables found in the database.");
+    //             return response()->json(['error' => 'No tables found in the database.'], 500);
+    //         }
     
-            $sqlDump = "-- Database Backup\n-- Generated on " . date('Y-m-d H:i:s') . "\n\n";
-            foreach ($tables as $table) {
-                \Log::info("Processing table: {$table}");
-                $escapedTable = "`" . str_replace("`", "``", $table) . "`";
+    //         $sqlDump = "-- Database Backup\n-- Generated on " . date('Y-m-d H:i:s') . "\n\n";
+    //         foreach ($tables as $table) {
+    //             \Log::info("Processing table: {$table}");
+    //             $escapedTable = "`" . str_replace("`", "``", $table) . "`";
     
-                $createTableStmt = $pdo->query("SHOW CREATE TABLE {$escapedTable}")->fetch(PDO::FETCH_ASSOC)['Create Table'];
-                $sqlDump .= "-- Structure for table `{$table}`\n";
-                $sqlDump .= "{$createTableStmt};\n\n";
+    //             $createTableStmt = $pdo->query("SHOW CREATE TABLE {$escapedTable}")->fetch(PDO::FETCH_ASSOC)['Create Table'];
+    //             $sqlDump .= "-- Structure for table `{$table}`\n";
+    //             $sqlDump .= "{$createTableStmt};\n\n";
     
-                $rows = $pdo->query("SELECT * FROM {$escapedTable}");
-                while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
-                    $values = array_map([$pdo, 'quote'], $row);
-                    $sqlDump .= "INSERT INTO `{$table}` VALUES (" . implode(", ", $values) . ");\n";
-                }
-                $sqlDump .= "\n";
-            }
+    //             $rows = $pdo->query("SELECT * FROM {$escapedTable}");
+    //             while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
+    //                 $values = array_map([$pdo, 'quote'], $row);
+    //                 $sqlDump .= "INSERT INTO `{$table}` VALUES (" . implode(", ", $values) . ");\n";
+    //             }
+    //             $sqlDump .= "\n";
+    //         }
     
-            return response()->stream(function () use ($sqlDump) {
-                echo $sqlDump;
-            }, 200, $headers);
+    //         return response()->stream(function () use ($sqlDump) {
+    //             echo $sqlDump;
+    //         }, 200, $headers);
     
-        } catch (Exception $e) {
-            \Log::error("Database backup failed: " . $e->getMessage());
-            return response()->json(['error' => 'Database backup failed. ' . $e->getMessage()], 500);
+    //     } catch (Exception $e) {
+    //         \Log::error("Database backup failed: " . $e->getMessage());
+    //         return response()->json(['error' => 'Database backup failed. ' . $e->getMessage()], 500);
+    //     }
+    // }
+    
+
+
+    public function backupDatabase()
+{
+    $dbHost = config('database.connections.mysql.host');
+    $dbName = config('database.connections.mysql.database');
+    $dbUser = config('database.connections.mysql.username');
+    $dbPassword = config('database.connections.mysql.password');
+
+    $fileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+
+    $headers = [
+        'Content-Type' => 'application/octet-stream',
+        'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+    ];
+
+    try {
+        \Log::info("Connecting to database...");
+
+        $pdo = new PDO(
+            "mysql:host={$dbHost};dbname={$dbName};charset=utf8",
+            $dbUser,
+            $dbPassword
+        );
+
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        \Log::info("Fetching tables...");
+
+        $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+
+        if (empty($tables)) {
+            return response()->json(['error' => 'No tables found in database.'], 500);
         }
+
+        $sqlDump = "-- Database Backup\n";
+        $sqlDump .= "-- Generated: " . date('Y-m-d H:i:s') . "\n\n";
+
+        foreach ($tables as $table) {
+
+            $escapedTable = "`" . str_replace("`", "``", $table) . "`";
+
+            // Table structure
+            $createTable = $pdo->query("SHOW CREATE TABLE {$escapedTable}")
+                ->fetch(PDO::FETCH_ASSOC)['Create Table'];
+
+            $sqlDump .= "\n-- Structure of {$table}\n";
+            $sqlDump .= $createTable . ";\n\n";
+
+            // Table data
+            $rows = $pdo->query("SELECT * FROM {$escapedTable}");
+
+            while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
+
+                $values = array_map(function ($value) use ($pdo) {
+                    return $value === null ? "NULL" : $pdo->quote($value);
+                }, $row);
+
+                $sqlDump .= "INSERT INTO `{$table}` VALUES (" . implode(", ", $values) . ");\n";
+            }
+
+            $sqlDump .= "\n";
+        }
+
+        return response()->stream(function () use ($sqlDump) {
+            echo $sqlDump;
+        }, 200, $headers);
+
+    } catch (\Exception $e) {
+
+        \Log::error("Database backup failed: " . $e->getMessage());
+
+        return response()->json([
+            'error' => 'Database backup failed. ' . $e->getMessage()
+        ], 500);
     }
-    
+}
     
 
     public function downloadZip()
