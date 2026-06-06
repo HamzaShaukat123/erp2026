@@ -151,41 +151,33 @@ public function downloadZip()
     $directoryPath = public_path('uploads');
 
     if (!is_dir($directoryPath)) {
-        return response()->json(['error' => 'The specified directory does not exist.'], 404);
+        return response()->json(['error' => 'Directory not found'], 404);
     }
 
-    // Prevent timeout for large folders
     set_time_limit(0);
-    ini_set('memory_limit', '1024M');
 
     $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
-    $tempPath = storage_path('app/temp');
+    $zipFilePath = storage_path('app/temp/' . $zipFileName);
 
-    if (!is_dir($tempPath)) {
-        mkdir($tempPath, 0755, true);
+    if (!is_dir(storage_path('app/temp'))) {
+        mkdir(storage_path('app/temp'), 0755, true);
     }
 
-    $zipFilePath = $tempPath . '/' . $zipFileName;
-
+    // Create ZIP
     $zip = new ZipArchive();
 
     if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
-        return response()->json(['error' => 'Failed to create zip file.'], 500);
+        return response()->json(['error' => 'Unable to create ZIP'], 500);
     }
 
-    // FAST ITERATOR (NO RECURSION = NO TIMEOUT)
-    $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($directoryPath, RecursiveDirectoryIterator::SKIP_DOTS),
-        RecursiveIteratorIterator::LEAVES_ONLY
+    $files = new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($directoryPath, \RecursiveDirectoryIterator::SKIP_DOTS)
     );
 
     foreach ($files as $file) {
 
         if (!$file->isDir()) {
-
             $filePath = $file->getRealPath();
-
-            // relative path inside zip
             $relativePath = substr($filePath, strlen($directoryPath) + 1);
 
             $zip->addFile($filePath, $relativePath);
@@ -194,7 +186,11 @@ public function downloadZip()
 
     $zip->close();
 
-    return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    // Return download link instead of streaming
+    return response()->json([
+        'success' => true,
+        'download_url' => url('download-temp-zip/' . basename($zipFilePath))
+    ]);
 }
 
 }
