@@ -13,10 +13,16 @@ class DatabaseBackupController extends Controller
 {
     public function backupDatabase()
     {
-         $dbHost = config('database.connections.mysql.host');
-    $dbName = config('database.connections.mysql.database');
-    $dbUser = config('database.connections.mysql.username');
-    $dbPassword = config('database.connections.mysql.password');
+        // $dbHost = env('DB_HOST');
+        // $dbName = env('DB_DATABASE');
+        // $dbUser = env('DB_USERNAME');
+        // $dbPassword = env('DB_PASSWORD');
+
+
+        $dbHost = config('database.connections.mysql.host');
+        $dbName = config('database.connections.mysql.database');
+        $dbUser = config('database.connections.mysql.username');
+        $dbPassword = config('database.connections.mysql.password');
     
         // try {
         //     $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword);
