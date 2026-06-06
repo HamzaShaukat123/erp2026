@@ -350,8 +350,11 @@
         });
         Route::get('/download-ready-zip/{file}', [DatabaseBackupController::class, 'downloadReadyZip']);
 
+        Route::get('/backup-start', [DatabaseBackupController::class, 'startBackup']);
+Route::get('/backup-download/{file}', [DatabaseBackupController::class, 'downloadBackup']);
 
-        
+
+
         Route::post('/logout', [App\Http\Controllers\UsersController::class, 'logout'])->name('logout');
         Route::get('/validate-user-password', [App\Http\Controllers\UsersController::class, 'getUserPassword'])->name('validate-user-password');
         Route::post('/change-user-password', [App\Http\Controllers\UsersController::class, 'updateUserPassowrd'])->name('change-user-password');

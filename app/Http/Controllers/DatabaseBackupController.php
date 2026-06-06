@@ -146,16 +146,8 @@ class DatabaseBackupController extends Controller
 // }
 
 
-public function downloadZip()
+public function startBackup()
 {
-    $source = public_path('uploads');
-
-    if (!is_dir($source)) {
-        return response()->json(['error' => 'Uploads folder not found'], 404);
-    }
-
-    set_time_limit(0);
-
     $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
     $zipPath = storage_path("app/temp/$zipFileName");
 
@@ -163,28 +155,30 @@ public function downloadZip()
         mkdir(storage_path('app/temp'), 0755, true);
     }
 
-    // ⚡ RUN ZIP IN BACKGROUND (NO TIMEOUT WAIT)
+    $source = public_path('uploads');
+
+    // Run in background (NO WAIT)
     $cmd = "cd " . escapeshellarg($source) .
-           " && nohup zip -r " . escapeshellarg($zipPath) . " . > /dev/null 2>&1 &";
+           " && zip -r " . escapeshellarg($zipPath) . " . > /dev/null 2>&1 &";
 
     exec($cmd);
 
     return response()->json([
         'status' => 'processing',
-        'message' => 'Backup is being created. Please wait 10–30 seconds.',
-        'download_url' => url("download-ready-zip/$zipFileName")
+        'file' => $zipFileName,
+        'message' => 'Backup started. Please wait 30–60 seconds.'
     ]);
 }
 
 
-public function downloadReadyZip($file)
+public function downloadBackup($file)
 {
     $path = storage_path("app/temp/$file");
 
     if (!file_exists($path)) {
         return response()->json([
             'status' => 'not_ready',
-            'message' => 'Backup still processing, try again in a few seconds'
+            'message' => 'Backup is still being created. Try again in a few seconds.'
         ], 202);
     }
 
