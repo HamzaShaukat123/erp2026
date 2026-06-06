@@ -148,64 +148,47 @@ class DatabaseBackupController extends Controller
 
 public function downloadZip()
 {
-    $sourcePath = public_path('uploads');
+    $source = public_path('uploads');
 
-    if (!is_dir($sourcePath)) {
+    if (!is_dir($source)) {
         return response()->json(['error' => 'Uploads folder not found'], 404);
     }
 
     set_time_limit(0);
 
     $zipFileName = 'uploads_' . date('Y-m-d_H-i-s') . '.zip';
-    $zipFilePath = storage_path("app/temp/$zipFileName");
+    $zipPath = storage_path("app/temp/$zipFileName");
 
     if (!is_dir(storage_path('app/temp'))) {
         mkdir(storage_path('app/temp'), 0755, true);
     }
 
-    try {
+    // ⚡ RUN ZIP IN BACKGROUND (NO TIMEOUT WAIT)
+    $cmd = "cd " . escapeshellarg($source) .
+           " && nohup zip -r " . escapeshellarg($zipPath) . " . > /dev/null 2>&1 &";
 
-        // 🔥 FASTEST METHOD (SERVER ZIP COMMAND)
-        if (function_exists('exec')) {
+    exec($cmd);
 
-            $command = "cd " . escapeshellarg($sourcePath) .
-                       " && zip -r " . escapeshellarg($zipFilePath) . " .";
+    return response()->json([
+        'status' => 'processing',
+        'message' => 'Backup is being created. Please wait 10–30 seconds.',
+        'download_url' => url("download-ready-zip/$zipFileName")
+    ]);
+}
 
-            exec($command);
 
-        } else {
+public function downloadReadyZip($file)
+{
+    $path = storage_path("app/temp/$file");
 
-            // 🔁 FALLBACK (PHP ZIP if exec disabled)
-            $zip = new \ZipArchive();
-
-            if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== TRUE) {
-                return response()->json(['error' => 'Cannot create zip file'], 500);
-            }
-
-            $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($sourcePath, \RecursiveDirectoryIterator::SKIP_DOTS)
-            );
-
-            foreach ($files as $file) {
-                if (!$file->isDir()) {
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($sourcePath) + 1);
-                    $zip->addFile($filePath, $relativePath);
-                }
-            }
-
-            $zip->close();
-        }
-
-        // 🔽 DOWNLOAD FILE
-        return response()->download($zipFilePath)->deleteFileAfterSend(true);
-
-    } catch (\Exception $e) {
-
+    if (!file_exists($path)) {
         return response()->json([
-            'error' => 'Backup failed: ' . $e->getMessage()
-        ], 500);
+            'status' => 'not_ready',
+            'message' => 'Backup still processing, try again in a few seconds'
+        ], 202);
     }
+
+    return response()->download($path)->deleteFileAfterSend(true);
 }
 
 }
