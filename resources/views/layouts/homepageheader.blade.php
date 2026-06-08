@@ -50,6 +50,12 @@
 					<li>
 						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Changed Password</a>
 					</li>
+
+					<a href="#changePassword"
+					class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
+						<i class="bx bx-lock text-primary"></i>
+						Change Password
+					</a>
 					
 					@if(session('user_role')==1 || session('user_role')==2)
 					<li>
