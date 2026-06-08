@@ -72,7 +72,7 @@
 		</div>
 
 		<!-- FOR SUB FORM -->
-		<div class="right-wrapper text-end d-none d-md-block">
+		<div class="logo-container d-none d-md-flex align-items-center justify-content-end gap-3">
 			<div id="userbox" class="userbox" style="float:right !important;">
 				<a href="#" data-bs-toggle="dropdown">
 					<div class="profile-info"> 
