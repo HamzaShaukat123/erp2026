@@ -39,17 +39,20 @@
 		<!-- FOR MOBILE -->
 		<div id="userbox" class="userbox" style="float:right !important;">
 			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px;">
-				<div class="profile-info"> 
-					<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
-					<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
+				<div class="text-end me-2">
+					<div class="fw-semibold text-primary" style="line-height:1;">
+						{{ session('user_name') }}
+					</div>
+					<small class="text-muted">
+						{{ session('role_name') }}
+					</small>
 				</div>
 				<i class="fa custom-caret"></i>
 			</a>
+
+			
 			<div class="dropdown-menu" >
 				<ul class="list-unstyled">
-					<li>
-						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Changed Password</a>
-					</li>
 
 					<a href="#changePassword"
 					class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
