@@ -73,7 +73,8 @@
 
 		<!-- FOR SUB FORM -->
 		<div class="logo-container d-none d-md-flex align-items-center justify-content-end gap-3">
-			<div id="userbox" class="userbox" style="float:right !important;">
+			<!-- <div id="userbox" class="userbox" style="float:right !important;"> -->
+				<div id="userbox" class="dropdown userbox">
 				<!-- <a href="#" data-bs-toggle="dropdown">
 					<div class="profile-info"> 
 						<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
