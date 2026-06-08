@@ -102,7 +102,7 @@
         <!-- Dropdown -->
         <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2" style="min-width: 220px; border-radius:10px;">
             
-            <a class="dropdown-item d-flex align-items-center" href="#changePassword">
+            <a class="dropdown-item d-flex align-items-center" href="#changePasswordForm">
                 <i class="bx bx-lock me-2"></i> Change Password
             </a>
 
