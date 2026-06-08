@@ -37,67 +37,74 @@
 		</a>
 
 		<!-- FOR MOBILE -->
-		<!-- User Dropdown -->
-		<div id="userbox" class="dropdown userbox">
+<div id="userbox" class="dropdown userbox float-end me-2">
 
-			<!-- Trigger -->
-			<a href="#" class="d-flex align-items-center text-decoration-none"
-			data-bs-toggle="dropdown">
+    <!-- Trigger -->
+    <a href="#" class="d-flex align-items-center text-decoration-none"
+       data-bs-toggle="dropdown">
 
-				<div class="text-end me-2">
-					<div class="fw-semibold text-primary" style="line-height:1;">
-						{{ session('user_name') }}
-					</div>
-					<small class="text-muted">
-						{{ session('role_name') }}
-					</small>
-				</div>
+        <div class="text-end me-2">
+            <div class="fw-semibold text-primary" style="line-height:1;">
+                {{ session('user_name') }}
+            </div>
+            <small class="text-muted">
+                {{ session('role_name') }}
+            </small>
+        </div>
 
-				<div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
-					style="width:38px;height:38px;">
-					<i class="bx bx-user text-secondary"></i>
-				</div>
+        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
+             style="width:34px;height:34px;">
+            <i class="bx bx-user text-secondary"></i>
+        </div>
 
-				<i class="bx bx-chevron-down ms-1 text-muted"></i>
-			</a>
+        <i class="bx bx-chevron-down ms-1 text-muted"></i>
+    </a>
 
-			<!-- Dropdown -->
-			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
-				style="min-width:240px;">
+    <!-- Dropdown -->
+    <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
+         style="min-width:220px;">
 
-				<a href="#changePassword"
-				class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
-					<i class="bx bx-lock text-primary"></i>
-					Change Password
-				</a>
+        <a href="#changePassword"
+           class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
+            <i class="bx bx-lock text-primary"></i>
+            Change Password
+        </a>
 
-				@if(session('user_role')==1 || session('user_role')==2)
-					<a href="{{ route('backup.database') }}"
-					class="dropdown-item d-flex align-items-center gap-2">
-						<i class="bx bx-cloud-download text-success"></i>
-						DB Backup
-					</a>
+        @if(session('user_role')==1 || session('user_role')==2)
+            <a href="{{ route('backup.database') }}"
+               class="dropdown-item d-flex align-items-center gap-2">
+                <i class="bx bx-cloud-download text-success"></i>
+                DB Backup
+            </a>
 
-					<a href="{{ route('backup.files') }}"
-					class="dropdown-item d-flex align-items-center gap-2">
-						<i class="bx bx-file text-warning"></i>
-						Files Backup
-					</a>
-				@endif
+            <a href="{{ route('backup.files') }}"
+               class="dropdown-item d-flex align-items-center gap-2">
+                <i class="bx bx-file text-warning"></i>
+                Files Backup
+            </a>
+        @endif
 
-				<div class="dropdown-divider"></div>
+        <div class="dropdown-divider"></div>
 
-				<form action="/logout" method="POST" class="m-0">
-					@csrf
-					<button type="submit"
-							class="dropdown-item d-flex align-items-center gap-2 text-danger">
-						<i class="bx bx-power-off"></i>
-						Logout
-					</button>
-				</form>
+        <form action="/logout" method="POST" class="m-0">
+            @csrf
+            <button type="submit"
+                    class="dropdown-item d-flex align-items-center gap-2 text-danger w-100 border-0 bg-transparent">
+                <i class="bx bx-power-off"></i>
+                Logout
+            </button>
+        </form>
 
-			</div>
-		</div>
+    </div>
+
+    <!-- Sidebar Toggle (unchanged) -->
+    <i class="fas fa-bars toggle-sidebar-left ms-2"
+       data-toggle-class="sidebar-left-opened"
+       data-target="html"
+       data-fire-event="sidebar-left-opened"
+       aria-label="Toggle sidebar"></i>
+
+</div>
 
 		<!-- FOR SUB FORM -->
 		<!-- <div class="right-wrapper text-end d-none d-md-block">
