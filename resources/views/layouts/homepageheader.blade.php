@@ -98,6 +98,13 @@
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}"><i class="bx bx-file"></i> Files Backup</a>
 					</li>
 					@endif
+
+					<li>	
+						<form action="/logout" method="POST">
+							@csrf
+							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
+						</form>
+					</li>
 				</ul>
 			</div>
 		</div>
