@@ -20,7 +20,7 @@
 			<div class="dropdown-menu" >
 				<ul class="list-unstyled">
 					<li>
-						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
+						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Changed Password</a>
 					</li>
 					
 					@if(session('user_role')==1 || session('user_role')==2)
@@ -96,12 +96,8 @@
 			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2" style="min-width:220px; border-radius:10px;">
 				<ul class="list-unstyled">
 					<li>
-						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
+						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Changed Password</a>
 					</li>
-
-					<a class="dropdown-item d-flex align-items-center" href="#changePassword">
-                        <i class="bx bx-lock me-2"></i> Change Password
-                    </a>
 					@if(session('user_role')==1 || session('user_role')==2)
 					<li>
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}"><i class="bx bx-cloud-download"></i> DB Backup</a>
