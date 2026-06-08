@@ -1,13 +1,18 @@
-<header class="page-header bg-white border-bottom shadow-sm">
-
-    <!-- LOADER -->
+ <!-- LOADER -->
     <div id="loader">
         <div class="spinner-border text-primary" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
 
-    <div class="container-fluid">
+<header class="page-header bg-white border-bottom shadow-sm">
+
+   
+
+   <div class="logo-container d-md-none">
+		<a href="/" class="logo ">
+			<img src="/assets/img/logo.png" width="70px" alt="MFI Logo" />
+		</a>
 
         <div class="d-flex align-items-center justify-content-between py-2">
 
@@ -22,9 +27,7 @@
                    style="cursor:pointer;"></i>
 
                 <!-- LOGO -->
-                <a href="/" class="d-flex align-items-center">
-                    <img src="/assets/img/logo.png" width="65" alt="MFI Logo">
-                </a>
+                
 
             </div>
 
