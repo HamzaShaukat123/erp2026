@@ -79,27 +79,68 @@
 				</div>
 				<i class="fa custom-caret"></i>
 			</a>
-			<div class="dropdown-menu" >
-				<ul class="list-unstyled">
-					<li>
-						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
-					</li>
-					<li>	
-						<form action="/logout" method="POST">
-							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
-						</form>
-					</li>
-					@if(session('user_role')==1 || session('user_role')==2)
-					<li>
-						<a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}"><i class="bx bx-cloud-download"></i> DB Backup</a>
-					</li>
-					<li>
-						<a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}"><i class="bx bx-file"></i> Files Backup</a>
-					</li>
-					@endif
-				</ul>
-			</div>
+			  <!-- USER DROPDOWN -->
+            <div class="dropdown">
+
+                <a href="#"
+                   class="d-flex align-items-center text-decoration-none"
+                   data-bs-toggle="dropdown">
+
+                    <!-- USER INFO -->
+                    <div class="text-end me-2 d-none d-sm-block">
+                        <div class="fw-semibold text-dark" style="font-size:14px;">
+                            {{ session('user_name') }}
+                        </div>
+                        <small class="text-muted">
+                            {{ session('role_name') }}
+                        </small>
+                    </div>
+
+                    <!-- AVATAR -->
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                         style="width:35px;height:35px;">
+                        {{ strtoupper(substr(session('user_name'),0,1)) }}
+                    </div>
+
+                    <i class="bx bx-chevron-down ms-2 text-secondary"></i>
+                </a>
+
+                <!-- DROPDOWN MENU -->
+                <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2"
+                     style="min-width:220px; border-radius:10px;">
+
+                    <a href="#changePassword" class="dropdown-item">
+                        <i class="bx bx-lock me-2 text-primary"></i>
+                        Change Password
+                    </a>
+
+                    @if(session('user_role')==1 || session('user_role')==2)
+
+                        <a href="{{ route('backup.database') }}" class="dropdown-item">
+                            <i class="bx bx-cloud-download me-2 text-success"></i>
+                            DB Backup
+                        </a>
+
+                        <a href="{{ route('backup.files') }}" class="dropdown-item">
+                            <i class="bx bx-file me-2 text-warning"></i>
+                            Files Backup
+                        </a>
+
+                    @endif
+
+                    <div class="dropdown-divider"></div>
+
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button class="dropdown-item text-danger">
+                            <i class="bx bx-power-off me-2 text-danger"></i>
+                            Logout
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
 		</div>
 	</div>
 
