@@ -5,7 +5,7 @@
         </div>
     </div>
 
-<header class="page-header bg-white border-bottom shadow-sm">
+<header class="page-header">
 
    
 
