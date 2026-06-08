@@ -56,13 +56,27 @@
 						Change Password
 					</a>
 					
-					@if(session('user_role')==1 || session('user_role')==2)
+					<!-- @if(session('user_role')==1 || session('user_role')==2)
 					<li>
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}"><i class="bx bx-cloud-download"></i> DB Backup</a>
 					</li>
 					<li>
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}"><i class="bx bx-files"></i> Files Backup</a>
 					</li>
+					@endif -->
+
+					@if(session('user_role')==1 || session('user_role')==2)
+						<a href="{{ route('backup.database') }}"
+						class="dropdown-item d-flex align-items-center gap-2">
+							<i class="bx bx-cloud-download text-success"></i>
+							DB Backup
+						</a>
+
+						<a href="{{ route('backup.files') }}"
+						class="dropdown-item d-flex align-items-center gap-2">
+							<i class="bx bx-file text-warning"></i>
+							Files Backup
+						</a>
 					@endif
 
 					<li>	
