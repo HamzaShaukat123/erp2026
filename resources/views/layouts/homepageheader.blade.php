@@ -22,12 +22,7 @@
 					<li>
 						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
 					</li>
-					<li>	
-						<form action="/logout" method="POST">
-							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
-						</form>
-					</li>
+					
 					@if(session('user_role')==1 || session('user_role')==2)
 					<li>
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}"><i class="bx bx-cloud-download"></i> DB Backup</a>
@@ -36,6 +31,13 @@
 						<a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}"><i class="bx bx-files"></i> Files Backup</a>
 					</li>
 					@endif
+
+					<li>	
+						<form action="/logout" method="POST">
+							@csrf
+							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
+						</form>
+					</li>
 				</ul>
 			</div>
 			<i class="fas fa-bars toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened" aria-label="Toggle sidebar"></i>
