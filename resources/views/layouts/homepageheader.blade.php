@@ -5,22 +5,28 @@
 </div>
 
 <style>
-.user-dropdown .hover-item {
-    transition: all 0.2s ease;
+/* Smooth hover effect for dropdown items */
+.userbox .dropdown-menu .dropdown-item {
+    transition: all 0.2s ease-in-out;
+    border-radius: 6px;
+    padding: 8px 10px;
 }
 
-.user-dropdown .hover-item:hover {
-    background: #f5f7ff;
-    transform: translateX(3px);
+/* Hover highlight */
+.userbox .dropdown-menu .dropdown-item:hover {
+    background: #0d6efd;   /* Bootstrap primary */
+    color: #fff !important;
+    transform: translateX(4px);
 }
 
-.user-dropdown .hover-danger:hover {
-    background: #ffecec;
-    transform: translateX(3px);
+/* Icon color change on hover */
+.userbox .dropdown-menu .dropdown-item:hover i {
+    color: #fff !important;
 }
 
-.userbox .dropdown-toggle:hover .text-primary {
-    color: #0d6efd !important;
+/* Optional: logout special hover */
+.userbox .dropdown-menu .text-danger:hover {
+    background: #dc3545 !important;
 }
 </style>
 <header class="page-header">
