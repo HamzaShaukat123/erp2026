@@ -79,12 +79,16 @@
 						</a>
 					@endif
 
-					<li>	
-						<form action="/logout" method="POST">
-							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
-						</form>
-					</li>
+					<div class="dropdown-divider"></div>
+
+					<form action="/logout" method="POST" class="m-0">
+						@csrf
+						<button type="submit"
+								class="dropdown-item d-flex align-items-center gap-2 text-danger">
+							<i class="bx bx-power-off"></i>
+							Logout
+						</button>
+					</form>
 				</ul>
 			</div>
 			<i class="fas fa-bars toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened" aria-label="Toggle sidebar"></i>
