@@ -170,7 +170,7 @@
 
         </div>
     </div>
-</div>
+
 	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
 			  style="width: 75%" enctype="multipart/form-data" 
