@@ -4,6 +4,10 @@
     </div>
 </div>
 
+
+<header class="page-header">
+
+
 <style>
 /* Smooth hover effect for dropdown items */
 .userbox .dropdown-menu .dropdown-item {
@@ -11,6 +15,10 @@
     border-radius: 6px;
     padding: 8px 10px;
 }
+
+ .user-dropdown {
+            transform: translateX(-8px);
+        }
 
 /* Hover highlight */
 .userbox .dropdown-menu .dropdown-item:hover {
@@ -29,7 +37,6 @@
     background: #dc3545 !important;
 }
 </style>
-<header class="page-header">
 	
 	<div class="logo-container d-md-none">
 		<a href="/" class="logo ">
@@ -132,7 +139,7 @@
 			</a>
 
 			<!-- Dropdown -->
-			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-9 user-dropdown">
+			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-4 user-dropdown">
 
 				<a href="#changePassword"
 				class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
