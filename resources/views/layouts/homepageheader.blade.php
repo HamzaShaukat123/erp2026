@@ -72,16 +72,22 @@
 		<div id="userbox" class="userbox" style="float:right !important;">
 			<a class="btn btn-success" href="/pos"> POS System</a>
 
-			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px;">
+			<!-- <a href="#" data-bs-toggle="dropdown" style="margin-right: 20px;">
 				<div class="profile-info"> 
-					<!-- <span class="name">{{session('user_name')}}</span>
-					<span class="role">{{session('role_name')}}</span> -->
+					<span class="name">{{session('user_name')}}</span>
+					<span class="role">{{session('role_name')}}</span>
+					
+				</div>
+				<i class="fa custom-caret"></i>
+			</a> -->
 
 
+			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px; color:#343a40;">
+				<div class="profile-info"> 
 					<span class="name" style="color:#212529; font-weight:600;">{{session('user_name')}}</span>
 					<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
 				</div>
-				<i class="fa custom-caret"></i>
+				<i class="fa custom-caret" style="color:#495057;"></i>
 			</a>
 			<div class="dropdown-menu" >
 				<ul class="list-unstyled">
