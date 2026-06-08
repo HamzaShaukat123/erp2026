@@ -132,7 +132,7 @@
 			</a>
 
 			<!-- Dropdown -->
-			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-4 user-dropdown">
+			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-9 user-dropdown">
 
 				<a href="#changePassword"
 				class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
