@@ -93,7 +93,7 @@
 			</a>
 
 
-			<div class="dropdown-menu" >
+			<!-- <div class="dropdown-menu" >
 				<ul class="list-unstyled">
 					<li>
 						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
@@ -115,7 +115,42 @@
 					</li>
 
 				</ul>
-			</div>
+			</div> -->
+
+
+
+			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2" style="min-width:220px; border-radius:10px;">
+
+				<!-- CHANGE PASSWORD -->
+				<a class="dropdown-item d-flex align-items-center" href="#changePassword">
+					<i class="bx bx-lock me-2"></i> Change Password
+				</a>
+
+				@if(session('user_role')==1 || session('user_role')==2)
+
+					<a class="dropdown-item d-flex align-items-center" href="{{ route('backup.database') }}">
+						<i class="bx bx-cloud-download me-2"></i> DB Backup
+					</a>
+
+					<a class="dropdown-item d-flex align-items-center" href="{{ route('backup.files') }}">
+						<i class="bx bx-file me-2"></i> Files Backup
+					</a>
+
+				@endif
+
+                <div class="dropdown-divider"></div>
+
+                    <!-- LOGOUT -->
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit"
+                                class="dropdown-item d-flex align-items-center text-danger">
+                            <i class="bx bx-power-off me-2"></i> Logout
+                        </button>
+                    </form>
+
+                </div>
+            </div>
 		</div>
 	</div>
 
