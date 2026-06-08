@@ -4,42 +4,32 @@
     </div>
 </div>
 
+<style>
+/* Smooth hover effect for dropdown items */
+.userbox .dropdown-menu .dropdown-item {
+    transition: all 0.2s ease-in-out;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
 
-	<style>
-	/* Smooth hover effect for dropdown items */
-	.userbox .dropdown-menu .dropdown-item {
-		transition: all 0.2s ease-in-out;
-		border-radius: 6px;
-		padding: 8px 10px;
-	}
+/* Hover highlight */
+.userbox .dropdown-menu .dropdown-item:hover {
+    background: #0d6efd;   /* Bootstrap primary */
+    color: #fff !important;
+    transform: translateX(4px);
+}
 
-	/* Move whole dropdown slightly left */
-	.user-dropdown {
-		margin-left: -8px;   /* better than transform */
-	}
+/* Icon color change on hover */
+.userbox .dropdown-menu .dropdown-item:hover i {
+    color: #fff !important;
+}
 
-	/* Hover highlight */
-	.userbox .dropdown-menu .dropdown-item:hover {
-		background: #0d6efd;
-		color: #fff !important;
-		transform: translateX(4px);
-	}
-
-	/* Icon color change on hover */
-	.userbox .dropdown-menu .dropdown-item:hover i {
-		color: #fff !important;
-	}
-
-	/* Logout hover */
-	.userbox .dropdown-menu .text-danger:hover {
-		background: #dc3545 !important;
-	}
-	</style>
-	
-
+/* Optional: logout special hover */
+.userbox .dropdown-menu .text-danger:hover {
+    background: #dc3545 !important;
+}
+</style>
 <header class="page-header">
-
-
 	
 	<div class="logo-container d-md-none">
 		<a href="/" class="logo ">
@@ -123,9 +113,6 @@
 		<div id="userbox" class="dropdown userbox">
 
 			<!-- Trigger -->
-			<!-- <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-			data-bs-toggle="dropdown"> -->
-
 			<a href="#" class="d-flex align-items-center text-decoration-none"
 			data-bs-toggle="dropdown">
 
@@ -138,44 +125,44 @@
 					</small>
 				</div>
 
+				<div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
+					style="width:38px;height:38px;">
+					<i class="bx bx-user text-secondary"></i>
+				</div>
+
 				<i class="bx bx-chevron-down ms-1 text-muted"></i>
 			</a>
 
 			<!-- Dropdown -->
-			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-4 user-dropdown">
+			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
+				style="min-width:240px;">
 
 				<a href="#changePassword"
-   class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
-
-    <i class="bx bx-lock text-primary"></i>
-
-    <!-- Text control for responsive behavior -->
-    <span class="d-inline d-md-inline fw-semibold">
-        Change Password
-    </span>
-
-</a>
+				class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
+					<i class="bx bx-lock text-primary"></i>
+					Change Password
+				</a>
 
 				@if(session('user_role')==1 || session('user_role')==2)
 					<a href="{{ route('backup.database') }}"
-					class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item">
+					class="dropdown-item d-flex align-items-center gap-2">
 						<i class="bx bx-cloud-download text-success"></i>
 						DB Backup
 					</a>
 
 					<a href="{{ route('backup.files') }}"
-					class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item">
+					class="dropdown-item d-flex align-items-center gap-2">
 						<i class="bx bx-file text-warning"></i>
 						Files Backup
 					</a>
 				@endif
 
-				<div class="dropdown-divider my-2"></div>
+				<div class="dropdown-divider"></div>
 
 				<form action="/logout" method="POST" class="m-0">
 					@csrf
 					<button type="submit"
-							class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 text-danger hover-danger">
+							class="dropdown-item d-flex align-items-center gap-2 text-danger">
 						<i class="bx bx-power-off"></i>
 						Logout
 					</button>
@@ -184,8 +171,6 @@
 			</div>
 		</div>
 	</div>
-
-
 	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
 			  style="width: 75%" enctype="multipart/form-data" 
