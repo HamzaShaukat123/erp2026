@@ -1,1 +1,37 @@
 /* Add here all your CSS customizations */
+/* Userbox Styling */
+.userbox a {
+    transition: 0.2s ease;
+}
+
+.userbox a:hover {
+    opacity: 0.85;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    border-radius: 10px;
+}
+
+.dropdown-item {
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Avatar */
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    font-weight: 600;
+}
+
+/* Header spacing */
+.page-header {
+    padding: 10px 20px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
