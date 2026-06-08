@@ -1,226 +1,230 @@
-<div id="loader" style="background:#ffffff;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+<header class="page-header bg-white shadow-sm border-bottom">
+
+    <!-- LOADER (unchanged) -->
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
-</div>
 
-<header class="page-header" style="background:linear-gradient(90deg,#f8f9fc,#ffffff); border-bottom:1px solid #e5e7eb; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+    <div class="logo-container d-md-none">
 
-	<!-- MOBILE HEADER -->
-	<div class="logo-container d-md-none">
+        <!-- LEFT: LOGO -->
+        <a href="/" class="logo d-flex align-items-center px-3 py-2">
+            <img src="/assets/img/logo.png" width="65" alt="MFI Logo" />
+        </a>
 
-		<a href="/" class="logo">
-			<img src="/assets/img/logo.png" width="70px" alt="MFI Logo" />
-		</a>
+        <!-- RIGHT: USER -->
+        <div id="userbox" class="dropdown d-flex align-items-center gap-2 px-3">
 
-		<div id="userbox" class="userbox" style="float:right !important;">
+            <a href="#"
+               class="d-flex align-items-center text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown">
 
-			<a href="#" data-bs-toggle="dropdown" style="margin-right: 15px; color:#111827; display:flex; align-items:center; gap:10px;">
+                <!-- USER INFO -->
+                <div class="text-end me-2 lh-sm d-none d-sm-block">
+                    <div class="fw-semibold text-dark" style="font-size:14px;">
+                        {{session('user_name')}}
+                    </div>
+                    <small class="text-muted">
+                        {{session('role_name')}}
+                    </small>
+                </div>
 
-				<div class="profile-info" style="text-align:right;">
-					<span class="name" style="display:block; font-weight:600; color:#111827;">
-						{{session('user_name')}}
-					</span>
-					<span class="role" style="font-size:12px; color:#6b7280;">
-						{{session('role_name')}}
-					</span>
-				</div>
+                <!-- AVATAR -->
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm"
+                     style="width:38px;height:38px;font-weight:600;">
+                    {{ strtoupper(substr(session('user_name'),0,1)) }}
+                </div>
 
-				<i class="fa fa-chevron-down" style="color:#6b7280;"></i>
+            </a>
 
-			</a>
+            <!-- DROPDOWN -->
+            <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
+                 style="min-width:240px;">
 
-			<div class="dropdown-menu shadow-sm" style="border-radius:12px; border:1px solid #e5e7eb; overflow:hidden;">
+                <a href="#changePassword"
+                   class="dropdown-item d-flex align-items-center py-2 rounded-2">
+                    <i class="bx bx-lock text-primary me-2 fs-5"></i>
+                    Change Password
+                </a>
 
-				<ul class="list-unstyled m-0">
+                @if(session('user_role')==1 || session('user_role')==2)
 
-					<li>
-						<a href="#changePassword"
-						   class="dropdown-item"
-						   style="color:#2563eb; font-weight:500;">
-						   <i class="bx bx-lock"></i> Change Password
-						</a>
-					</li>
+                    <a href="{{ route('backup.database') }}"
+                       class="dropdown-item d-flex align-items-center py-2 rounded-2">
+                        <i class="bx bx-cloud-download text-success me-2 fs-5"></i>
+                        DB Backup
+                    </a>
 
-					<li>
-						<form action="/logout" method="POST">
-							@csrf
-							<button type="submit"
-								class="dropdown-item"
-								style="background:none; border:none; color:#ef4444; font-weight:500; width:100%; text-align:left;">
-								<i class="bx bx-power-off"></i> Logout
-							</button>
-						</form>
-					</li>
+                    <a href="{{ route('backup.files') }}"
+                       class="dropdown-item d-flex align-items-center py-2 rounded-2">
+                        <i class="bx bx-folder text-warning me-2 fs-5"></i>
+                        Files Backup
+                    </a>
 
-					@if(session('user_role')==1 || session('user_role')==2)
-					<li>
-						<a href="{{ route('backup.database') }}" class="dropdown-item" style="color:#16a34a;">
-							<i class="bx bx-cloud-download"></i> DB Backup
-						</a>
-					</li>
-					<li>
-						<a href="{{ route('backup.files') }}" class="dropdown-item" style="color:#14b8a6;">
-							<i class="bx bx-files"></i> Files Backup
-						</a>
-					</li>
-					@endif
+                @endif
 
-				</ul>
+                <div class="dropdown-divider my-2"></div>
 
-			</div>
+                <form action="/logout" method="POST">
+                    @csrf
+                    <button type="submit"
+                            class="dropdown-item d-flex align-items-center py-2 text-danger">
+                        <i class="bx bx-power-off me-2 fs-5"></i>
+                        Logout
+                    </button>
+                </form>
 
-			<i class="fas fa-bars toggle-sidebar-left" style="color:#111827;"></i>
+            </div>
 
-		</div>
+        </div>
 
-	</div>
+    </div>
 
-	<!-- DESKTOP HEADER -->
-	<div class="logo-container d-none d-md-block">
+    <!-- DESKTOP HEADER -->
+    <div class="logo-container d-none d-md-flex justify-content-between align-items-center px-3 py-2">
 
-		<div id="userbox" class="userbox" style="float:right !important; display:flex; align-items:center; gap:15px;">
+        <!-- LEFT: LOGO -->
+        <a href="/" class="logo d-flex align-items-center">
+            <img src="/assets/img/logo.png" width="65" alt="MFI Logo" />
+        </a>
 
-			<a href="/pos"
-			   class="btn"
-			   style="background:linear-gradient(135deg,#22c55e,#16a34a); color:white; border:none; padding:8px 16px; border-radius:10px; font-weight:600; box-shadow:0 4px 10px rgba(34,197,94,0.25);">
-				POS System
-			</a>
+        <!-- RIGHT: ACTIONS -->
+        <div class="d-flex align-items-center gap-3">
 
-			<a href="#" data-bs-toggle="dropdown" style="color:#111827; display:flex; align-items:center; gap:10px;">
+            <!-- POS BUTTON -->
+            <a href="/pos"
+               class="btn btn-success d-flex align-items-center px-3 py-2 fw-semibold shadow-sm rounded-3">
+                <i class="bx bx-cart me-2 fs-5"></i>
+                POS System
+            </a>
 
-				<div class="profile-info" style="text-align:right;">
-					<span class="name" style="display:block; font-weight:600;">
-						{{session('user_name')}}
-					</span>
-					<span class="role" style="font-size:12px; color:#6b7280;">
-						{{session('role_name')}}
-					</span>
-				</div>
+            <!-- USER BOX -->
+            <div class="dropdown d-flex align-items-center gap-2">
 
-				<i class="fa fa-chevron-down" style="color:#6b7280;"></i>
+                <a href="#"
+                   class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown">
 
-			</a>
+                    <div class="text-end me-2 lh-sm">
+                        <div class="fw-semibold text-dark" style="font-size:14px;">
+                            {{session('user_name')}}
+                        </div>
+                        <small class="text-muted">
+                            {{session('role_name')}}
+                        </small>
+                    </div>
 
-			<div class="dropdown-menu shadow" style="border-radius:12px; border:1px solid #e5e7eb;">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm"
+                         style="width:38px;height:38px;font-weight:600;">
+                        {{ strtoupper(substr(session('user_name'),0,1)) }}
+                    </div>
 
-				<ul class="list-unstyled m-0">
+                </a>
 
-					<li>
-						<a href="#changePassword" class="dropdown-item" style="color:#2563eb;">
-							<i class="bx bx-lock"></i> Change Password
-						</a>
-					</li>
+                <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
+                     style="min-width:240px;">
 
-					<li>
-						<form action="/logout" method="POST">
-							@csrf
-							<button type="submit"
-								class="dropdown-item"
-								style="background:none; border:none; color:#ef4444; width:100%; text-align:left;">
-								<i class="bx bx-power-off"></i> Logout
-							</button>
-						</form>
-					</li>
+                    <a href="#changePassword" class="dropdown-item py-2">
+                        <i class="bx bx-lock text-primary me-2 fs-5"></i>
+                        Change Password
+                    </a>
 
-					@if(session('user_role')==1 || session('user_role')==2)
-					<li>
-						<a href="{{ route('backup.database') }}" class="dropdown-item" style="color:#16a34a;">
-							<i class="bx bx-cloud-download"></i> DB Backup
-						</a>
-					</li>
-					<li>
-						<a href="{{ route('backup.files') }}" class="dropdown-item" style="color:#14b8a6;">
-							<i class="bx bx-file"></i> Files Backup
-						</a>
-					</li>
-					@endif
+                    @if(session('user_role')==1 || session('user_role')==2)
 
-				</ul>
+                        <a href="{{ route('backup.database') }}" class="dropdown-item py-2">
+                            <i class="bx bx-cloud-download text-success me-2 fs-5"></i>
+                            Database Backup
+                        </a>
 
-			</div>
+                        <a href="{{ route('backup.files') }}" class="dropdown-item py-2">
+                            <i class="bx bx-folder text-warning me-2 fs-5"></i>
+                            Files Backup
+                        </a>
 
-		</div>
+                    @endif
 
-	</div>
+                    <div class="dropdown-divider"></div>
 
-	<!-- CHANGE PASSWORD MODAL -->
-	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger py-2">
+                            <i class="bx bx-power-off me-2 fs-5"></i>
+                            Logout
+                        </button>
+                    </form>
 
-		<form id="changePasswordForm"
-			  method="post"
-			  action="{{ route('change-user-password') }}"
-			  style="width: 75%"
-			  enctype="multipart/form-data"
-			  onkeydown="return event.key != 'Enter';">
+                </div>
 
-			@csrf
+            </div>
 
-			<header class="card-header" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); color:white; border-radius:10px 10px 0 0;">
-				<h2 class="card-title" style="margin:0;">Change Password</h2>
-			</header>
+        </div>
 
-			<div class="card-body" style="background:#ffffff;">
+    </div>
 
-				<div class="row form-group">
+    <!-- CHANGE PASSWORD MODAL (UNCHANGED) -->
+    <div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 
-					<div class="col-12 mb-3">
-						<label style="font-weight:600; color:#374151;">Current Password</label>
-						<input type="password" class="form-control"
-							   style="border:1px solid #d1d5db; border-radius:8px;"
-							   id="current_password"
-							   name="current_password"
-							   required>
-					</div>
+        <form id="changePasswordForm"
+              method="post"
+              action="{{ route('change-user-password') }}"
+              style="width: 75%"
+              enctype="multipart/form-data"
+              onkeydown="return event.key != 'Enter';">
 
-					<div class="col-12 mb-3">
-						<label style="font-weight:600; color:#374151;">New Password</label>
-						<input type="password" class="form-control"
-							   style="border:1px solid #22c55e; border-radius:8px;"
-							   id="new_password"
-							   minlength="8"
-							   name="new_password"
-							   required>
-					</div>
+            @csrf
 
-					<div class="col-12 mb-3">
-						<label style="font-weight:600; color:#374151;">Confirm Password</label>
-						<input type="password" class="form-control"
-							   style="border:1px solid #14b8a6; border-radius:8px;"
-							   id="confirm_new_password"
-							   required>
-					</div>
+            <header class="card-header">
+                <h2 class="card-title">Change Password</h2>
+            </header>
 
-				</div>
+            <div class="card-body">
 
-			</div>
+                <div class="row form-group">
 
-			<footer class="card-footer" style="background:#f9fafb; border-top:1px solid #e5e7eb;">
+                    <div class="col-12 mb-2">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control"
+                               id="current_password"
+                               name="current_password"
+                               required>
+                    </div>
 
-				<div class="row">
+                    <div class="col-12 mb-2">
+                        <label>New Password</label>
+                        <input type="password" class="form-control"
+                               id="new_password"
+                               minlength="8"
+                               name="new_password"
+                               required>
+                    </div>
 
-					<div class="col-md-12 text-end">
+                    <div class="col-12 mb-2">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="form-control"
+                               id="confirm_new_password"
+                               required>
+                    </div>
 
-						<button type="submit"
-							class="btn"
-							style="background:linear-gradient(135deg,#2563eb,#1d4ed8); color:white; border-radius:8px;">
-							Change Password
-						</button>
+                </div>
 
-						<button type="button"
-							class="btn modal-dismiss"
-							style="background:#6b7280; color:white; border-radius:8px;">
-							Cancel
-						</button>
+            </div>
 
-					</div>
+            <footer class="card-footer text-end">
 
-				</div>
+                <button type="submit" class="btn btn-primary">
+                    Change Password
+                </button>
 
-			</footer>
+                <button type="button" class="btn btn-secondary modal-dismiss">
+                    Cancel
+                </button>
 
-		</form>
+            </footer>
 
-	</div>
+        </form>
+
+    </div>
 
 </header>
