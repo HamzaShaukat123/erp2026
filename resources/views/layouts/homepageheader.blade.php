@@ -74,12 +74,33 @@
 		<!-- FOR SUB FORM -->
 		<div class="logo-container d-none d-md-flex align-items-center justify-content-end gap-3">
 			<div id="userbox" class="userbox" style="float:right !important;">
-				<a href="#" data-bs-toggle="dropdown">
+				<!-- <a href="#" data-bs-toggle="dropdown">
 					<div class="profile-info"> 
 						<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
 						<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
 					</div>
 					<i class="fa custom-caret"></i>
+				</a> -->
+
+				<!-- Trigger -->
+				<a href="#" class="d-flex align-items-center text-decoration-none"
+					data-bs-toggle="dropdown">
+
+					<div class="text-end me-2">
+						<div class="fw-semibold text-primary" style="line-height:1;">
+							{{ session('user_name') }}
+						</div>
+						<small class="text-muted">
+							{{ session('role_name') }}
+						</small>
+					</div>
+
+					<div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
+						style="width:38px;height:38px;">
+						<i class="bx bx-user text-secondary"></i>
+					</div>
+
+					<i class="bx bx-chevron-down ms-1 text-muted"></i>
 				</a>
 				<div class="dropdown-menu" >
 					<ul class="list-unstyled">
@@ -114,7 +135,7 @@
 
 			<!-- Trigger -->
 			<a href="#" class="d-flex align-items-center text-decoration-none"
-			data-bs-toggle="dropdown">
+				data-bs-toggle="dropdown">
 
 				<div class="text-end me-2">
 					<div class="fw-semibold text-primary" style="line-height:1;">
