@@ -147,8 +147,9 @@
 				<a href="#changePassword"
 				class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
 					<i class="bx bx-lock text-primary"></i>
-					Change Password
+					<span class="d-inline d-md-none">Change Password</span>
 				</a>
+				
 
 				@if(session('user_role')==1 || session('user_role')==2)
 					<a href="{{ route('backup.database') }}"
