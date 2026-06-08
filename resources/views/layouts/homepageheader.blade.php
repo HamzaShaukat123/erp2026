@@ -79,48 +79,39 @@
 				</div>
 				<i class="fa custom-caret"></i>
 			</a>
-			<div class="dropdown-menu">
-    <ul class="list-unstyled mb-0">
+			<div class="dropdown-menu p-0">
+    <div class="list-group list-group-flush">
 
-        <li>
-            <a role="menuitem" tabindex="-1" href="#changePassword" 
-               class="dropdown-item mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal">
-               <i class="bx bx-lock"></i> Change Password
-            </a>
-        </li>
+        <a href="#changePassword" 
+           class="list-group-item list-group-item-action">
+            <i class="bx bx-lock me-2"></i> Change Password
+        </a>
 
         @if(session('user_role')==1 || session('user_role')==2)
-        <li>
-            <a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}" class="dropdown-item">
-                <i class="bx bx-cloud-download"></i> DB Backup
-            </a>
-        </li>
-        <li>
-            <a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}" class="dropdown-item">
-                <i class="bx bx-file"></i> Files Backup
-            </a>
-        </li>
+        <a href="{{ route('backup.database') }}" 
+           class="list-group-item list-group-item-action">
+            <i class="bx bx-cloud-download me-2"></i> DB Backup
+        </a>
+
+        <a href="{{ route('backup.files') }}" 
+           class="list-group-item list-group-item-action">
+            <i class="bx bx-file me-2"></i> Files Backup
+        </a>
         @endif
 
-        <!-- 🔴 Red Divider -->
-        <li>
-            <hr class="dropdown-divider" style="border-top: 2px solid red;">
-        </li>
+        <!-- Divider -->
+        <div class="dropdown-divider my-1"></div>
 
-        <!-- 🔴 Logout Button -->
-        <li>
-            <form action="/logout" method="POST" class="px-2">
-                @csrf
-                <button 
-                    type="submit" 
-                    class="dropdown-item text-danger"
-                    style="background: transparent; border: none;">
-                    <i class="bx bx-power-off"></i> Logout
-                </button>
-            </form>
-        </li>
+        <!-- Logout (highlighted) -->
+        <form action="/logout" method="POST">
+            @csrf
+            <button type="submit"
+                class="list-group-item list-group-item-action text-danger border-0 bg-transparent">
+                <i class="bx bx-power-off me-2"></i> Logout
+            </button>
+        </form>
 
-    </ul>
+    </div>
 </div>
 		</div>
 	</div>
