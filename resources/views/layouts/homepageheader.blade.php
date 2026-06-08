@@ -39,13 +39,9 @@
 		<!-- FOR MOBILE -->
 		<div id="userbox" class="userbox" style="float:right !important;">
 			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px;">
-				<div class="text-end me-2">
-					<div class="fw-semibold text-primary" style="line-height:1;">
-						{{ session('user_name') }}
-					</div>
-					<small class="text-muted">
-						{{ session('role_name') }}
-					</small>
+				<div class="profile-info"> 
+					<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
+					<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
 				</div>
 				<i class="fa custom-caret"></i>
 			</a>
