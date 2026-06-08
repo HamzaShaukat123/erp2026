@@ -4,6 +4,18 @@
     </div>
 </div>
 <header class="page-header">
+
+
+<style>
+.userbox a:hover {
+    opacity: 0.85;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+</style>
 	
 	<div class="logo-container d-md-none">
 		<a href="/" class="logo ">
