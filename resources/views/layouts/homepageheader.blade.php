@@ -145,11 +145,16 @@
 			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-4 user-dropdown">
 
 				<a href="#changePassword"
-				class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
-					<i class="bx bx-lock text-primary"></i>
-					<span class="d-inline d-md-none">Change Password</span>
-				</a>
-				
+   class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
+
+    <i class="bx bx-lock text-primary"></i>
+
+    <!-- Text control for responsive behavior -->
+    <span class="d-inline d-md-inline fw-semibold">
+        Change Password
+    </span>
+
+</a>
 
 				@if(session('user_role')==1 || session('user_role')==2)
 					<a href="{{ route('backup.database') }}"
