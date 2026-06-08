@@ -68,21 +68,23 @@
 		</div>
 	</div>
 
-	<div class="logo-container d-none d-md-flex justify-content-end align-items-center">
+	<div class="logo-container d-flex flex-wrap justify-content-between align-items-center gap-2">
 
     <!-- POS Button -->
-    <a class="btn btn-success me-3 px-3 py-2 fw-semibold shadow-sm" href="/pos">
+    <a class="btn btn-success px-3 py-2 fw-semibold shadow-sm d-flex align-items-center"
+       href="/pos">
         <i class="bx bx-cart me-1 text-white"></i>
-        POS System
+        <span class="d-none d-sm-inline">POS System</span>
     </a>
 
     <!-- User Box -->
     <div id="userbox" class="userbox dropdown">
 
-        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+        <a href="#" class="d-flex align-items-center text-decoration-none"
+           data-bs-toggle="dropdown">
 
-            <!-- User Info -->
-            <div class="profile-info text-end me-2">
+            <!-- User Info (hidden on very small screens) -->
+            <div class="profile-info text-end me-2 d-none d-sm-block">
                 <div class="fw-semibold text-dark" style="font-size: 14px;">
                     {{ session('user_name') }}
                 </div>
@@ -105,8 +107,7 @@
         <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2"
              style="min-width: 220px; border-radius:10px;">
 
-            <a role="menuitem" tabindex="-1"
-               href="#changePassword"
+            <a href="#changePassword"
                class="dropdown-item d-flex align-items-center text-dark">
                 <i class="bx bx-lock me-2 text-primary"></i>
                 Change Password
@@ -114,12 +115,14 @@
 
             @if(session('user_role')==1 || session('user_role')==2)
 
-                <a class="dropdown-item d-flex align-items-center text-dark" href="{{ route('backup.database') }}">
+                <a class="dropdown-item d-flex align-items-center text-dark"
+                   href="{{ route('backup.database') }}">
                     <i class="bx bx-cloud-download me-2 text-success"></i>
                     DB Backup
                 </a>
 
-                <a class="dropdown-item d-flex align-items-center text-dark" href="{{ route('backup.files') }}">
+                <a class="dropdown-item d-flex align-items-center text-dark"
+                   href="{{ route('backup.files') }}">
                     <i class="bx bx-file me-2 text-warning"></i>
                     Files Backup
                 </a>
@@ -138,6 +141,7 @@
 
         </div>
     </div>
+
 </div>
 	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
