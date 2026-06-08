@@ -72,7 +72,7 @@
 		</div>
 
 		<!-- FOR SUB FORM -->
-		<div class="right-wrapper text-end d-none d-md-block">
+		<!-- <div class="right-wrapper text-end d-none d-md-block">
 			<div id="userbox" class="userbox" style="float:right !important;">
 				<a href="#" data-bs-toggle="dropdown">
 					<div class="profile-info"> 
@@ -97,7 +97,7 @@
 				<i class="fas fa-bars toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened" aria-label="Toggle sidebar"></i>
 
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 	<!-- fOR DEKTOP HOME -->
