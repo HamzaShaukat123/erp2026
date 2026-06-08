@@ -113,7 +113,10 @@
 		<div id="userbox" class="dropdown userbox">
 
 			<!-- Trigger -->
-			<a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+			<!-- <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+			data-bs-toggle="dropdown"> -->
+
+			<a href="#" class="d-flex align-items-center text-decoration-none"
 			data-bs-toggle="dropdown">
 
 				<div class="text-end me-2">
