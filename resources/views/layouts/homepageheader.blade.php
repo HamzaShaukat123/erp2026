@@ -3,7 +3,6 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
-<header class="page-header">
 
 
 <style>
@@ -16,6 +15,8 @@
     border-radius: 6px;
 }
 </style>
+<header class="page-header">
+
 	
 	<div class="logo-container d-md-none">
 		<a href="/" class="logo ">
