@@ -68,53 +68,66 @@
 		</div>
 	</div>
 
-	<div class="logo-container d-none d-md-block">
-		<div id="userbox" class="userbox" style="float:right !important;">
-			<a class="btn btn-success" href="/pos"> POS System</a>
+	<div class="logo-container d-none d-md-flex justify-content-end align-items-center">
 
-			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px;">
-				<div class="profile-info"> 
-					<span class="name">{{session('user_name')}}</span>
-					<span class="role">{{session('role_name')}}</span>
-				</div>
-				<i class="fa custom-caret"></i>
-			</a>
-			<div class="dropdown-menu p-0">
-    <div class="list-group list-group-flush">
+    <!-- POS Button -->
+    <a class="btn btn-success me-3 px-3 py-2 fw-semibold shadow-sm" href="/pos">
+        <i class="bx bx-cart me-1"></i> POS System
+    </a>
 
-        <a href="#changePassword" 
-           class="list-group-item list-group-item-action">
-            <i class="bx bx-lock me-2"></i> Change Password
+    <!-- User Box -->
+    <div id="userbox" class="userbox dropdown">
+
+        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+            
+            <!-- User Info -->
+            <div class="profile-info text-end me-2">
+                <div class="fw-semibold text-dark" style="font-size: 14px;">
+                    {{ session('user_name') }}
+                </div>
+                <small class="text-muted">
+                    {{ session('role_name') }}
+                </small>
+            </div>
+
+            <!-- Avatar -->
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                 style="width:35px;height:35px;">
+                {{ strtoupper(substr(session('user_name'),0,1)) }}
+            </div>
+
+            <i class="bx bx-chevron-down ms-2 text-muted"></i>
         </a>
 
-        @if(session('user_role')==1 || session('user_role')==2)
-        <a href="{{ route('backup.database') }}" 
-           class="list-group-item list-group-item-action">
-            <i class="bx bx-cloud-download me-2"></i> DB Backup
-        </a>
+        <!-- Dropdown -->
+        <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2" style="min-width: 220px; border-radius:10px;">
+            
+            <a class="dropdown-item d-flex align-items-center" href="#changePassword">
+                <i class="bx bx-lock me-2"></i> Change Password
+            </a>
 
-        <a href="{{ route('backup.files') }}" 
-           class="list-group-item list-group-item-action">
-            <i class="bx bx-file me-2"></i> Files Backup
-        </a>
-        @endif
+            @if(session('user_role')==1 || session('user_role')==2)
+            <a class="dropdown-item d-flex align-items-center" href="{{ route('backup.database') }}">
+                <i class="bx bx-cloud-download me-2"></i> DB Backup
+            </a>
 
-        <!-- Divider -->
-        <div class="dropdown-divider my-1"></div>
+            <a class="dropdown-item d-flex align-items-center" href="{{ route('backup.files') }}">
+                <i class="bx bx-file me-2"></i> Files Backup
+            </a>
+            @endif
 
-        <!-- Logout (highlighted) -->
-        <form action="/logout" method="POST">
-            @csrf
-            <button type="submit"
-                class="list-group-item list-group-item-action text-danger border-0 bg-transparent">
-                <i class="bx bx-power-off me-2"></i> Logout
-            </button>
-        </form>
+            <div class="dropdown-divider"></div>
 
+            <form action="/logout" method="POST">
+                @csrf
+                <button class="dropdown-item d-flex align-items-center text-danger">
+                    <i class="bx bx-power-off me-2"></i> Logout
+                </button>
+            </form>
+
+        </div>
     </div>
 </div>
-		</div>
-	</div>
 
 	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
