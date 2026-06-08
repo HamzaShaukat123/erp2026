@@ -84,7 +84,7 @@
 
 			<a href="#" data-bs-toggle="dropdown" style="margin-right: 20px; color:#343a40;">
 				<div class="profile-info"> 
-					<span class="name text-primary fw-semibold">{{session('user_name')}}</span>
+					<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
 					<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
 				</div>
 				<i class="fa custom-caret" style="color:#495057;"></i>
