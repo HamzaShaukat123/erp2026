@@ -5,28 +5,22 @@
 </div>
 
 <style>
-/* Smooth hover effect for dropdown items */
-.userbox .dropdown-menu .dropdown-item {
-    transition: all 0.2s ease-in-out;
-    border-radius: 6px;
-    padding: 8px 10px;
+.user-dropdown .hover-item {
+    transition: all 0.2s ease;
 }
 
-/* Hover highlight */
-.userbox .dropdown-menu .dropdown-item:hover {
-    background: #0d6efd;   /* Bootstrap primary */
-    color: #fff !important;
-    transform: translateX(4px);
+.user-dropdown .hover-item:hover {
+    background: #f5f7ff;
+    transform: translateX(3px);
 }
 
-/* Icon color change on hover */
-.userbox .dropdown-menu .dropdown-item:hover i {
-    color: #fff !important;
+.user-dropdown .hover-danger:hover {
+    background: #ffecec;
+    transform: translateX(3px);
 }
 
-/* Optional: logout special hover */
-.userbox .dropdown-menu .text-danger:hover {
-    background: #dc3545 !important;
+.userbox .dropdown-toggle:hover .text-primary {
+    color: #0d6efd !important;
 }
 </style>
 <header class="page-header">
@@ -113,7 +107,7 @@
 		<div id="userbox" class="dropdown userbox">
 
 			<!-- Trigger -->
-			<a href="#" class="d-flex align-items-center text-decoration-none"
+			<a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
 			data-bs-toggle="dropdown">
 
 				<div class="text-end me-2">
@@ -125,44 +119,38 @@
 					</small>
 				</div>
 
-				<!-- <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
-					style="width:38px;height:38px;">
-					<i class="bx bx-user text-secondary"></i>
-				</div> -->
-
 				<i class="bx bx-chevron-down ms-1 text-muted"></i>
 			</a>
 
 			<!-- Dropdown -->
-			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-3"
-				style="min-width:240px;">
+			<div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2 rounded-4 user-dropdown">
 
 				<a href="#changePassword"
-				class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
+				class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item modal-with-zoom-anim">
 					<i class="bx bx-lock text-primary"></i>
 					Change Password
 				</a>
 
 				@if(session('user_role')==1 || session('user_role')==2)
 					<a href="{{ route('backup.database') }}"
-					class="dropdown-item d-flex align-items-center gap-2">
+					class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item">
 						<i class="bx bx-cloud-download text-success"></i>
 						DB Backup
 					</a>
 
 					<a href="{{ route('backup.files') }}"
-					class="dropdown-item d-flex align-items-center gap-2">
+					class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 hover-item">
 						<i class="bx bx-file text-warning"></i>
 						Files Backup
 					</a>
 				@endif
 
-				<div class="dropdown-divider"></div>
+				<div class="dropdown-divider my-2"></div>
 
 				<form action="/logout" method="POST" class="m-0">
 					@csrf
 					<button type="submit"
-							class="dropdown-item d-flex align-items-center gap-2 text-danger">
+							class="dropdown-item d-flex align-items-center gap-2 py-2 rounded-3 text-danger hover-danger">
 						<i class="bx bx-power-off"></i>
 						Logout
 					</button>
@@ -171,6 +159,8 @@
 			</div>
 		</div>
 	</div>
+
+
 	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
 			  style="width: 75%" enctype="multipart/form-data" 
