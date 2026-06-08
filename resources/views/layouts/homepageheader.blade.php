@@ -79,27 +79,49 @@
 				</div>
 				<i class="fa custom-caret"></i>
 			</a>
-			<div class="dropdown-menu" >
-				<ul class="list-unstyled">
-					<li>
-						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
-					</li>
-					<li>	
-						<form action="/logout" method="POST">
-							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
-						</form>
-					</li>
-					@if(session('user_role')==1 || session('user_role')==2)
-					<li>
-						<a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}"><i class="bx bx-cloud-download"></i> DB Backup</a>
-					</li>
-					<li>
-						<a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}"><i class="bx bx-file"></i> Files Backup</a>
-					</li>
-					@endif
-				</ul>
-			</div>
+			<div class="dropdown-menu">
+    <ul class="list-unstyled mb-0">
+
+        <li>
+            <a role="menuitem" tabindex="-1" href="#changePassword" 
+               class="dropdown-item mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal">
+               <i class="bx bx-lock"></i> Change Password
+            </a>
+        </li>
+
+        @if(session('user_role')==1 || session('user_role')==2)
+        <li>
+            <a role="menuitem" tabindex="-1" href="{{ route('backup.database') }}" class="dropdown-item">
+                <i class="bx bx-cloud-download"></i> DB Backup
+            </a>
+        </li>
+        <li>
+            <a role="menuitem" tabindex="-1" href="{{ route('backup.files') }}" class="dropdown-item">
+                <i class="bx bx-file"></i> Files Backup
+            </a>
+        </li>
+        @endif
+
+        <!-- 🔴 Red Divider -->
+        <li>
+            <hr class="dropdown-divider" style="border-top: 2px solid red;">
+        </li>
+
+        <!-- 🔴 Logout Button -->
+        <li>
+            <form action="/logout" method="POST" class="px-2">
+                @csrf
+                <button 
+                    type="submit" 
+                    class="dropdown-item text-danger"
+                    style="background: transparent; border: none;">
+                    <i class="bx bx-power-off"></i> Logout
+                </button>
+            </form>
+        </li>
+
+    </ul>
+</div>
 		</div>
 	</div>
 
