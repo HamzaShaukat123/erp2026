@@ -3,6 +3,32 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
+
+<style>
+/* Smooth hover effect for dropdown items */
+.userbox .dropdown-menu .dropdown-item {
+    transition: all 0.2s ease-in-out;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+/* Hover highlight */
+.userbox .dropdown-menu .dropdown-item:hover {
+    background: #0d6efd;   /* Bootstrap primary */
+    color: #fff !important;
+    transform: translateX(4px);
+}
+
+/* Icon color change on hover */
+.userbox .dropdown-menu .dropdown-item:hover i {
+    color: #fff !important;
+}
+
+/* Optional: logout special hover */
+.userbox .dropdown-menu .text-danger:hover {
+    background: #dc3545 !important;
+}
+</style>
 <header class="page-header">
 	
 	<div class="logo-container d-md-none">
