@@ -6,89 +6,99 @@
 
 <header class="page-header bg-white shadow-sm px-3 py-2">
 
-    <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex justify-content-between align-items-center">
 
-        <!-- LEFT: Logo -->
+        <!-- LEFT: LOGO -->
         <div class="d-flex align-items-center">
             <a href="/" class="d-flex align-items-center">
                 <img src="/assets/img/logo.png" width="70" alt="MFI Logo">
             </a>
         </div>
 
-        <!-- RIGHT: Actions -->
-        <div class="d-flex align-items-center gap-3">
+        <!-- RIGHT: ACTIONS -->
+        <div class="logo-container d-none d-md-flex justify-content-end align-items-center">
 
-            <!-- POS Button -->
-            <a href="/pos" class="btn btn-success btn-sm fw-semibold">
+            <!-- POS BUTTON -->
+            <a class="btn btn-success me-3 px-3 py-2 fw-semibold shadow-sm" href="/pos">
                 <i class="bx bx-cart me-1"></i> POS System
             </a>
 
-            <!-- User Dropdown -->
-            <div class="dropdown">
+            <!-- USER BOX -->
+            <div id="userbox" class="userbox dropdown">
 
-                <a class="d-flex align-items-center text-decoration-none" href="#" data-bs-toggle="dropdown">
+                <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
 
-                    <div class="text-end me-2 d-none d-sm-block">
-                        <div class="fw-semibold">{{ session('user_name') }}</div>
-                        <div class="text-muted small">{{ session('role_name') }}</div>
+                    <!-- USER INFO -->
+                    <div class="profile-info text-end me-2">
+                        <div class="fw-semibold text-dark" style="font-size: 14px;">
+                            {{ session('user_name') }}
+                        </div>
+                        <small class="text-muted">
+                            {{ session('role_name') }}
+                        </small>
                     </div>
 
-                    <i class="fa fa-user-circle fs-5"></i>
+                    <!-- AVATAR -->
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                         style="width:35px;height:35px;font-weight:600;">
+                        {{ strtoupper(substr(session('user_name'),0,1)) }}
+                    </div>
+
+                    <i class="bx bx-chevron-down ms-2 text-muted"></i>
 
                 </a>
 
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <!-- DROPDOWN -->
+                <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-2"
+                     style="min-width:220px; border-radius:10px;">
 
-                    <li>
-                        <a class="dropdown-item" href="#changePassword">
-                            <i class="bx bx-lock me-2"></i> Change Password
-                        </a>
-                    </li>
-
-                    <li>
-                        <form action="/logout" method="POST">
-                            @csrf
-                            <button class="dropdown-item text-danger" type="submit">
-                                <i class="bx bx-power-off me-2"></i> Logout
-                            </button>
-                        </form>
-                    </li>
+                    <!-- CHANGE PASSWORD -->
+                    <a class="dropdown-item d-flex align-items-center" href="#changePassword">
+                        <i class="bx bx-lock me-2"></i> Change Password
+                    </a>
 
                     @if(session('user_role')==1 || session('user_role')==2)
 
-                        <li><hr class="dropdown-divider"></li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('backup.database') }}">
+                            <i class="bx bx-cloud-download me-2"></i> DB Backup
+                        </a>
 
-                        <li>
-                            <a class="dropdown-item" href="{{ route('backup.database') }}">
-                                <i class="bx bx-cloud-download me-2"></i> DB Backup
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('backup.files') }}">
-                                <i class="bx bx-file me-2"></i> Files Backup
-                            </a>
-                        </li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('backup.files') }}">
+                            <i class="bx bx-file me-2"></i> Files Backup
+                        </a>
 
                     @endif
 
-                </ul>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- LOGOUT -->
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit"
+                                class="dropdown-item d-flex align-items-center text-danger">
+                            <i class="bx bx-power-off me-2"></i> Logout
+                        </button>
+                    </form>
+
+                </div>
             </div>
 
-            <!-- Sidebar Toggle -->
-            <button class="btn btn-light btn-sm">
+        </div>
+
+        <!-- MOBILE MENU BUTTON -->
+        <div class="d-md-none">
+            <button class="btn btn-light">
                 <i class="fas fa-bars"></i>
             </button>
-
         </div>
-    </div>
 
+    </div>
 </header>
 
-<!-- Change Password Modal -->
+<!-- CHANGE PASSWORD MODAL -->
 <div id="changePassword" class="mfp-hide white-popup-block p-4 bg-white rounded shadow">
 
-    <form action="{{ route('change-user-password') }}" method="POST">
+    <form method="POST" action="{{ route('change-user-password') }}">
         @csrf
 
         <h5 class="mb-3">Change Password</h5>
@@ -109,7 +119,7 @@
         </div>
 
         <div class="text-end">
-            <button class="btn btn-primary">Change</button>
+            <button type="submit" class="btn btn-primary">Change Password</button>
             <button type="button" class="btn btn-secondary modal-dismiss">Cancel</button>
         </div>
 
