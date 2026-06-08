@@ -125,10 +125,10 @@
 					</small>
 				</div>
 
-				<div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
+				<!-- <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
 					style="width:38px;height:38px;">
 					<i class="bx bx-user text-secondary"></i>
-				</div>
+				</div> -->
 
 				<i class="bx bx-chevron-down ms-1 text-muted"></i>
 			</a>
