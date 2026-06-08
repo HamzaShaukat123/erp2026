@@ -10,12 +10,12 @@
    
 
     <!-- MAIN HEADER -->
-    <div class="logo-container d-flex flex-wrap justify-content-between align-items-center gap-2 px-2 py-2">
+    <div class="logo-container d-md-none">
 
         <!-- Logo -->
-        <a href="/" class="logo d-flex align-items-center">
-            <img src="/assets/img/logo.png" width="70" alt="MFI Logo">
-        </a>
+        <a href="/" class="logo ">
+			<img src="/assets/img/logo.png" width="70px" alt="MFI Logo" />
+		</a>
 
         <!-- RIGHT SIDE ACTIONS -->
         <div class="d-flex align-items-center gap-2">
