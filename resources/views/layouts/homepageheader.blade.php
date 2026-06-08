@@ -5,9 +5,6 @@
 </div>
 
 
-<header class="page-header">
-
-
 	<style>
 	/* Smooth hover effect for dropdown items */
 	.userbox .dropdown-menu .dropdown-item {
@@ -38,7 +35,12 @@
 		background: #dc3545 !important;
 	}
 	</style>
-		
+	
+
+<header class="page-header">
+
+
+	
 	<div class="logo-container d-md-none">
 		<a href="/" class="logo ">
 			<img src="/assets/img/logo.png" width="70px" alt="MFI Logo" />
