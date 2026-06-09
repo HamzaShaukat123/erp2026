@@ -29,6 +29,8 @@
 		background: #dc3545 !important;
 	}
 </style>
+
+
 <header class="page-header">
 	
 	<div class="logo-container d-md-none">

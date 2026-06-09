@@ -3,6 +3,35 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
+
+
+<style>
+	/* Smooth hover effect for dropdown items */
+	.userbox .dropdown-menu .dropdown-item {
+		transition: all 0.2s ease-in-out;
+		border-radius: 6px;
+		padding: 8px 10px;
+	}
+
+	/* Hover highlight */
+	.userbox .dropdown-menu .dropdown-item:hover {
+		background: #0d6efd;   /* Bootstrap primary */
+		color: #fff !important;
+		transform: translateX(4px);
+	}
+
+	/* Icon color change on hover */
+	.userbox .dropdown-menu .dropdown-item:hover i {
+		color: #fff !important;
+	}
+
+	/* Optional: logout special hover */
+	.userbox .dropdown-menu .text-danger:hover {
+		background: #dc3545 !important;
+	}
+</style>
+
+
 <header class="header header-nav-menu header-nav-top-line ">
 	<div class="logo-container">
 		<a href="/home" class="logo" style="float:left !important">						
@@ -23,15 +52,31 @@
 					<!-- <li>
 						<a role="menuitem" tabindex="-1" href="#"><i class="bx bx-user"></i> Profile</a>
 					</li> -->
-					<li>
+					<!-- <li>
 						<a role="menuitem" tabindex="-1" href="#changePassword" class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal"><i class="bx bx-lock"></i> Change Password</a>
-					</li>
-					<li>	
+					</li> -->
+					<a href="#changePassword"
+					class="dropdown-item d-flex align-items-center gap-2 modal-with-zoom-anim">
+						<i class="bx bx-lock text-primary"></i>
+						Change Password
+					</a>
+					<!-- <li>	
 						<form action="/logout" method="POST">
 							@csrf
 							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
 						</form>
-					</li>
+					</li> -->
+
+					<div class="dropdown-divider"></div>
+
+					<form action="/logout" method="POST" class="m-0">
+						@csrf
+						<button type="submit"
+								class="dropdown-item d-flex align-items-center gap-2 text-danger">
+							<i class="bx bx-power-off"></i>
+							Logout
+						</button>
+					</form>
 				</ul>
 			</div>
 		</div>				
