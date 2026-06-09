@@ -29,7 +29,7 @@
 					<li>	
 						<form action="/logout" method="POST">
 							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
+							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logo22ut</button>
 						</form>
 					</li>
 				</ul>
