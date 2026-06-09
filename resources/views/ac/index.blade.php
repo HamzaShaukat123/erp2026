@@ -89,6 +89,8 @@
                                                         </td>
                                                         @if($row->status==1)
                                                             <td class="actions">
+                                                                <a href="{{ route('show-purchases2',$row->Sale_inv_no) }}" class=""><i class="fas fa-eye text-primary"></i></a>
+                                                                <span class="separator"> | </span>
                                                                 <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-dark modal-with-form" onclick="getAccountDetails({{$row->ac_code}})" href="#updateModal"><i class="fas fa-pencil-alt text-success"></i></a>
                                                                 @if(session('user_role')==1)
                                                                 <span class="separator"> | </span>
