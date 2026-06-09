@@ -27,7 +27,7 @@
 						<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="bx bx-lock"></i> Lock Screen</a>
 					</li> -->
 					<li>
-						<a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="bx bx-power-off"></i> Logout</a>
+						<a role="menuitem" tabindex="-1" href="pages-signin.html"><i class="bx bx-power-off"></i> Log7745out</a>
 					</li>
 				</ul>
 			</div>
