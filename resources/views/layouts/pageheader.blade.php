@@ -11,8 +11,8 @@
 		<div id="userbox" class="userbox" style="float:right !important;margin:16px 10px 0 0px">
 			<a href="#" data-bs-toggle="dropdown">
 				<div class="profile-info">
-					<span class="name">{{session('user_name')}}</span>
-					<span class="role">{{session('role_name')}}</span>
+					<span class="name text-primary" style="font-weight: 600;">{{session('user_name')}}</span>
+					<span class="role" style="color:#6c757d;">{{session('role_name')}}</span>
 				</div>
 
 				<i class="fa custom-caret"></i>
@@ -29,7 +29,7 @@
 					<li>	
 						<form action="/logout" method="POST">
 							@csrf
-							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logo22ut</button>
+							<button style="background: transparent;border: none;font-size: 14px;" type="submit" role="menuitem" tabindex="-1"><i class="bx bx-power-off"></i> Logout</button>
 						</form>
 					</li>
 				</ul>
