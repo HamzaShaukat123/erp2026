@@ -89,12 +89,6 @@
                                                         </td>
                                                         @if($row->status==1)
                                                             <td class="actions">
-                                                                <a href="#viewModal" 
-                                                                    class="modal-with-zoom-anim"
-                                                                    onclick="viewAccountDetails({{$row->ac_code}})">
-                                                                    <i class="fas fa-eye text-primary"></i>
-                                                                    </a>
-                                                                <span class="separator"> | </span>
                                                                 <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-dark modal-with-form" onclick="getAccountDetails({{$row->ac_code}})" href="#updateModal"><i class="fas fa-pencil-alt text-success"></i></a>
                                                                 @if(session('user_role')==1)
                                                                 <span class="separator"> | </span>
@@ -455,50 +449,6 @@
             </section>
         </div>
 
-        <div id="viewModal" class="zoom-anim-dialog modal-block modal-block-primary mfp-hide">
-            <section class="card">
-                <header class="card-header">
-                    <h2 class="card-title">View Account</h2>
-                </header>
-
-                <div class="card-body">
-                    <form id="viewForm">
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Account Name</label>
-                                <input type="text" id="view_ac_name" class="form-control" readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label>Code</label>
-                                <input type="text" id="view_ac_code" class="form-control" readonly>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-md-6">
-                                <label>Address</label>
-                                <input type="text" id="view_address" class="form-control" readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label>Phone</label>
-                                <input type="text" id="view_phone" class="form-control" readonly>
-                            </div>
-                        </div>
-
-                        <!-- Add more fields same as update modal -->
-
-                    </form>
-                </div>
-
-                <footer class="card-footer text-end">
-                    <button class="btn btn-default modal-dismiss">Close</button>
-                </footer>
-            </section>
-        </div>
-
         @include('../layouts.footerlinks')
 	</body>
 </html>
@@ -579,9 +529,6 @@
         });
 	}
 
-
-    
-
     function getAttachements(id){
 
         var table = document.getElementById('acc_attachements');
@@ -650,25 +597,5 @@
             alert(error.message);
         });
     }
-
-function viewAccountDetails(id) {
-    $.ajax({
-        url: '/get-account-details/' + id,
-        type: 'GET',
-        success: function (data) {
-
-            $('#view_ac_name').val(data.ac_name);
-            $('#view_ac_code').val(data.ac_code);
-            $('#view_address').val(data.address);
-            $('#view_phone').val(data.phone_no);
-
-            // IMPORTANT: force readonly (extra safety)
-            $('#viewForm input, #viewForm select, #viewForm textarea')
-                .prop('readonly', true)
-                .prop('disabled', true);
-        }
-    });
-}
-
 
 </script>
