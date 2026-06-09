@@ -6,34 +6,29 @@
 
 
 <style>
-	/* Smooth hover */
-.userbox .dropdown-menu .dropdown-item {
-    transition: all 0.2s ease-in-out;
-    border-radius: 6px;
-    padding: 8px 10px;
-}
+	/* Smooth hover effect for dropdown items */
+	.userbox .dropdown-menu .dropdown-item {
+		transition: all 0.2s ease-in-out;
+		border-radius: 6px;
+		padding: 8px 10px;
+	}
 
-/* Hover highlight (better contrast) */
-.userbox .dropdown-menu .dropdown-item:hover {
-    background: #e9f2ff;   /* light blue instead of strong */
-    color: #0d6efd !important;
-    transform: translateX(3px);
-}
+	/* Hover highlight */
+	.userbox .dropdown-menu .dropdown-item:hover {
+		background: #0d6efd;   /* Bootstrap primary */
+		color: #fff !important;
+		transform: translateX(4px);
+	}
 
-/* Keep icons consistent */
-.userbox .dropdown-menu .dropdown-item i {
-    transition: 0.2s;
-}
+	/* Icon color change on hover */
+	.userbox .dropdown-menu .dropdown-item:hover i {
+		color: #fff !important;
+	}
 
-.userbox .dropdown-menu .dropdown-item:hover i {
-    color: #0d6efd !important;
-}
-
-/* Logout hover (strong but clean) */
-.userbox .dropdown-menu .text-danger:hover {
-    background: #fdeaea !important;
-    color: #dc3545 !important;
-}
+	/* Optional: logout special hover */
+	.userbox .dropdown-menu .text-danger:hover {
+		background: #dc3545 !important;
+	}
 </style>
 
 
