@@ -19,14 +19,18 @@
     <div class="row align-items-center">
 
         <div class="col-md-8">
-            <h3 class="mb-1 text-primary fw-bold">
-                ACCOUNT DETAIL SHEET
-            </h3>
 
-            <h3 class="mb-0 text-primary fw-bold">
-				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
+			<h5 class="text-muted mb-1 fw-semibold" style="letter-spacing:0.5px;">
+				ACCOUNT DETAIL SHEET
+			</h5>
+
+			<h3 class="mb-0 fw-bold text-dark">
+				{{$acc->ac_code ?? '-' }} 
+				<span class="text-primary">-</span> 
+				{{$acc->ac_name ?? '-'}}
 			</h3>
-        </div>
+
+		</div>
 
         <div class="col-md-4 text-end">
             <img width="90px" src="/assets/img/logo.png" alt="MFI Logo">
