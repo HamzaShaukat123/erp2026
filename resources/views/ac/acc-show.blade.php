@@ -163,7 +163,7 @@
 </body>
 </html>
 
-</script>
+<script>
  function getAccountDetails(id){
         $.ajax({
             type: "GET",
