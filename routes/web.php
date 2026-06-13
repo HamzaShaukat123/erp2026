@@ -19,6 +19,7 @@
         Route::get('/items/all-items', [App\Http\Controllers\ItemsController::class, 'index'])->name('all-items');
         Route::get('/item2/all-items', [App\Http\Controllers\Item2Controller::class, 'index'])->name('all-items-2');
         Route::get('/coa/all-acc', [App\Http\Controllers\COAController::class, 'index'])->name('all-acc');
+        Route::get('/ac/show/{ac_code}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
         Route::get('/coa-groups/all-coa-groups', [App\Http\Controllers\COAGroupsController::class, 'index'])->name('all-acc-groups');
         Route::get('/coa-city/all-city', [App\Http\Controllers\COACityController::class, 'index'])->name('all-city');
         Route::get('/coa-area/all-area', [App\Http\Controllers\COAAreaController::class, 'index'])->name('all-area');
@@ -684,7 +685,7 @@
 
 
 
-    Route::get('/ac/show/{ac_code}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
+    
 
     
     
