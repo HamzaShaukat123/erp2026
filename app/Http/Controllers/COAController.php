@@ -71,7 +71,12 @@ class COAController extends Controller
             ->where('ac.ac_code', $id)
             ->first();
 
-        return view('ac.acc-show', compact('acc'));
+        $sub_head_of_acc = sub_head_of_acc::where('status', 1)->get();
+        $ac_group = ac_group::where('status', 1)->get();
+        $ac_area = ac_area::where('status', 1)->get();
+        $ac_city = ac_city::where('status', 1)->get();
+
+        return view('ac.acc-show', compact('acc','sub_head_of_acc','ac_group','ac_area','ac_city'));
     }
 
 
