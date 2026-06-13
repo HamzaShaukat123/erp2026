@@ -30,15 +30,6 @@
                 <span class="text-dark fw-bold">
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
                 </span>
-
-                <span class="ms-3">
-                    Status:
-                    @if(($acc->status ?? 1) == 1)
-                        <span class="badge bg-success">Active</span>
-                    @else
-                        <span class="badge bg-danger">Inactive</span>
-                    @endif
-                </span>
             </h5>
 
         </div>
