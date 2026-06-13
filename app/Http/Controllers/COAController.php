@@ -55,26 +55,24 @@ class COAController extends Controller
     }
 
 
-    public function show(string $id)
+   public function show(string $id)
     {
-        
         $acc = AC::join('sub_head_of_acc as shoa', 'shoa.id', '=', 'ac.AccountType')
-        ->leftJoin('ac_group as ag', 'ag.group_cod', '=', 'ac.group_cod')
-        ->leftJoin('ac_city as ac_city', 'ac_city.id', '=', 'ac.city')
-        ->leftJoin('ac_area as ac_area', 'ac_area.id', '=', 'ac.area')
-        ->select(
-            'ac.*',
-            'ag.group_name',
-            'shoa.sub',
-            'ac_city.city',
-            'ac_area.area'
-        )
-        ->where('ac.status', 1)
-        ->orderBy('ac.ac_name', 'asc')
-        ->get();
+            ->leftJoin('ac_group as ag', 'ag.group_cod', '=', 'ac.group_cod')
+            ->leftJoin('ac_city as ac_city', 'ac_city.id', '=', 'ac.city')
+            ->leftJoin('ac_area as ac_area', 'ac_area.id', '=', 'ac.area')
+            ->select(
+                'ac.*',
+                'ag.group_name',
+                'shoa.sub',
+                'ac_city.city',
+                'ac_area.area'
+            )
+            ->where('ac.status', 1)
+            ->where('ac.id', $id)   // IMPORTANT
+            ->first();
 
-        return view('ac.acc-show',compact('acc'));
-    
+        return view('ac.acc-show', compact('acc'));
     }
 
 
