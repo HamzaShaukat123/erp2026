@@ -22,8 +22,7 @@
             <h3 class="mb-1 text-primary fw-bold">
                 ACCOUNT DETAIL SHEET
             </h3>
-
-			<h4 class="text-danger">
+			<h4 class="text-danger" style="font-weight:700">
 				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
 			</h4>
         </div>
