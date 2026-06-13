@@ -23,9 +23,9 @@
                 ACCOUNT DETAIL SHEET
             </h3>
 
-            <h4 class="mb-0 text-dark fw-semibold">
-                {{$acc->ac_code ?? '-'}} - {{$acc->ac_name ?? '-'}}
-            </h4>
+            <h4 class="mb-0 text-dark fw-bold">
+				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
+			</h4>
         </div>
 
         <div class="col-md-4 text-end">
