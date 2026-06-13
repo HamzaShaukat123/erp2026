@@ -25,6 +25,7 @@
                 ACCOUNT DETAIL SHEET
             </h3>
 
+            {{-- ACCOUNT CODE + NAME --}}
             <h5 class="mt-2 mb-0">
                 <span class="text-dark fw-bold">
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
@@ -48,7 +49,6 @@
 
     <tbody>
 
-        {{-- 1. BASIC INFO --}}
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
             <td>
@@ -65,18 +65,16 @@
             </td>
         </tr>
 
-        {{-- 2. OPENING + CONTACT --}}
         <tr>
             <th>Opening Date</th>
             <td>
                 {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
             </td>
 
-            <th>Phone No</th>
+			<th>Phone No</th>
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
-        {{-- 3. FINANCIAL INFO --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -89,7 +87,6 @@
             </td>
         </tr>
 
-        {{-- 4. LIMITS --}}
         <tr>
             <th>Credit Limit</th>
             <td>{{ number_format($acc->credit_limit ?? 0, 2) }}</td>
@@ -98,7 +95,6 @@
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
 
-        {{-- 5. LOCATION --}}
         <tr class="table-light">
             <th>City</th>
             <td>{{ $acc->city ?? '-' }}</td>
@@ -107,25 +103,24 @@
             <td>{{ $acc->area ?? '-' }}</td>
         </tr>
 
-        {{-- 6. ACCOUNT CLASSIFICATION --}}
         <tr>
-            <th>Account Type</th>
-            <td>{{ $acc->sub ?? '-' }}</td>
-
-            <th>Group Code</th>
-            <td>{{ $acc->group_name ?? '-' }}</td>
-        </tr>
-
-        {{-- 7. ADDRESS --}}
-        <tr class="table-light">
             <th>Address</th>
             <td colspan="3">{{ $acc->address ?? '-' }}</td>
         </tr>
 
-        {{-- 8. REMARKS --}}
-        <tr>
+        <tr class="table-light">
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
+        </tr>
+        <tr>
+
+			<th>Account Type</th>
+            <td>{{ $acc->sub ?? '-' }}</td>
+
+            <th>Group Code</th>
+            <td>{{ $acc->group_name ?? '-' }}</td>
+
+            
         </tr>
 
     </tbody>
@@ -135,9 +130,9 @@
 </div>
 
 <div class="text-end">
-    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2" target="_blank">
-        <i class="fas fa-print"></i> Print
-    </button>
+	<button onclick="window.print()" class="btn btn-danger mt-2 mb-2" target="_blank">
+		<i class="fas fa-print"></i> Print
+	</button>
 </div>
 
 </div>
