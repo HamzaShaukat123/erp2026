@@ -27,7 +27,7 @@
                 {{$acc->ac_code ?? '-'}} - {{$acc->ac_name ?? '-'}}
             </h4>
 
-			<h4 class="mb-0 fw-bold text-danger">
+			<h4 class="mb-0 text-danger">
 				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
 			</h4>
         </div>
