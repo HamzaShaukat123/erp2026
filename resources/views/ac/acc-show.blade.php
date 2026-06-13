@@ -158,6 +158,114 @@
 </div>
 </section>
 
+<div id="updateModal" class="modal-block modal-block-primary mfp-hide">
+            <section class="card">
+                <form method="post" id="updateForm" action="{{ route('update-acc') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+                    @csrf
+                    <header class="card-header">
+                        <h2 class="card-title">Update Account</h2>
+                    </header>
+                    <div class="card-body">
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label>Account Code</label>
+                                <input type="number" class="form-control" placeholder="Account Code" id="ac_id" required disabled>
+                                <input type="number" class="form-control"  name="ac_cod" id="update_ac_id" required hidden>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Account Name<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="text" class="form-control" placeholder="Account Name"  name="ac_name" id="update_ac_name" required>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Receivables<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="number" class="form-control" placeholder="Receivables" value="0" required name="rec_able" id="update_rec_able" step=".00001">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Payables<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="number" class="form-control" placeholder="Payables" value="0" name="pay_able" required id="update_pay_able" step=".00001">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Date</label>
+                                <input type="date" class="form-control" placeholder="Date" name="opp_date" id="update_opp_date">
+                            </div>  
+                            <div class="col-lg-6 mb-2">
+                                <label>Remarks</label>
+                                <input type="text" class="form-control"  placeholder="Remarks" name="remarks" id="update_remarks">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Area</label>
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="area" id="update_area">
+                                    <option value="">Select Area</option>
+                                    @foreach($ac_area as $key => $row)	
+                                        <option value="{{$row->id}}">{{$row->area}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>City</label>
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="city" id="update_city">
+                                    <option value="">Select City</option>
+                                    @foreach($ac_city as $key => $row)	
+                                        <option value="{{$row->id}}">{{$row->city}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Address</label>
+                                <textarea type="text" class="form-control" rows="2" placeholder="Address" name="address" id="update_address"></textarea>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Phone No.</label>
+                                <input type="text" class="form-control"  placeholder="Phone No." name="phone_no" id="update_phone_no">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Credit Limit<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="text" class="form-control"  placeholder="Credit Limit." required name="credit_limit" id="update_credit_limit">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Days Limit<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="text" class="form-control"  placeholder="Days Limit" required name="days_limit" id="update_days_limit">
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Account Group</label>
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="group_cod" id="update_group_cod">
+                                    <option value="">Select Group</option>
+                                    @foreach($ac_group as $key => $row)	
+                                        <option value="{{$row->group_cod}}">{{$row->group_name}}</option>
+                                    @endforeach
+                                </select>
+                                <a href="{{ route('all-acc-groups') }}">Add New A.Group</a>
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <label>Account Type<span style="color: red;"><strong>*</strong></span></label>
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="AccountType" required id="update_AccountType">
+                                    <option disabled selected>Select Account Type</option>
+                                    @foreach($sub_head_of_acc as $key => $row)	
+                                        <option value="{{$row->id}}">{{$row->sub}}</option>
+                                    @endforeach
+                                </select>
+                                <a href="{{ route('all-acc-sub-heads-groups') }}">Add New A.Type</a>
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <label>Attachements</label>
+                                <input type="file" class="form-control" name="att[]" id="update_att" multiple accept="application/pdf, image/png, image/jpeg">
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-end">
+                                <button type="submit" class="btn btn-primary">Update Account</button>
+                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                            </div>
+                        </div>
+                    </footer>
+                </form>
+            </section>
+        </div>
+
 @include('../layouts.footerlinks')
 
 </body>
