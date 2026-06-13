@@ -15,24 +15,35 @@
 <div class="invoice">
 
 {{-- HEADER --}}
-
 <header class="mb-3 border-bottom pb-2">
 
     <div class="row align-items-center">
 
-        <div class="col-md-8">
+        <div class="col-md-6">
 
             <h3 class="mb-1 text-primary fw-bold">
                 ACCOUNT DETAIL SHEET
             </h3>
 
+            {{-- ACCOUNT CODE + NAME + STATUS INLINE --}}
+            <h5 class="mt-2 mb-0">
+                <span class="text-dark fw-bold">
+                    {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
+                </span>
+
+                <span class="ms-3">
+                    Status:
+                    @if(($acc->status ?? 1) == 1)
+                        <span class="badge bg-success">Active</span>
+                    @else
+                        <span class="badge bg-danger">Inactive</span>
+                    @endif
+                </span>
+            </h5>
+
         </div>
 
-		<h4 class="text-danger" style="font-weight:550"> 
-			{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}} 
-		</h4>
-
-        <div class="col-md-4 text-end">
+        <div class="col-md-6 text-end">
             <img width="90" src="/assets/img/logo.png" alt="MFI Logo">
         </div>
 
@@ -53,20 +64,20 @@
 <table class="table table-bordered table-striped align-middle">
 
     <tbody>
+
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
-            <td colspan="3" class="d-flex align-items-center gap-2">
-                <span>
-                    {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
-                </span>
+            <td>
+                {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
             </td>
 
-			<th width="20%">Status</th>
-            <td colspan="3" class="d-flex align-items-center gap-2">
-
-                <span class="badge bg-success">
-                    Active
-                </span>
+            <th width="20%">Status</th>
+            <td>
+                @if(($acc->status ?? 1) == 1)
+                    <span class="badge bg-success">Active</span>
+                @else
+                    <span class="badge bg-danger">Inactive</span>
+                @endif
             </td>
         </tr>
 
@@ -122,10 +133,8 @@
             <th>Account Type</th>
             <td>{{ $acc->AccountType ?? '-' }}</td>
 
-            <th>Status</th>
-            <td>
-                <span class="badge bg-success">Active</span>
-            </td>
+            <th></th>
+            <td></td>
         </tr>
 
     </tbody>
