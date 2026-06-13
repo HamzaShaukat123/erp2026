@@ -42,10 +42,8 @@
     <tbody>
 
         <tr class="table-light">
-            <th width="20%">Account Code</th>
+            <th width="40%">Account Code</th>
             <td>{{$acc->ac_code ?? '-'}}</td>
-
-            <th width="20%">Account Name</th>
             <td>{{$acc->ac_name ?? '-'}}</td>
         </tr>
 
