@@ -47,6 +47,7 @@
         Route::get('/weight/all-weight', [App\Http\Controllers\WeightController::class, 'index'])->name('all-weight');
         Route::get('/pdc/all-pdc', [App\Http\Controllers\PDCController::class, 'index'])->name('all-pdc');
         Route::get('/po/show/{id}', [App\Http\Controllers\PoController::class, 'show'])->name('show-po');
+        Route::get('/ac/show/{ac_code}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
         Route::post('/coa-city/update', [App\Http\Controllers\COACityController::class, 'update'])->name('update-acc-city');
         Route::post('/coa-area/update', [App\Http\Controllers\COAAreaController::class, 'update'])->name('update-acc-area');
         Route::get('/purchase2/show/{id}', [App\Http\Controllers\Purchase2Controller::class, 'show'])->name('show-purchases2');
@@ -312,7 +313,6 @@
 
         Route::get('/coa/print', [App\Http\Controllers\COAController::class, 'print'])->name('print-acc');
         Route::get('/coa/excel', [App\Http\Controllers\COAController::class, 'chartExcel'])->name('chart-excel');
-        Route::get('/ac/show/{ac_code}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
         Route::get('/items/excel', [App\Http\Controllers\ItemsController::class, 'item1Excel'])->name('item1-excel');
         Route::get('/item2/excel', [App\Http\Controllers\Item2Controller::class, 'item2Excel'])->name('item2-excel');
         Route::get('/purchase2/generatePDF/{id}', [App\Http\Controllers\Purchase2Controller::class, 'generatePDF'])->name('print-purc2-invoice');
