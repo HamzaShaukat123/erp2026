@@ -48,14 +48,16 @@
 <table class="table table-bordered table-striped align-middle">
 
     <tbody>
-
-        {{-- ACCOUNT NAME + STATUS (SIDE BY SIDE) --}}
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
             <td colspan="3" class="d-flex align-items-center gap-2">
                 <span>
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
                 </span>
+            </td>
+
+			<th width="20%">Status</th>
+            <td colspan="3" class="d-flex align-items-center gap-2">
 
                 <span class="badge bg-success">
                     Active
