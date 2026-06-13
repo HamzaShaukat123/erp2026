@@ -68,7 +68,6 @@ class COAController extends Controller
                 'ac_city.city',
                 'ac_area.area'
             )
-            ->where('ac.status', 1)
             ->where('ac.ac_code', $id)
             ->first();
 
