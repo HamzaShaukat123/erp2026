@@ -29,14 +29,6 @@
                 <span class="text-dark fw-bold">
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
                 </span>
-
-                &nbsp; 
-
-                @if(($acc->status ?? 1) == 1)
-                    <span class="badge bg-success">Active</span>
-                @else
-                    <span class="badge bg-danger">Inactive</span>
-                @endif
             </h5>
 
         </div>
@@ -63,11 +55,28 @@
                 {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
             </td>
 
-            <th width="20%">Phone No</th>
+            <th width="20%">Status</th>
+            <td>
+                @if(($acc->status ?? 1) == 1)
+                    <span class="badge bg-success">Active</span>
+                @else
+                    <span class="badge bg-danger">Inactive</span>
+                @endif
+            </td>
+        </tr>
+
+        {{-- 2. OPENING + CONTACT --}}
+        <tr>
+            <th>Opening Date</th>
+            <td>
+                {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
+            </td>
+
+            <th>Phone No</th>
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
-        {{-- 2. FINANCIAL INFO --}}
+        {{-- 3. FINANCIAL INFO --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -80,7 +89,7 @@
             </td>
         </tr>
 
-        {{-- 3. LIMITS --}}
+        {{-- 4. LIMITS --}}
         <tr>
             <th>Credit Limit</th>
             <td>{{ number_format($acc->credit_limit ?? 0, 2) }}</td>
@@ -89,25 +98,8 @@
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
 
-        {{-- 4. OPENING INFO --}}
-        <tr class="table-light">
-            <th>Opening Date</th>
-            <td>
-                {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
-            </td>
-
-            <th>Status</th>
-            <td>
-                @if(($acc->status ?? 1) == 1)
-                    <span class="badge bg-success">Active</span>
-                @else
-                    <span class="badge bg-danger">Inactive</span>
-                @endif
-            </td>
-        </tr>
-
         {{-- 5. LOCATION --}}
-        <tr>
+        <tr class="table-light">
             <th>City</th>
             <td>{{ $acc->city ?? '-' }}</td>
 
@@ -115,8 +107,8 @@
             <td>{{ $acc->area ?? '-' }}</td>
         </tr>
 
-        {{-- 6. CLASSIFICATION --}}
-        <tr class="table-light">
+        {{-- 6. ACCOUNT CLASSIFICATION --}}
+        <tr>
             <th>Account Type</th>
             <td>{{ $acc->sub ?? '-' }}</td>
 
@@ -125,13 +117,13 @@
         </tr>
 
         {{-- 7. ADDRESS --}}
-        <tr>
+        <tr class="table-light">
             <th>Address</th>
             <td colspan="3">{{ $acc->address ?? '-' }}</td>
         </tr>
 
         {{-- 8. REMARKS --}}
-        <tr class="table-light">
+        <tr>
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
@@ -143,7 +135,7 @@
 </div>
 
 <div class="text-end">
-    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
+    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2" target="_blank">
         <i class="fas fa-print"></i> Print
     </button>
 </div>
