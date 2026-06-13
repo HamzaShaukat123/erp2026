@@ -130,13 +130,6 @@
 
 </div>
 
-<div class="text-end">
-    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
-        <i class="fas fa-print"></i> Print
-    </button>
-</div>
-
-
 <div class="row mt-3">
     <div class="col-12 col-md-4 ms-auto text-end">
         <a onclick="window.location='{{ route('all-acc') }}'" class="btn btn-primary">
@@ -145,7 +138,7 @@
 
         <button type="button"
             class="btn btn-warning modal-with-zoom-anim ws-normal modal-with-form"
-            onclick="getJVSDetails({{ $acc->ac_code }})"
+            onclick="getAccountDetails({{ $acc->ac_code }})"
             href="#updateModal"
             title="Edit JV1">
             <i class="fas fa-edit"></i> Edit
@@ -169,3 +162,35 @@
 
 </body>
 </html>
+
+</script>
+ function getAccountDetails(id){
+        $.ajax({
+            type: "GET",
+            url: "/coa/detail",
+            data: {id:id},
+            success: function(result){
+                $('#ac_id').val(result['ac_code']);
+                $('#update_ac_id').val(result['ac_code']);
+                $('#update_ac_name').val(result['ac_name']);
+                $('#update_rec_able').val(result['rec_able']);
+                $('#update_pay_able').val(result['pay_able']);
+                $('#update_opp_date').val(result['opp_date']);
+                $('#update_remarks').val(result['remarks']);
+                $('#update_area').val(result['area']).trigger('change');
+                $('#update_city').val(result['city']).trigger('change');
+                $('#update_address').val(result['address']);
+                $('#update_phone_no').val(result['phone_no']);
+                $('#update_credit_limit').val(result['credit_limit']);
+                $('#update_days_limit').val(result['days_limit']);
+                $('#update_group_cod').val(result['group_cod']).trigger('change');
+                $('#update_AccountType').val(result['AccountType']).trigger('change');
+                $('#update_att').val(result['att']);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+	}
+
+ </script>
