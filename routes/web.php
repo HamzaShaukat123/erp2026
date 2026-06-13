@@ -63,7 +63,7 @@
         Route::get('/vouchers/show/{id}', [App\Http\Controllers\JV1Controller::class, 'show'])->name('show-jv1');
         Route::get('/vouchers2/show/{id}', [App\Http\Controllers\JV2Controller::class, 'show'])->name('show-jv2');
         Route::get('/tbad_dabs/show/{id}', [App\Http\Controllers\TBadDabsController::class, 'show'])->name('show-tbad-dabs');
-        Route::get('/ac/show/{id}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
+        
         Route::get('/tstock_in/tstock_in_invoice/view/{id}', [App\Http\Controllers\TStockInController::class, 'show'])->name('show-tstock-in-invoice');
         Route::get('/tstock_out/tstock_out/view/{id}', [App\Http\Controllers\TStockOutController::class, 'show'])->name('show-tstock-out-invoice');
         Route::post('/tstock_out/show/update', [App\Http\Controllers\TStockOutController::class, 'updatebill'])->name('update-tstock-out-bill-number');
@@ -680,6 +680,11 @@
     Route::get('/salesageing/all-salesageing', [App\Http\Controllers\SalesAgeingController::class, 'index'])->name('all-salesageing');
     Route::post('/salesageing/delete', [App\Http\Controllers\SalesAgeingController::class, 'destroy'])->name('delete-salesageing');
 
+
+
+
+    
+    Route::get('/ac/show/{id}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
 
     
     
