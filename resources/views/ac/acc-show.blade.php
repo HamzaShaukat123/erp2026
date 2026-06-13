@@ -40,13 +40,6 @@
 
     </div>
 
-
-	<div class="text-end">
-		<button onclick="window.print()" class="btn btn-danger mt-2 mb-2" target="_blank">
-			<i class="fas fa-print"></i> Print
-		</button>
-	</div>
-
 </header>
 
 {{-- TABLE --}}
