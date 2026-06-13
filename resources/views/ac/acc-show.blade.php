@@ -145,7 +145,7 @@
 
         <button type="button"
             class="btn btn-warning modal-with-zoom-anim ws-normal modal-with-form"
-            onclick="getJVSDetails({{ $jv1->auto_lager }})"
+            onclick="getJVSDetails({{ $acc->ac_code }})"
             href="#updateModal"
             title="Edit JV1">
             <i class="fas fa-edit"></i> Edit
