@@ -96,15 +96,9 @@
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
 
-        <tr>
-            <th>City</th>
-            <td>{{ $acc->city ?? '-' }}</td>
+        
 
-            <th>Area</th>
-            <td>{{ $acc->area ?? '-' }}</td>
-        </tr>
-
-        <tr>
+        <tr class="table-light">
             <th>Account Type</th>
             <td>{{ $acc->sub ?? '-' }}</td>
 
@@ -113,11 +107,19 @@
         </tr>
 
         <tr>
+            <th>City</th>
+            <td>{{ $acc->city ?? '-' }}</td>
+
+            <th>Area</th>
+            <td>{{ $acc->area ?? '-' }}</td>
+        </tr>
+
+        <tr class="table-light">
             <th>Address</th>
             <td colspan="3">{{ $acc->address ?? '-' }}</td>
         </tr>
 
-        <tr class="table-light">
+        <tr >
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
