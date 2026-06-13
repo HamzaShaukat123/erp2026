@@ -81,7 +81,6 @@
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
-        {{-- UPDATED ROW (Group Code + Account Type same row) --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -121,7 +120,7 @@
         </tr>
         <tr>
             <th>Group Code</th>
-            <td>{{ $acc->group_cod ?? '-' }}</td>
+            <td>{{ $acc->group_name ?? '-' }}</td>
 
             <th>Account Type</th>
             <td>{{ $acc->AccountType ?? '-' }}</td>
