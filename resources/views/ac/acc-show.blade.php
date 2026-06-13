@@ -15,6 +15,7 @@
 <div class="invoice">
 
 {{-- HEADER --}}
+
 <header class="mb-3 border-bottom pb-2">
 
     <div class="row align-items-center">
@@ -26,6 +27,10 @@
             </h3>
 
         </div>
+
+		<h4 class="text-danger" style="font-weight:550"> 
+			{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}} 
+		</h4>
 
         <div class="col-md-4 text-end">
             <img width="90" src="/assets/img/logo.png" alt="MFI Logo">
