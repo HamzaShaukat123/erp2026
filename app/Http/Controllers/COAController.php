@@ -195,10 +195,10 @@ class COAController extends Controller
         if ($request->has('phone_no') && $request->phone_no OR empty($request->phone_no)) {
             $acc->phone_no=$request->phone_no;
         }
-        if ($request->has('credit_limit') && $request->credit_limit) {
+        if ($request->has('credit_limit') && $request->credit_limit OR $request->credit_limit==0) {
             $acc->credit_limit=$request->credit_limit;
         }
-        if ($request->has('days_limit') && $request->days_limit) {
+        if ($request->has('days_limit') && $request->days_limit OR $request->days_limit==0) {
             $acc->days_limit=$request->days_limit;
         }
         if ($request->has('group_cod') && $request->group_cod OR empty($request->group_cod)) {
