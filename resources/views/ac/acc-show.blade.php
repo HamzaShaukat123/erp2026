@@ -26,6 +26,10 @@
             <h4 class="mb-0 text-dark fw-semibold text-danger">
                 {{$acc->ac_code ?? '-'}} - {{$acc->ac_name ?? '-'}}
             </h4>
+
+			<h4 class="mb-0 fw-bold text-danger">
+				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
+			</h4>
         </div>
 
         <div class="col-md-4 text-end">
