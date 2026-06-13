@@ -288,24 +288,24 @@ class COAController extends Controller
     }
 
    public function print()
-{
-    $data = AC::where('ac.status', 1)
-        ->join('sub_head_of_acc', 'ac.AccountType', '=', 'sub_head_of_acc.id')
-        ->join('head_of_acc', 'sub_head_of_acc.main', '=', 'head_of_acc.ID')
-        ->select(
-            'ac.ac_code',
-            'ac.ac_name',
-            'ac.rec_able',
-            'ac.opp_date',
-            'ac.remarks',
-            'ac.address',
-            'ac.phone_no',
-            'ac.group_cod',
-            'ac.pay_able',
-            'head_of_acc.heads',
-            'sub_head_of_acc.sub'
-        )
-        ->groupBy(
+    {
+        $data = AC::where('ac.status', 1)
+            ->join('sub_head_of_acc', 'ac.AccountType', '=', 'sub_head_of_acc.id')
+            ->join('head_of_acc', 'sub_head_of_acc.main', '=', 'head_of_acc.ID')
+            ->select(
+                'ac.ac_code',
+                'ac.ac_name',
+                'ac.rec_able',
+                'ac.opp_date',
+                'ac.remarks',
+                'ac.address',
+                'ac.phone_no',
+                'ac.group_cod',
+                'ac.pay_able',
+                'head_of_acc.heads',
+                'sub_head_of_acc.sub'
+            )
+            ->groupBy(
             'ac.ac_code',
             'ac.ac_name',
             'ac.rec_able',
