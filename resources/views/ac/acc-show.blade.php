@@ -77,8 +77,8 @@
                 {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
             </td>
 
-            <th>Group Code</th>
-            <td>{{ $acc->group_cod ?? '-' }}</td>
+			<th>Phone No</th>
+            <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
         {{-- UPDATED ROW (Group Code + Account Type same row) --}}
@@ -103,11 +103,11 @@
         </tr>
 
         <tr class="table-light">
-            <th>Phone No</th>
-            <td>{{ $acc->phone_no ?? '-' }}</td>
+            <th>City</th>
+            <td>{{ $acc->city ?? '-' }}</td>
 
-            <th>City / Area</th>
-            <td>{{ $acc->city ?? '-' }} / {{ $acc->area ?? '-' }}</td>
+            <th>Area</th>
+            <td>{{ $acc->area ?? '-' }}</td>
         </tr>
 
         <tr>
@@ -119,8 +119,6 @@
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
-
-        {{-- GROUP CODE + ACCOUNT TYPE IN ONE ROW --}}
         <tr>
             <th>Group Code</th>
             <td>{{ $acc->group_cod ?? '-' }}</td>
