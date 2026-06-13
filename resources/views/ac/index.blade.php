@@ -96,7 +96,17 @@
                                                                 @endif
                                                             </td>
                                                         @else
-                                                            <td><a href="{{ route('activate-acc',$row->ac_code)}}"><i style="color:green" class="fas fa-check"></i></a></td>
+                                                           <td>
+                                                                <a href="{{ route('show-acc',$row->ac_code) }}">
+                                                                    <i class="fas fa-eye text-primary"></i>
+                                                                </a>
+
+                                                                <span class="separator"> | </span>
+
+                                                                <a href="{{ route('activate-acc',$row->ac_code) }}">
+                                                                    <i style="color:green" class="fas fa-check"></i>
+                                                                </a>
+                                                            </td>
                                                         @endif
                                                     
                                                     </tr>
