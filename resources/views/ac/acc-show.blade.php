@@ -1,165 +1,199 @@
 @include('../layouts.header')
-	<body>
-		<section class="body">
-			<div class="inner-wrapper">
-				<section role="main" class="content-body" style="margin:0px;padding:75px 10px !important">
-				@include('../layouts.pageheader')
 
-                    <section class="card">
+<body>
+<section class="body">
+<div class="inner-wrapper">
 
-						<div class="card-body">
+<section role="main" class="content-body" style="margin:0px;padding:75px 10px !important">
+@include('../layouts.pageheader')
 
-							<div class="invoice">
+<section class="card shadow-sm border-0">
 
-								<header class="clearfix">
-									<div class="row">
-										<div class="col-8 mt-3 mb-3">
-											<h2 class="h2 mt-0 mb-1" style="color:#17365D">Account Name:</h2>
-											<h4 class="h4 m-0 text-dark font-weight-bold">{{$acc->ac_code }}-{{$acc->ac_name}}</h4>
-										</div>
-										<div class="col-4 text-end mt-3 mb-3">
-											<div class="ib">
-												<img width="100px" src="/assets/img/logo.png" alt="MFI Logo" />
-											</div>
-										</div>
-									</div>
-								</header>
-								<div class="bill-info">
-									<div class="row">
-										<div class="col-md-7">
-											<div class="bill-to">
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Opening Date: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value">  {{\Carbon\Carbon::parse($acc->opp_date)->format('d-m-y')}}</span>
-												</h4>
+<div class="card-body">
 
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Remarks: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->remarks}}</span>
-												</h4>
+<div class="invoice">
 
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Address: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->address}}</span>
-												</h4>
+{{-- HEADER --}}
+<header class="clearfix border-bottom pb-3 mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h3 class="mb-1 text-primary fw-bold">
+                Account Profile
+            </h3>
+            <h4 class="m-0 fw-semibold text-dark">
+                {{$acc->ac_code}} - {{$acc->ac_name}}
+            </h4>
+        </div>
 
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Phone No: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->phone_no}}</span>
-												</h4>
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Group Code: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->group_cod}}</span>
-												</h4>
-											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="bill-data">
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Dispatch From: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->disp_to}}</span>
-												</h4>
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Name Of Person: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->Cash_name}}</span>
-												</h4>
-												
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Person Address: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->cash_Pur_address}}</span>
-												</h4>
+        <div class="col-md-4 text-end">
+            <img width="90px" src="/assets/img/logo.png" alt="MFI Logo" />
+        </div>
+    </div>
+</header>
 
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<a href="#" style="color:#53b21c" data-bs-toggle="modal" data-bs-target="#editBillModal">
-														Bill No: &nbsp;
-													</a>
-													<span style="font-weight:400;color:black" class="value" id="billNoDisplay">{{ $acc->pur_ord_no }}</span>
-												</h4>
+{{-- MAIN INFO --}}
+<div class="row g-3">
 
-												<h4 class="mb-0 h6 mb-1 text-dark font-weight-semibold">
-													<span style="color:#17365D">Remarks: &nbsp </span>
-													<span style="font-weight:400;color:black" class="value"> {{$acc->Sales_Remarks}}</span>
-												</h4>
-											</div>
-										</div>
-									</div>
-								</div>
+    {{-- LEFT PANEL --}}
+    <div class="col-md-6">
 
-	
+        <div class="card border h-100">
+            <div class="card-header bg-light">
+                <strong>Basic Information</strong>
+            </div>
+            <div class="card-body">
 
-							</div>
+                <p><strong>Opening Date:</strong>
+                    {{\Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y')}}
+                </p>
 
-						<div id="printModal" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide" style="max-width: 350px;">
-							<form method="get" action="{{ route('print-sales2-invoice') }}" target="_blank" enctype="multipart/form-data">
-								@csrf
-								<section class="card">
-									<header class="card-header">
-										<h2 class="card-title">Select Print Format</h2>
-									</header>
-									<div class="card-body">
-										<div class="modal-wrapper">
-											<select data-plugin-selecttwo class="form-control select2-js" autofocus name="print_type" required>
-												<option value="" disabled selected>Select Print Format</option>
-												<option value="1" >Show All</option>
-												<option value="2" >Exclude Item Length</option>
-												<option value="3" >Only Quantity & Price</option>
-											</select>
-											<input type="hidden" name="print_sale2" id="printID" >
-										</div>
-									</div>
-									<footer class="card-footer">
-										<div class="row">
-											<div class="col-md-12 text-end">
-												<button type="submit" class="btn btn-danger">Print Invoice</button>
-												<button type="button" class="btn btn-default modal-dismiss">Cancel</button>
-												{{-- <a href="{{ route('all-sale2invoices-paginate') }}" class="btn btn-primary mt-2 mb-2">
-													<i class="fas fa-arrow-left"></i> Back
-												</a> --}}
-												<div class="btn-group dropup mt-2 mb-2 position-relative">
-													<!-- Back Button -->
-													<button type="button" onclick="window.location='{{ route('all-sale2invoices-paginate') }}'" class="btn btn-primary">
-														<i class="fas fa-arrow-left"></i> Back
-													</button>
+                <p><strong>Remarks:</strong> {{$acc->remarks ?? '-'}}</p>
+                <p><strong>Address:</strong> {{$acc->address ?? '-'}}</p>
+                <p><strong>Phone No:</strong> {{$acc->phone_no ?? '-'}}</p>
+                <p><strong>Group Code:</strong> {{$acc->group_cod ?? '-'}}</p>
 
-													<!-- Dropdown Split Button -->
-													<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-														<span class="visually-hidden">Toggle Dropdown</span>
-													</button>
+                <p>
+                    <strong>Account Type:</strong>
+                    <span class="badge bg-info">{{$acc->AccountType}}</span>
+                </p>
 
-													<!-- Dropdown Menu -->
-													<ul class="dropdown-menu dropdown-menu-end" style="inset: auto 100% 100% auto; transform: translateX(-8px);">
-														<li>
-															<a class="dropdown-item text-success fw-semibold" href="{{ route('new-sales2') }}">
-																<i class="fas fa-plus me-2"></i> Add New
-															</a>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</div>
-									</footer>
-									
-								</section>
-							</form>
-						</div>
-					</section>
-				</section>
-			</div>
-			</div>
-		</section>
-		
-		
+            </div>
+        </div>
 
+    </div>
 
-        @include('../layouts.footerlinks')
-	</body>
+    {{-- RIGHT PANEL --}}
+    <div class="col-md-6">
 
-	<script>
+        <div class="card border h-100">
+            <div class="card-header bg-light">
+                <strong>Financial Summary</strong>
+            </div>
 
+            <div class="card-body">
 
-		function setPrintId(id){
-			$('#printID').val(id);
-		}
-	</script>
-	
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <div class="p-2 bg-light rounded">
+                            <small class="text-muted">Receivable</small>
+                            <h5 class="mb-0 text-success">
+                                {{ number_format($acc->rec_able,2) }}
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="p-2 bg-light rounded">
+                            <small class="text-muted">Payable</small>
+                            <h5 class="mb-0 text-danger">
+                                {{ number_format($acc->pay_able,2) }}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <p><strong>Credit Limit:</strong>
+                    <span class="text-primary">
+                        {{ number_format($acc->credit_limit,2) }}
+                    </span>
+                </p>
+
+                <p><strong>Days Limit:</strong>
+                    <span class="badge bg-secondary">{{$acc->days_limit}}</span>
+                </p>
+
+                <hr>
+
+                <p><strong>Dispatch From:</strong> {{$acc->disp_to ?? '-'}}</p>
+                <p><strong>Person Name:</strong> {{$acc->Cash_name ?? '-'}}</p>
+                <p><strong>Person Address:</strong> {{$acc->cash_Pur_address ?? '-'}}</p>
+
+                <p>
+                    <strong>Bill No:</strong>
+                    <a href="#" style="color:#53b21c"
+                       data-bs-toggle="modal"
+                       data-bs-target="#editBillModal">
+                        {{$acc->pur_ord_no}}
+                    </a>
+                </p>
+
+                <p><strong>Sales Remarks:</strong> {{$acc->Sales_Remarks ?? '-'}}</p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{{-- PRINT MODAL (UNCHANGED) --}}
+<div id="printModal" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide" style="max-width: 350px;">
+    <form method="get" action="{{ route('print-sales2-invoice') }}" target="_blank">
+        @csrf
+
+        <section class="card">
+            <header class="card-header">
+                <h2 class="card-title">Select Print Format</h2>
+            </header>
+
+            <div class="card-body">
+                <select class="form-control select2-js" name="print_type" required>
+                    <option value="" disabled selected>Select Print Format</option>
+                    <option value="1">Show All</option>
+                    <option value="2">Exclude Item Length</option>
+                    <option value="3">Only Quantity & Price</option>
+                </select>
+
+                <input type="hidden" name="print_sale2" id="printID">
+            </div>
+
+            <footer class="card-footer text-end">
+                <button type="submit" class="btn btn-danger">Print Invoice</button>
+
+                <button type="button" class="btn btn-default modal-dismiss">Cancel</button>
+
+                <div class="btn-group dropup">
+                    <button type="button"
+                            onclick="window.location='{{ route('all-sale2invoices-paginate') }}'"
+                            class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown">
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item text-success fw-semibold"
+                               href="{{ route('new-sales2') }}">
+                                <i class="fas fa-plus me-2"></i> Add New
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </footer>
+        </section>
+    </form>
+</div>
+
+</section>
+</section>
+</div>
+</section>
+
+@include('../layouts.footerlinks')
+
+</body>
+
+<script>
+function setPrintId(id){
+    $('#printID').val(id);
+}
+</script>
+
 </html>
