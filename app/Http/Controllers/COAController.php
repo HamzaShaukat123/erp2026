@@ -76,7 +76,8 @@ class COAController extends Controller
         $ac_area = ac_area::where('status', 1)->get();
         $ac_city = ac_city::where('status', 1)->get();
 
-        return view('ac.acc-show', compact('acc','sub_head_of_acc','ac_group','ac_area','ac_city'));
+        return view('ac.acc-show',compact('acc','sub_head_of_acc','ac_group','ac_area','ac_city'));
+
     }
 
 
@@ -163,9 +164,7 @@ class COAController extends Controller
     public function update(Request $request)
     {
         
-        // $acc = AC::where('ac_code', $request->ac_code)->get()->first();
-
-        $acc = AC::where('ac_code', $request->ac_cod)->first();
+        $acc = AC::where('ac_code', $request->ac_cod)->get()->first();
 
         $acc->updated_by = session('user_id');
 
@@ -241,7 +240,7 @@ class COAController extends Controller
             }
         }
 
-        return redirect()->route('show-acc');
+        return redirect()->route('all-acc');
     }
 
     public function getAccountDetails(Request $request)
