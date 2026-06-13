@@ -16,15 +16,28 @@
 
 {{-- HEADER --}}
 <header class="mb-3 border-bottom pb-2">
+
     <div class="row align-items-center">
 
         <div class="col-md-8">
+
             <h3 class="mb-1 text-primary fw-bold">
                 ACCOUNT DETAIL SHEET
             </h3>
-            <h5 class="text-danger fw-semibold mb-0">
-                {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
-            </h5>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <h5 class="text-danger fw-semibold mb-0">
+                    {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
+                </h5>
+
+                {{-- STATUS --}}
+                <span class="badge bg-success">
+                    Active
+                </span>
+
+            </div>
+
         </div>
 
         <div class="col-md-4 text-end">
@@ -39,12 +52,13 @@
             Print Report
         </button>
     </div>
+
 </header>
 
 {{-- TABLE --}}
 <div class="table-responsive">
 
-<table class="table table-bordered align-middle">
+<table class="table table-bordered table-striped align-middle">
 
     <tbody>
 
@@ -109,7 +123,9 @@
 
             <th>Status</th>
             <td>
-                <span class="badge bg-success">Active</span>
+                <span class="badge bg-success">
+                    Active
+                </span>
             </td>
         </tr>
 
