@@ -102,16 +102,7 @@
             <th>Area</th>
             <td>{{ $acc->area ?? '-' }}</td>
         </tr>
-
-        <tr>
-            <th>Address</th>
-            <td colspan="3">{{ $acc->address ?? '-' }}</td>
-        </tr>
-
-        <tr class="table-light">
-            <th>Remarks</th>
-            <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
-        </tr>
+        
         <tr>
 
 			<th>Account Type</th>
@@ -121,6 +112,16 @@
             <td>{{ $acc->group_name ?? '-' }}</td>
 
             
+        </tr>
+
+        <tr>
+            <th>Address</th>
+            <td colspan="3">{{ $acc->address ?? '-' }}</td>
+        </tr>
+
+        <tr class="table-light">
+            <th>Remarks</th>
+            <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
 
     </tbody>
