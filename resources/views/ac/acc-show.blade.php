@@ -2,6 +2,8 @@
 
 <style>
 @media print {
+
+    /* hide everything not needed in print */
     .no-print,
     header,
     footer,
@@ -75,6 +77,7 @@
 
     <tbody>
 
+        {{-- BASIC INFO --}}
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
             <td>{{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}</td>
@@ -89,6 +92,7 @@
             </td>
         </tr>
 
+        {{-- OPENING + CONTACT --}}
         <tr>
             <th>Opening Date</th>
             <td>
@@ -99,6 +103,7 @@
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
+        {{-- FINANCIAL --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -111,6 +116,7 @@
             </td>
         </tr>
 
+        {{-- LIMITS --}}
         <tr>
             <th>Credit Limit</th>
             <td>{{ number_format($acc->credit_limit ?? 0, 2) }}</td>
@@ -119,6 +125,7 @@
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
 
+        {{-- LOCATION --}}
         <tr class="table-light">
             <th>City</th>
             <td>{{ $acc->city ?? '-' }}</td>
@@ -127,6 +134,7 @@
             <td>{{ $acc->area ?? '-' }}</td>
         </tr>
 
+        {{-- CLASSIFICATION --}}
         <tr>
             <th>Account Type</th>
             <td>{{ $acc->sub ?? '-' }}</td>
@@ -135,11 +143,13 @@
             <td>{{ $acc->group_name ?? '-' }}</td>
         </tr>
 
+        {{-- ADDRESS --}}
         <tr class="table-light">
             <th>Address</th>
             <td colspan="3">{{ $acc->address ?? '-' }}</td>
         </tr>
 
+        {{-- REMARKS --}}
         <tr>
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
@@ -149,6 +159,13 @@
 
 </table>
 
+</div>
+
+{{-- PRINT BUTTON --}}
+<div class="text-end no-print">
+    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
+        <i class="fas fa-print"></i> Print
+    </button>
 </div>
 
 </div>
