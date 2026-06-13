@@ -49,6 +49,7 @@
 
     <tbody>
 
+        {{-- MOVED STATUS NEXT TO ACCOUNT CODE/NAME --}}
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
             <td>
@@ -71,7 +72,7 @@
                 {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
             </td>
 
-			<th>Phone No</th>
+            <th>Phone No</th>
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
@@ -95,23 +96,20 @@
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
 
-        <tr class="table-light">
+        <tr>
             <th>City</th>
             <td>{{ $acc->city ?? '-' }}</td>
 
             <th>Area</th>
             <td>{{ $acc->area ?? '-' }}</td>
         </tr>
-        
-        <tr>
 
-			<th>Account Type</th>
+        <tr>
+            <th>Account Type</th>
             <td>{{ $acc->sub ?? '-' }}</td>
 
             <th>Group Code</th>
             <td>{{ $acc->group_name ?? '-' }}</td>
-
-            
         </tr>
 
         <tr>
@@ -131,9 +129,9 @@
 </div>
 
 <div class="text-end">
-	<button onclick="window.print()" class="btn btn-danger mt-2 mb-2" target="_blank">
-		<i class="fas fa-print"></i> Print
-	</button>
+    <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
+        <i class="fas fa-print"></i> Print
+    </button>
 </div>
 
 </div>
