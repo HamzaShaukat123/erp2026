@@ -119,7 +119,7 @@
             <td colspan="3">{{ $acc->address ?? '-' }}</td>
         </tr>
 
-        <tr >
+        <tr>
             <th>Remarks</th>
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
@@ -134,6 +134,27 @@
     <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
         <i class="fas fa-print"></i> Print
     </button>
+</div>
+
+
+<div class="row mt-3">
+    <div class="col-12 col-md-4 ms-auto text-end">
+        <a onclick="window.location='{{ route('all-acc') }}'" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
+        <button type="button"
+            class="btn btn-warning modal-with-zoom-anim ws-normal modal-with-form"
+            onclick="getJVSDetails({{ $jv1->auto_lager }})"
+            href="#updateModal"
+            title="Edit JV1">
+            <i class="fas fa-edit"></i> Edit
+        </button>
+
+        <button onclick="window.print()" class="btn btn-danger mt-2 mb-2">
+            <i class="fas fa-print"></i> Print
+        </button>
+    </div>
 </div>
 
 </div>
