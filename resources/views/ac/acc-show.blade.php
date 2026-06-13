@@ -102,7 +102,7 @@
             <th>Account Type</th>
             <td>{{ $acc->sub ?? '-' }}</td>
 
-            <th>Group Code</th>
+            <th>Group Name</th>
             <td>{{ $acc->group_name ?? '-' }}</td>
         </tr>
 
