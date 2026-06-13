@@ -25,19 +25,6 @@
                 ACCOUNT DETAIL SHEET
             </h3>
 
-            <div class="d-flex align-items-center gap-2">
-
-                <h5 class="text-danger fw-semibold mb-0">
-                    {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
-                </h5>
-
-                {{-- STATUS --}}
-                <span class="badge bg-success">
-                    Active
-                </span>
-
-            </div>
-
         </div>
 
         <div class="col-md-4 text-end">
@@ -62,10 +49,17 @@
 
     <tbody>
 
+        {{-- ACCOUNT NAME + STATUS (SIDE BY SIDE) --}}
         <tr class="table-light">
             <th width="20%">Account Code / Name</th>
-            <td colspan="3">
-                {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
+            <td colspan="3" class="d-flex align-items-center gap-2">
+                <span>
+                    {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
+                </span>
+
+                <span class="badge bg-success">
+                    Active
+                </span>
             </td>
         </tr>
 
@@ -123,9 +117,7 @@
 
             <th>Status</th>
             <td>
-                <span class="badge bg-success">
-                    Active
-                </span>
+                <span class="badge bg-success">Active</span>
             </td>
         </tr>
 
