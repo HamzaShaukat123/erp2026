@@ -42,7 +42,7 @@
     <tbody>
 
         <tr class="table-light">
-            <th width="20%">Account Code</th>
+            <th width="20%">Account NAme</th>
             <td>{{$acc->ac_code ?? '-'}}-{{$acc->ac_name ?? '-'}}</td>
         </tr>
 
@@ -110,23 +110,7 @@
             </td>
         </tr>
 
-        <tr class="table-light">
-            <th>Dispatch From</th>
-            <td>{{$acc->disp_to ?? '-'}}</td>
-
-            <th>Person Name</th>
-            <td>{{$acc->Cash_name ?? '-'}}</td>
-        </tr>
-
-        <tr>
-            <th>Person Address</th>
-            <td colspan="3">{{$acc->cash_Pur_address ?? '-'}}</td>
-        </tr>
-
-        <tr class="table-light">
-            <th>Sales Remarks</th>
-            <td colspan="3">{{$acc->Sales_Remarks ?? '-'}}</td>
-        </tr>
+       
 
     </tbody>
 
