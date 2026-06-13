@@ -239,7 +239,7 @@ class COAController extends Controller
             }
         }
 
-        return redirect()->route('all-acc');
+        return redirect()->route('show-acc');
     }
 
     public function getAccountDetails(Request $request)
