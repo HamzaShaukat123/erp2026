@@ -25,7 +25,7 @@
                 ACCOUNT DETAIL SHEET
             </h3>
 
-            {{-- ACCOUNT CODE + NAME + STATUS INLINE --}}
+            {{-- ACCOUNT CODE + NAME --}}
             <h5 class="mt-2 mb-0">
                 <span class="text-dark fw-bold">
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
@@ -40,7 +40,6 @@
 
     </div>
 
-    {{-- PRINT BUTTON --}}
     <div class="mt-2 text-end">
         <button onclick="window.print()" class="btn btn-sm btn-primary">
             Print Report
@@ -82,6 +81,7 @@
             <td>{{ $acc->group_cod ?? '-' }}</td>
         </tr>
 
+        {{-- UPDATED ROW (Group Code + Account Type same row) --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -120,12 +120,13 @@
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
 
+        {{-- GROUP CODE + ACCOUNT TYPE IN ONE ROW --}}
         <tr>
+            <th>Group Code</th>
+            <td>{{ $acc->group_cod ?? '-' }}</td>
+
             <th>Account Type</th>
             <td>{{ $acc->AccountType ?? '-' }}</td>
-
-            <th></th>
-            <td></td>
         </tr>
 
     </tbody>
