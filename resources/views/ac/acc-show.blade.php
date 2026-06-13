@@ -19,12 +19,17 @@
     <div class="row align-items-center">
 
         <div class="col-md-8">
-            <h3 class="mb-1 text-primary fw-bold">
+
+            <h5 class="text-muted mb-1 fw-semibold">
                 ACCOUNT DETAIL SHEET
+            </h5>
+
+            <h3 class="mb-0 fw-bold">
+                <span class="text-dark">{{$acc->ac_code ?? '-'}}</span>
+                <span class="text-danger"> - </span>
+                <span class="text-dark">{{$acc->ac_name ?? '-'}}</span>
             </h3>
-			<h4 class="text-danger" style="font-weight:550">
-				{{$acc->ac_code ?? '-' }} - {{$acc->ac_name ?? '-'}}
-			</h4>
+
         </div>
 
         <div class="col-md-4 text-end">
@@ -41,21 +46,28 @@
 
     <tbody>
 
+        {{-- ACCOUNT NAME ROW --}}
         <tr class="table-light">
-            <th width="20%">Account NAme</th>
-            <td>{{$acc->ac_code ?? '-'}}-{{$acc->ac_name ?? '-'}}</td>
+            <th width="20%">Account Name</th>
+            <td colspan="3">
+                <span class="fw-bold text-dark">
+                    {{$acc->ac_code ?? '-'}} - {{$acc->ac_name ?? '-'}}
+                </span>
+            </td>
         </tr>
 
+        {{-- BASIC INFO --}}
         <tr>
-            <th>Opening Date</th>
+            <th width="20%">Opening Date</th>
             <td>
                 {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
             </td>
 
-            <th>Group Code</th>
+            <th width="20%">Group Code</th>
             <td>{{$acc->group_cod ?? '-'}}</td>
         </tr>
 
+        {{-- FINANCIAL --}}
         <tr class="table-light">
             <th>Receivable</th>
             <td class="text-success fw-bold">
@@ -80,6 +92,7 @@
             </td>
         </tr>
 
+        {{-- CONTACT --}}
         <tr class="table-light">
             <th>Phone No</th>
             <td>{{$acc->phone_no ?? '-'}}</td>
@@ -90,16 +103,19 @@
             </td>
         </tr>
 
+        {{-- ADDRESS --}}
         <tr>
             <th>Address</th>
             <td colspan="3">{{$acc->address ?? '-'}}</td>
         </tr>
 
+        {{-- REMARKS --}}
         <tr class="table-light">
             <th>Remarks</th>
             <td colspan="3">{{$acc->remarks ?? '-'}}</td>
         </tr>
 
+        {{-- ACCOUNT TYPE --}}
         <tr>
             <th>Account Type</th>
             <td>{{$acc->AccountType ?? '-'}}</td>
@@ -110,7 +126,24 @@
             </td>
         </tr>
 
-       
+        {{-- EXTRA INFO (IF EXISTS) --}}
+        <tr class="table-light">
+            <th>Dispatch From</th>
+            <td>{{$acc->disp_to ?? '-'}}</td>
+
+            <th>Person Name</th>
+            <td>{{$acc->Cash_name ?? '-'}}</td>
+        </tr>
+
+        <tr>
+            <th>Person Address</th>
+            <td colspan="3">{{$acc->cash_Pur_address ?? '-'}}</td>
+        </tr>
+
+        <tr class="table-light">
+            <th>Sales Remarks</th>
+            <td colspan="3">{{$acc->Sales_Remarks ?? '-'}}</td>
+        </tr>
 
     </tbody>
 
