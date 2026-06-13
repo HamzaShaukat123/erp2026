@@ -287,127 +287,119 @@ class COAController extends Controller
         return Excel::download(new ChartOfAccountExport($AC), $filename);
     }
 
-    public function print()
-    {
-        $data = AC::where('ac.status', 1)
+   public function print()
+{
+    $data = AC::where('ac.status', 1)
         ->join('sub_head_of_acc', 'ac.AccountType', '=', 'sub_head_of_acc.id')
         ->join('head_of_acc', 'sub_head_of_acc.main', '=', 'head_of_acc.ID')
-        ->select('ac.ac_code', 'ac.ac_name', 'ac.rec_able', 'ac.opp_date', 'ac.remarks', 
-        'ac.address', 'ac.phone_no', 'ac.group_cod', 'ac.pay_able', 'head_of_acc.heads', 'sub_head_of_acc.sub')
-        ->groupBy('ac.ac_code', 'ac.ac_name', 'ac.rec_able', 'ac.opp_date', 'ac.remarks', 'ac.address', 
-        'ac.phone_no', 'ac.group_cod', 'ac.pay_able', 'head_of_acc.heads', 'sub_head_of_acc.sub')
+        ->select(
+            'ac.ac_code',
+            'ac.ac_name',
+            'ac.rec_able',
+            'ac.opp_date',
+            'ac.remarks',
+            'ac.address',
+            'ac.phone_no',
+            'ac.group_cod',
+            'ac.pay_able',
+            'head_of_acc.heads',
+            'sub_head_of_acc.sub'
+        )
+        ->groupBy(
+            'ac.ac_code',
+            'ac.ac_name',
+            'ac.rec_able',
+            'ac.opp_date',
+            'ac.remarks',
+            'ac.address',
+            'ac.phone_no',
+            'ac.group_cod',
+            'ac.pay_able',
+            'head_of_acc.heads',
+            'sub_head_of_acc.sub'
+        )
         ->orderBy('head_of_acc.heads')
         ->orderBy('sub_head_of_acc.sub')
         ->get();
 
-        $pdf = new TCPDF();
+    $pdf = new \TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
 
-        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('MFI');
+    $pdf->SetTitle('COA Report');
+    $pdf->SetSubject('COA Report');
 
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('MFI');
-        $pdf->SetTitle('COA Report');
-        $pdf->SetSubject('COA Report');
-        $pdf->SetKeywords('Invoice, TCPDF, PDF');
-        $pdf->setPageOrientation('L');
+    // FIXED MARGINS
+    $pdf->SetMargins(10, 15, 10);
+    $pdf->SetFooterMargin(10);
 
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-        
-        // Set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-        
-        // Set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_RIGHT);
-        // $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-                
-        // Set image scale factor
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-        
-        // Set font
-        $pdf->SetFont('helvetica', '', 10);
-        
-        // Add a page
-        $pdf->AddPage();
-           
-        $pdf->setCellPadding(1.2); // Set padding for all cells in the table
+    $pdf->SetAutoPageBreak(TRUE, 15);
 
-        // margin top
-        $margin_top = '.margin-top {
-            margin-top: 10px;
-        }';
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    $pdf->SetFont('helvetica', '', 10);
 
-        // margin bottom
-        $margin_bottom = '.margin-bottom {
-            margin-bottom: 5px;
-        }';
+    $pdf->AddPage();
 
-        $heading='<h1 style="text-align:center;text-decoration:underline;color:#006699;font-size:25px;font-style:italic">Chart Of Account</h1>';
-        $pdf->writeHTML($heading, true, false, true, false, '');
-        $pdf->writeHTML('<style>' . $margin_bottom . '</style>', true, false, true, false, '');
+    $heading = '
+        <h1 style="text-align:center;text-decoration:underline;color:#006699;font-size:22px;">
+            Chart Of Account
+        </h1>';
 
-        $date='<h3 style="text-align:right;">Print Date: '.date('d-m-y').'</h3>';
-        $pdf->writeHTML($date, true, false, true, false, '');
-        
-        $coas=$data->groupBy('heads');
+    $pdf->writeHTML($heading, true, false, true, false, '');
 
-        foreach ($coas as $acc_key=>$coa){
-            $headName='<h2 style="">'.$acc_key.'</h2>';
-            $pdf->writeHTML($headName, true, false, true, false, '');
+    $date = '<h4 style="text-align:right;">Print Date: ' . date('d-m-Y') . '</h4>';
+    $pdf->writeHTML($date, true, false, true, false, '');
 
-            $sub_accs=$coa->groupBy('sub');
+    $coas = $data->groupBy('heads');
 
-            foreach ($sub_accs as $sub_acc_key=>$sub_acc){
-                $SubheadName='<h3 style="text-align:center">'.$sub_acc_key.'</h3>';
-                $pdf->writeHTML($SubheadName, true, false, true, false, '');
+    foreach ($coas as $head => $coa) {
 
-                $html = '<table border="1" style="border-collapse: collapse;text-align:center" >';
-                $html .= '<tr>';
-                $html .= '<th style="width:12%;font-weight:bold">Ac. Code</th>';
-                $html .= '<th style="width:12%;font-weight:bold">Date</th>';
-                $html .= '<th style="width:40%;font-weight:bold">Account Name</th>';
-                $html .= '<th style="width:18%;font-weight:bold">Debit</th>';
-                $html .= '<th style="width:18%;font-weight:bold">Credit</th>';
-                $html .= '</tr>';
-                $html .= '</table>';
+        $pdf->writeHTML("<h2 style='color:#333;'>$head</h2>", true, false, true, false, '');
 
-                $pdf->writeHTML($html, true, false, true, false, '');
-                
-                $item_table = '<table style="text-align:center;font-size:15px">';
-                $count=1;
+        $sub_accs = $coa->groupBy('sub');
 
-                foreach ($sub_acc as $item){
-                    if($count%2==0)
-                    {
-                        $item_table .= '<tr style="background-color:#f1f1f1">';
-                        $item_table .= '<td style="width:12%;font-weight:bold">'.$item['ac_code'].'</td>';
-                        $item_table .= '<td style="width:12%;font-weight:bold">'.Carbon::parse($item['opp_date'])->format('d-m-Y').'</td>';
-                        $item_table .= '<td style="width:40%; text-align:left">'.$item['ac_name'].'</td>';
-                        $item_table .= '<td style="width:18%">'.$item['rec_able'].'</td>';
-                        $item_table .= '<td style="width:18%">'.$item['pay_able'].'</td>';
-                        $item_table .= '</tr>';
-                    }
-                    else{
-                        $item_table .= '<tr>';
-                        $item_table .= '<td style="width:12%;font-weight:bold">'.$item['ac_code'].'</td>';
-                        $item_table .= '<td style="width:12%;font-weight:bold">'.Carbon::parse($item['opp_date'])->format('d-m-Y').'</td>';
-                        $item_table .= '<td style="width:40%; text-align:left">'.$item['ac_name'].'</td>';
-                        $item_table .= '<td style="width:18%">'.$item['rec_able'].'</td>';
-                        $item_table .= '<td style="width:18%">'.$item['pay_able'].'</td>';
-                        $item_table .= '</tr>';
-                    }
-                    $count++;
-                }
-                $item_table .= '</table>';
-                $pdf->writeHTML($item_table, true, false, true, false, '');
+        foreach ($sub_accs as $sub => $items) {
+
+            $pdf->writeHTML("<h3 style='text-align:center;'>$sub</h3>", true, false, true, false, '');
+
+            // TABLE HEADER
+            $html = '
+            <table border="1" cellpadding="4" cellspacing="0">
+                <tr style="background-color:#ddd;font-weight:bold;">
+                    <th width="12%">Ac Code</th>
+                    <th width="12%">Date</th>
+                    <th width="40%">Account Name</th>
+                    <th width="18%">Debit</th>
+                    <th width="18%">Credit</th>
+                </tr>';
+
+            $count = 1;
+
+            foreach ($items as $item) {
+
+                $bg = ($count % 2 == 0) ? 'style="background-color:#f5f5f5;"' : '';
+
+                $html .= '
+                <tr ' . $bg . '>
+                    <td width="12%">' . $item->ac_code . '</td>
+                    <td width="12%">' . \Carbon\Carbon::parse($item->opp_date)->format('d-m-Y') . '</td>
+                    <td width="40%" align="left">' . $item->ac_name . '</td>
+                    <td width="18%">' . $item->rec_able . '</td>
+                    <td width="18%">' . $item->pay_able . '</td>
+                </tr>';
+
+                $count++;
             }
+
+            $html .= '</table>';
+
+            $pdf->writeHTML($html, true, false, true, false, '');
         }
-        $pdf->Output('COA Report.pdf', 'I');
-        exit;
-        
     }
 
+    $pdf->Output('COA Report.pdf', 'I');
+    exit;
+}
     public function downloadAtt($id)
     {
         $doc=ac_att::where('att_id', $id)->select('att_path')->first();
