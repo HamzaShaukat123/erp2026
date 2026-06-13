@@ -384,8 +384,8 @@ class COAController extends Controller
                         $item_table .= '<td style="width:12%;font-weight:bold">'.$item['ac_code'].'</td>';
                         $item_table .= '<td style="width:12%;font-weight:bold">'.Carbon::parse($item['opp_date'])->format('d-m-Y').'</td>';
                         $item_table .= '<td style="width:40%; text-align:left">'.$item['ac_name'].'</td>';
-                        $item_table .= '<td style="width:18%">Debit Here</td>';
-                        $item_table .= '<td style="width:18%">Credit Here</td>';
+                        $item_table .= '<td style="width:18%">'.$item['rec_able'].'</td>';
+                        $item_table .= '<td style="width:18%">'.$item['pay_able'].'</td>';
                         $item_table .= '</tr>';
                     }
                     else{
