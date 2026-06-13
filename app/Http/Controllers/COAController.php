@@ -163,7 +163,7 @@ class COAController extends Controller
     public function update(Request $request)
     {
         
-        $acc = AC::where('ac_code', $request->ac_cod)->get()->first();
+        $acc = AC::where('ac_code', $request->ac_code)->get()->first();
 
         $acc->updated_by = session('user_id');
 
