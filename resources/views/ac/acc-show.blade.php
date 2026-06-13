@@ -25,11 +25,17 @@
                 ACCOUNT DETAIL SHEET
             </h3>
 
-            {{-- ACCOUNT CODE + NAME --}}
+            {{-- ACCOUNT CODE + NAME + STATUS --}}
             <h5 class="mt-2 mb-0">
                 <span class="text-dark fw-bold">
                     {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
                 </span>
+
+                @if(($acc->status ?? 1) == 1)
+                    <span class="badge bg-success ms-2">Active</span>
+                @else
+                    <span class="badge bg-danger ms-2">Inactive</span>
+                @endif
             </h5>
 
         </div>
@@ -49,30 +55,13 @@
 
     <tbody>
 
-        {{-- MOVED STATUS NEXT TO ACCOUNT CODE/NAME --}}
-        <tr class="table-light">
-            <th width="20%">Account Code / Name</th>
-            <td>
-                {{ $acc->ac_code ?? '-' }} - {{ $acc->ac_name ?? '-' }}
-            </td>
-
-            <th width="20%">Status</th>
-            <td>
-                @if(($acc->status ?? 1) == 1)
-                    <span class="badge bg-success">Active</span>
-                @else
-                    <span class="badge bg-danger">Inactive</span>
-                @endif
-            </td>
-        </tr>
-
         <tr>
-            <th>Opening Date</th>
+            <th width="20%">Opening Date</th>
             <td>
                 {{ !empty($acc->opp_date) ? \Carbon\Carbon::parse($acc->opp_date)->format('d-m-Y') : '-' }}
             </td>
 
-            <th>Phone No</th>
+            <th width="20%">Phone No</th>
             <td>{{ $acc->phone_no ?? '-' }}</td>
         </tr>
 
@@ -95,8 +84,6 @@
             <th>Days Limit</th>
             <td>{{ $acc->days_limit ?? 0 }}</td>
         </tr>
-
-        
 
         <tr class="table-light">
             <th>Account Type</th>
@@ -139,8 +126,7 @@
         <button type="button"
             class="btn btn-warning modal-with-zoom-anim ws-normal modal-with-form"
             onclick="getAccountDetails({{ $acc->ac_code }})"
-            href="#updateModal"
-            title="Edit JV1">
+            href="#updateModal">
             <i class="fas fa-edit"></i> Edit
         </button>
 
@@ -192,5 +178,4 @@
             }
         });
 	}
-
- </script>
+</script>
