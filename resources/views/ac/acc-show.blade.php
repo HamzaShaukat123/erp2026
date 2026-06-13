@@ -119,11 +119,14 @@
             <td colspan="3">{{ $acc->remarks ?? '-' }}</td>
         </tr>
         <tr>
+
+			<th>Account Type</th>
+            <td>{{ $acc->sub ?? '-' }}</td>
+
             <th>Group Code</th>
             <td>{{ $acc->group_name ?? '-' }}</td>
 
-            <th>Account Type</th>
-            <td>{{ $acc->AccountType ?? '-' }}</td>
+            
         </tr>
 
     </tbody>
