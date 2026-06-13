@@ -683,8 +683,8 @@
 
 
 
-    
-    Route::get('/ac/show/{id}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
+
+    Route::get('/ac/show/{ac_code}', [App\Http\Controllers\COAController::class, 'show'])->name('show-acc');
 
     
     

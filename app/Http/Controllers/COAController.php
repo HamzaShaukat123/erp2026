@@ -69,7 +69,7 @@ class COAController extends Controller
                 'ac_area.area'
             )
             ->where('ac.status', 1)
-            ->where('ac.ac_code ', $id)   // IMPORTANT
+            ->where('ac.ac_code', $id)
             ->first();
 
         return view('ac.acc-show', compact('acc'));
