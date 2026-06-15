@@ -242,7 +242,7 @@ class COAController extends Controller
 
         // return redirect()->route('all-acc');
 
-        return redirect()->route('show-acc', ['ac_cod' => $request->ac_cod]);
+        return redirect()->route('show-acc', ['ac_code' => $acc->ac_code]);
     }
 
     public function getAccountDetails(Request $request)
