@@ -70,7 +70,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-danger" aria-label="Print PDF" onclick="printPDF('sale')"><i class="fa fa-file-pdf"></i> Print PDF</a>
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('sale')"><i class="fa fa-file-excel"></i> Excel</a>      
                                     </div>
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
@@ -119,7 +119,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('purchase')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>

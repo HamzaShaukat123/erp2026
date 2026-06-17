@@ -76,7 +76,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-danger" aria-label="Print PDF" onclick="printPDF('sale1')"><i class="fa fa-file-pdf"></i> Print PDF</a>
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('sale1')"><i class="fa fa-file-excel"></i> Excel</a>      
                                     </div>
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
@@ -126,7 +126,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('purchase1')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
@@ -174,7 +174,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-danger" aria-label="Print PDF" onclick="printPDF('sale2')"><i class="fa fa-file-pdf"></i> Print PDF</a>
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('sale2')"><i class="fa fa-file-excel"></i> Excel</a>      
                                     </div>
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
@@ -225,7 +225,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('purchase2')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>

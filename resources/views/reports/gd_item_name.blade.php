@@ -82,7 +82,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('IL')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
 
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0 rep-datatable-default">
                                             <thead>
                                                 <tr>
@@ -137,7 +137,7 @@
                                             <i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0 rep-datatable-default">
                                             <thead>
                                                 <tr>
@@ -191,7 +191,7 @@
                                             <i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0 rep-datatable-default">
                                             <thead>
                                                 <tr>
@@ -240,7 +240,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('bal')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0 rep-datatable-default">
                                             <thead>
                                                 <tr>

@@ -58,7 +58,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('AG')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
@@ -114,7 +114,7 @@
                                         <a class="mb-1 mt-1 me-1 btn btn-success" aria-label="Export to Excel" onclick="downloadExcel('SHOA')"><i class="fa fa-file-excel"></i> Excel</a>   
                                     </div>
                                     
-                                    <div class="col-12 mt-4">
+                                    <div class="modal-wrapper table-scroll">
                                         <table class="table table-bordered table-striped mb-0">
                                             <thead>
                                                 <tr>
