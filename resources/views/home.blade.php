@@ -2065,8 +2065,8 @@
 																<div class="form-group">
 																	<select data-plugin-selecttwo class="form-control select2-js" id="hr_monthly_tonage_of_coa" name="account_name" required onchange="getMonthlyTonageOfCustomer()">
 																		<option value="" disabled selected>Select Account</option>
-																		@foreach($coa as $key => $row)	
-																			<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+																		@foreach($emply as $key => $row)	
+																			<option value="{{$row->id}}">{{$row->name}}</option>
 																		@endforeach
 																	</select>
 																</div>

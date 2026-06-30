@@ -62,6 +62,8 @@ class HomeController extends Controller
             $dash_pur_2_summary_monthly_companywise = dash_pur_2_summary_monthly_companywise::get();
     
             $coa = AC::where('status', 1)->get();
+
+            $emply = users::where('status', 1)->get();
     
             return view('home', compact('receivables','payables','short_term_loan','long_term_loan','pdc','bal_pdc','banks','cash','foreign','login_users','last_month_purchase','last_month_sale','dash_pur_2_summary_monthly_companywise','coa'));
         }
