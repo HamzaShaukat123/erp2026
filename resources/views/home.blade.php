@@ -2041,71 +2041,43 @@
 								</div>
 
 								<div id="PETTY_CASH" class="tab-pane">
-    <div class="row form-group pb-3">
+									<div class="row form-group pb-3">
 
-        <div class="col-12">
-            <section class="card">
-                
-                <header class="card-header">
-                    <div class="card-actions">
-                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-                    </div>
-                    <h2 class="card-title">Petty Cash Detail</h2>
-                </header>
+										<div class="col-12">
+											<section class="card">
+												
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+													<h2 class="card-title">Petty Cash Detail</h2>
+												</header>
 
-                <div class="card-body">
+												<div class="card-body">
+													<div class="row mb-2">
+														<div class="col-lg-10">
+															<div class="form-group">
+															
+																<select data-plugin-selecttwo class="form-control select2-js" id="hr_monthly_tonage_of_coa" name="account_name" required onchange="getMonthlyTonageOfCustomer()">
+																	<option value="" disabled selected>Select Account</option>
+																	@foreach($coa as $key => $row)	
+																		<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<div class="col-lg-2">
+															<a class="btn btn-primary" style="padding: 0.5rem 0.6rem;" onclick="getMonthlyTonageOfCustomer()"><i class="fa fa-filter"></i></a>
+														</div>
+													</div>
 
-                    <!-- 🔍 FILTER SECTION -->
-                    <div class="row mb-3">
+												</div>
 
-                        <!-- Employee Combo -->
-                        <div class="col-md-4">
-                            <label>Employee Name</label>
-                            <select id="employee_id" class="form-control select2">
-                                <option value="">Select Employee</option>
-                                <!-- Dynamic Data -->
-                                <!-- <option value="1">Hamza</option> -->
-                            </select>
-                        </div>
+											</section>
+										</div>
 
-                        <!-- Search Button -->
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button class="btn btn-primary w-100" onclick="searchPettyCash()">
-                                Search
-                            </button>
-                        </div>
-
-                    </div>
-
-                    <!-- 📊 TABLE -->
-                    <div class="scrollable-div2">
-                        <table class="table table-responsive-md table-striped mb-0">
-                            
-                            <thead class="sticky-tbl-header">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Detail</th>
-                                    <th>Amount</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
-                                    <th>Balance</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="PettyCashTable">
-                                <!-- Dynamic Data -->
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                </div>
-
-            </section>
-        </div>
-
-    </div>
-</div>
+									</div>
+								</div>
 								
 							</div>
 						</div>
