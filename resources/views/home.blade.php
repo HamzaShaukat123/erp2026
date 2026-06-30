@@ -2039,6 +2039,42 @@
 										</div>
 									</div>
 								</div>
+
+								<div id="PETTY_CASH" class="tab-pane">
+									<div class="row form-group pb-3">
+
+										<div class="col-12 col-md-6 mb-3">
+											<section class="card">
+												<header class="card-header">
+													<div class="card-actions">
+														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+													</div>
+
+													<h2 class="card-title">Received PDCs</h2>
+												</header>
+												<div class="card-body scrollable-div2">
+													
+													<table class="table table-responsive-md table-striped mb-0">
+														<thead class="sticky-tbl-header">
+															<tr>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PDC ID</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Chq Date</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Account Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Detail</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Amount</font></font></th>
+															</tr>
+														</thead>
+														<tbody id="RecPDCTable">
+															
+														</tbody>
+													</table>
+												</div>
+											</section>
+										</div>
+
+										
+									</div>
+								</div>
 								
 							</div>
 						</div>
