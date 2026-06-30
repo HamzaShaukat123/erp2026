@@ -2041,71 +2041,83 @@
 								</div>
 
 								<div id="PETTY_CASH" class="tab-pane">
-									<div class="row form-group pb-3">
+    <div class="row form-group pb-3">
 
-										<div class="col-12">
-											<section class="card">
-												
-												<header class="card-header">
-													<div class="card-actions">
-														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-													</div>
-													<h2 class="card-title">Petty Cash Detail</h2>
-												</header>
+        <div class="col-12">
+            <section class="card shadow-sm border-0">
 
-												<div class="card-body">
+                <!-- HEADER -->
+                <header class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title mb-0">Petty Cash Detail</h2>
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    </div>
+                </header>
 
-													<!-- 🔍 FILTER SECTION -->
-													<div class="row mb-3">
+                <div class="card-body">
 
-														<!-- Employee Combo -->
-														
-														<div class="row mb-2">
-															<div class="col-lg-8">
-																<div class="form-group">
-																
-																	<select data-plugin-selecttwo class="form-control select2-js" id="hr_monthly_tonage_of_coa" name="account_name" required onchange="getMonthlyTonageOfCustomer()">
-																		<option value="" disabled selected>Select Account</option>
-																		@foreach($coa as $key => $row)	
-																			<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-																		@endforeach
-																	</select>
-																</div>
-															</div>
-															<div class="col-lg-2">
-																<a class="btn btn-primary" style="padding: 0.5rem 0.6rem;" onclick="getMonthlyTonageOfCustomer()"><i class="fa fa-filter"></i></a>
-															</div>
-														</div>
+                    <!-- 🔍 FILTER SECTION -->
+                    <div class="row align-items-end mb-3">
 
-													<!-- 📊 TABLE -->
-													<div class="scrollable-div2">
-														<table class="table table-responsive-md table-striped mb-0">
-															
-															<thead class="sticky-tbl-header">
-																<tr>
-																	<th>Date</th>
-																	<th>Detail</th>
-																	<th>Amount</th>
-																	<th>Debit</th>
-																	<th>Credit</th>
-																	<th>Balance</th>
-																</tr>
-															</thead>
+                        <!-- Select Account -->
+                        <div class="col-lg-10 col-md-9">
+                            <label class="form-label fw-bold">Select Account</label>
+                            <select data-plugin-selecttwo 
+                                    class="form-control select2-js" 
+                                    id="hr_monthly_tonage_of_coa" 
+                                    name="account_name" 
+                                    required>
+                                
+                                <option value="" disabled selected>Select Account</option>
+                                
+                                @foreach($coa as $key => $row)	
+                                    <option value="{{$row->ac_code}}">
+                                        {{$row->ac_name}}
+                                    </option>
+                                @endforeach
 
-															<tbody id="PettyCashTable">
-																<!-- Dynamic Data -->
-															</tbody>
+                            </select>
+                        </div>
 
-														</table>
-													</div>
+                        <!-- Filter Button -->
+                        <div class="col-lg-2 col-md-3">
+                            <button class="btn btn-primary w-100" 
+                                    onclick="getMonthlyTonageOfCustomer()">
+                                <i class="fa fa-filter me-1"></i> Filter
+                            </button>
+                        </div>
 
-												</div>
+                    </div>
 
-											</section>
-										</div>
+                    <!-- 📊 TABLE -->
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-bordered table-striped mb-0">
 
-									</div>
-								</div>
+                            <thead class="table-dark sticky-top">
+                                <tr>
+                                    <th style="min-width:120px;">Date</th>
+                                    <th>Detail</th>
+                                    <th style="min-width:100px;" class="text-end">Amount</th>
+                                    <th style="min-width:100px;" class="text-end">Debit</th>
+                                    <th style="min-width:100px;" class="text-end">Credit</th>
+                                    <th style="min-width:120px;" class="text-end">Balance</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="PettyCashTable">
+                                <!-- Dynamic Data -->
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+
+    </div>
+</div>
 								
 							</div>
 						</div>
