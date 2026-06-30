@@ -2050,7 +2050,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Received PDCs</h2>
+													<h2 class="card-title">Petty Cash Detail</h2>
 												</header>
 												<div class="card-body scrollable-div2">
 													
