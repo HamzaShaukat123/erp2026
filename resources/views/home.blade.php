@@ -447,6 +447,9 @@
 								<li class="nav-item">
 									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#PDC" href="#PDC" data-bs-toggle="tab">PDC</a>
 								</li>
+								<li class="nav-item">
+									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#PETTY_CASH" href="#PETTY_CASH" data-bs-toggle="tab">PETTY CASH</a>
+								</li>
 							</ul>
 							<div class="tab-content">
 								<div id="PENDING_INVOICES" class="tab-pane">
