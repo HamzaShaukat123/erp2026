@@ -2041,7 +2041,6 @@
 								</div>
 
 								<div id="PETTY_CASH" class="tab-pane">
-<div id="PETTY_CASH" class="tab-pane">
     <div class="row form-group pb-3">
 
         <div class="col-12">
@@ -2056,28 +2055,16 @@
 
                 <div class="card-body">
 
-                    <!-- 🔍 FILTER -->
+                    <!-- 🔍 FILTER SECTION -->
                     <div class="row mb-3">
 
                         <!-- Employee Combo -->
                         <div class="col-md-4">
-                            <label class="col-form-label">
-                                Employee Name <span style="color:red">*</span>
-                            </label>
-
-                            <select 
-                                class="form-control select2-js"  
-                                name="employee_id" 
-                                id="employee_id" 
-                                required
-                            >
-                                <option value="" disabled selected>Select Employee</option>
-
-                                @foreach($employees as $row)    
-                                    <option value="{{ $row->id }}">
-                                        {{ $row->name }}
-                                    </option>
-                                @endforeach
+                            <label>Employee Name</label>
+                            <select id="employee_id" class="form-control select2">
+                                <option value="">Select Employee</option>
+                                <!-- Dynamic Data -->
+                                <!-- <option value="1">Hamza</option> -->
                             </select>
                         </div>
 
@@ -2092,7 +2079,7 @@
 
                     <!-- 📊 TABLE -->
                     <div class="scrollable-div2">
-                        <table class="table table-striped table-bordered mb-0">
+                        <table class="table table-responsive-md table-striped mb-0">
                             
                             <thead class="sticky-tbl-header">
                                 <tr>
@@ -2106,7 +2093,7 @@
                             </thead>
 
                             <tbody id="PettyCashTable">
-                                <!-- Data will come here -->
+                                <!-- Dynamic Data -->
                             </tbody>
 
                         </table>
