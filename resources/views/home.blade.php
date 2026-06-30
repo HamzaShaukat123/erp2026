@@ -2054,21 +2054,49 @@
 												</header>
 
 												<div class="card-body">
-													<div class="row mb-2">
-														<div class="col-lg-10">
-															<div class="form-group">
-															
-																<select data-plugin-selecttwo class="form-control select2-js" id="hr_monthly_tonage_of_coa" name="account_name" required onchange="getMonthlyTonageOfCustomer()">
-																	<option value="" disabled selected>Select Account</option>
-																	@foreach($coa as $key => $row)	
-																		<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-																	@endforeach
-																</select>
+
+													<!-- 🔍 FILTER SECTION -->
+													<div class="row mb-3">
+
+														<!-- Employee Combo -->
+														
+														<div class="row mb-2">
+															<div class="col-lg-10">
+																<div class="form-group">
+																
+																	<select data-plugin-selecttwo class="form-control select2-js" id="hr_monthly_tonage_of_coa" name="account_name" required onchange="getMonthlyTonageOfCustomer()">
+																		<option value="" disabled selected>Select Account</option>
+																		@foreach($coa as $key => $row)	
+																			<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+																		@endforeach
+																	</select>
+																</div>
+															</div>
+															<div class="col-lg-2">
+																<a class="btn btn-primary" style="padding: 0.5rem 0.6rem;" onclick="getMonthlyTonageOfCustomer()"><i class="fa fa-filter"></i></a>
 															</div>
 														</div>
-														<div class="col-lg-2">
-															<a class="btn btn-primary" style="padding: 0.5rem 0.6rem;" onclick="getMonthlyTonageOfCustomer()"><i class="fa fa-filter"></i></a>
-														</div>
+
+													<!-- 📊 TABLE -->
+													<div class="scrollable-div2">
+														<table class="table table-responsive-md table-striped mb-0">
+															
+															<thead class="sticky-tbl-header">
+																<tr>
+																	<th>Date</th>
+																	<th>Detail</th>
+																	<th>Amount</th>
+																	<th>Debit</th>
+																	<th>Credit</th>
+																	<th>Balance</th>
+																</tr>
+															</thead>
+
+															<tbody id="PettyCashTable">
+																<!-- Dynamic Data -->
+															</tbody>
+
+														</table>
 													</div>
 
 												</div>
