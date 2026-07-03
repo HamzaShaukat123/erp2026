@@ -452,6 +452,10 @@
         // PDC Tab
         Route::get('/dashboard-tabs/pdc', [App\Http\Controllers\DashboardPDCTabController::class, 'PDC']);
 
+
+        // Petty Cash Tab
+        Route::get('/dashboard-tabs/petty-cash', [App\Http\Controllers\DashboardPettyCashTabController::class, 'PettyCash']);
+
     });
 
     Route::middleware(['checkPermission:view'])->group(function () {

@@ -3544,7 +3544,7 @@
 				});
 			}
 
-			else if(tabId=="#PETTY_CASH"){
+			else if (tabId == "#PETTY_CASH") {
 
 				var table = document.getElementById('PettyCashTable');
 				while (table.rows.length > 0) {
@@ -3553,84 +3553,56 @@
 
 				$.ajax({
 					type: "GET",
-					url: '/dashboard-tabs/pdc',
-					beforeSend: function() {
-						$('#RecPDCTable, #PaidPDCTable')
-						.html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+					url: '/dashboard-tabs/petty-cash',
+
+					beforeSend: function () {
+						$('#PettyCashTable')
+							.html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
 					},
-					success: function(result) {
+
+					success: function (result) {
 
 						// =========================
-						// PDC RECEIVABLES
+						// Petty Cash
 						// =========================
 						var salesRows = '';
-						var totalRecv = 0;
+						var balance = 0;
 
-						$.each(result['dash_pdc_recv'], function(index, value) {
+						$.each(result['Petty_Cash'], function (index, value) {
 
-							var amount = value['amount'] ? parseFloat(value['amount']) : 0;
-							totalRecv += amount;
+							var debit = value['debit'] ? parseFloat(value['debit']) : 0;
+							var credit = value['credit'] ? parseFloat(value['credit']) : 0;
+
+							balance += debit - credit;
 
 							salesRows += `<tr>
-								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
-								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] || ''}</td>
-								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
-								<td class="text-end">${amount.toFixed(0)}</td>
+								<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
+								<td>${value['detail'] || ''}</td>
+								<td class="text-end">${(debit + credit).toFixed(0)}</td>
+								<td class="text-end">${debit.toFixed(0)}</td>
+								<td class="text-end">${credit.toFixed(0)}</td>
+								<td class="text-end">${balance.toFixed(0)}</td>
 							</tr>`;
 						});
 
-						// Add Total Row
+						// Total Row
 						salesRows += `
 							<tr class="fw-bold text-danger">
-								<td colspan="4" class="text-end">Total:</td>
-								<td class="text-end">${totalRecv.toFixed(0)}</td>
+								<td colspan="5" class="text-end">Closing Balance:</td>
+								<td class="text-end">${balance.toFixed(0)}</td>
 							</tr>
 						`;
 
-						$('#RecPDCTable').html(salesRows);
-
-
-						// =========================
-						// PDC PAYABLES
-						// =========================
-						var purchaseRows = '';
-						var totalPay = 0;
-
-						$.each(result['dash_pdc_pay'], function(index, value) {
-
-							var amount = value['amount'] ? parseFloat(value['amount']) : 0;
-							totalPay += amount;
-
-							purchaseRows += `<tr>
-								<td>${value['prefix'] || ''} ${value['pdc_id'] || ''}</td>
-								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
-								<td>${value['ac_name'] || ''}</td>
-								<td>${value['remarks'] || ''} ${value['bankname'] || ''} ${value['instrumentnumber'] || ''}</td>
-								<td class="text-end">${amount.toFixed(0)}</td>
-							</tr>`;
-						});
-
-						// Add Total Row
-						purchaseRows += `
-							<tr class="fw-bold text-danger">
-								<td colspan="4" class="text-end">Total:</td>
-								<td class="text-end">${totalPay.toFixed(0)}</td>
-							</tr>
-						`;
-
-						$('#PaidPDCTable').html(purchaseRows);
+						// ✅ IMPORTANT (you missed this)
+						$('#PettyCashTable').html(salesRows);
 					},
-					error: function() {
-						$('#RecPDCTable, #PaidPDCTable')
-						.html('<tr><td colspan="5" class="text-center text-danger">Error loading PDC data</td></tr>');
+
+					error: function () {
+						$('#PettyCashTable')
+							.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
 					}
 				});
 			}
-
-
-
-		}
 
 		function getTabData() {
             const activeTabLink = document.querySelector('.nav-link-dashboard-tab.active');
