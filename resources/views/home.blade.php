@@ -2087,9 +2087,8 @@
 																	<th>Date</th>
 																	<th>User</th>
 																	<th>Detail</th>
-																	<th>Debit</th>
-																	<th>Credit</th>
-																	<th>Balance</th>
+																	<th>Add/IN</th>
+																	<th>Less/Out</th>
 																</tr>
 															</thead>
 
@@ -3492,17 +3491,9 @@
 								<td>${value['detail'] || ''}</td>
 								<td class="text-end">${debit.toFixed(0)}</td>
 								<td class="text-end">${credit.toFixed(0)}</td>
-								<td class="text-end">${balance.toFixed(0)}</td>
 							</tr>`;
 						});
 
-						// Total Row
-						salesRows += `
-							<tr class="fw-bold text-danger">
-								<td colspan="5" class="text-end">Closing Balance:</td>
-								<td class="text-end">${balance.toFixed(0)}</td>
-							</tr>
-						`;
 
 						// ✅ IMPORTANT (you missed this)
 						$('#PettyCashTable').html(salesRows);
