@@ -3462,6 +3462,53 @@
 			});
 
 			}
+			else if(tabId=="#PDC"){
+				var table = document.getElementById('RecPDCTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('PaidPDCTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				$.ajax({
+					type: "GET",
+					url: '/dashboard-tabs/pdc',
+					success: function(result) {
+						// For Sales Ageing
+						var salesRows = '';
+						$.each(result['dash_pdc_recv'], function (index, value) {
+							salesRows += `<tr>
+								<td>${value['prefix'] ? value['prefix'] : ''} ${value['pdc_id'] ? value['pdc_id'] : ''}</td>
+								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+								<td>${value['remarks'] ? value['remarks'] : ''} ${value['bankname'] ? value['bankname'] : ''} ${value['instrumentnumber'] ? value['instrumentnumber'] : ''}</td>
+								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
+							</tr>`;
+						});
+						$('#RecPDCTable').html(salesRows);
+
+						// For Purchase Ageing
+						var purchaseRows = '';
+						$.each(result['dash_pdc_pay'], function (index, value) {
+							purchaseRows += `<tr>
+								<td>${value['prefix'] ? value['prefix'] : ''} ${value['pdc_id'] ? value['pdc_id'] : ''}</td>
+								<td>${value['chqdate'] ? moment(value['chqdate']).format('D-M-YY') : ''}</td>
+								<td>${value['ac_name'] ? value['ac_name'] : ''}</td>
+								<td>${value['remarks'] ? value['remarks'] : ''} ${value['bankname'] ? value['bankname'] : ''} ${value['instrumentnumber'] ? value['instrumentnumber'] : ''}</td>
+								<td>${value['amount'] ? value['amount'].toFixed(0) : ''}</td>
+							</tr>`;
+						});
+						$('#PaidPDCTable').html(purchaseRows);
+					},
+					error: function() {
+						alert("Error loading PDC data");
+					}
+				});
+
+			}
 			else if (tabId == "#PETTY_CASH") {
 
 				var table = document.getElementById('PettyCashTable');
