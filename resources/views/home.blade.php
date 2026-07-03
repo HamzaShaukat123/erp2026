@@ -2078,8 +2078,16 @@
 														<!-- Filter Button -->
 														<div class="col-lg-2 col-md-3">
 															<button class="btn btn-primary w-100"
-																	onclick="getMonthlyTonageOfCustomer()">
+																	onclick="getPettyCash()">
 																<i class="fa fa-filter"></i> Filter
+															</button>
+														</div>
+
+														<!-- Entry -->
+														<div class="col-lg-2 col-md-3">
+															<button class="btn btn-primary w-100"
+																	onclick="EntryPettyCash()">
+																<i class="fa fa-filter"></i> Entry
 															</button>
 														</div>
 
@@ -3532,6 +3540,65 @@
 			case 3: return day + 'rd';
 			default: return day + 'th';
 			}
+		}
+
+
+
+		function getPettyCash() {
+
+			var accountId = $('#petty_cash_account_name').val();
+
+			if (!accountId) {
+				alert('Please select account');
+				return;
+			}
+
+			var table = document.getElementById('PettyCashTable');
+			while (table.rows.length > 0) {
+				table.deleteRow(0);
+			}
+
+			$.ajax({
+				type: "GET",
+				url: '/dashboard-tabs/petty-cash',
+				data: {
+					account_id: accountId   // ✅ send selected account
+				},
+
+				beforeSend: function () {
+					$('#PettyCashTable')
+						.html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+				},
+
+				success: function (result) {
+
+					var rows = '';
+					var balance = 0;
+
+					$.each(result['petty_cash'], function (index, value) {
+
+						var debit = value['debit'] ? parseFloat(value['debit']) : 0;
+						var credit = value['credit'] ? parseFloat(value['credit']) : 0;
+
+						balance += debit - credit;
+
+						rows += `<tr>
+							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
+							<td>${value['user_name'] || ''}</td>
+							<td>${value['detail'] || ''}</td>
+							<td class="text-end">${debit.toFixed(0)}</td>
+							<td class="text-end">${credit.toFixed(0)}</td>
+						</tr>`;
+					});
+
+					$('#PettyCashTable').html(rows);
+				},
+
+				error: function () {
+					$('#PettyCashTable')
+						.html('<tr><td colspan="5" class="text-center text-danger">Error loading data</td></tr>');
+				}
+			});
 		}
 
 	</script>									
