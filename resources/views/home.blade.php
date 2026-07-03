@@ -2041,11 +2041,11 @@
 								</div>
 
 								<div id="PETTY_CASH" class="tab-pane">
-									<div class="row form-group pb-3">
+									<div class="row pb-3">
 
 										<div class="col-12">
 											<section class="card">
-												
+
 												<header class="card-header">
 													<div class="card-actions">
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
@@ -2056,39 +2056,46 @@
 												<div class="card-body">
 
 													<!-- 🔍 FILTER SECTION -->
-													<div class="row mb-3">
+													<div class="row mb-3 align-items-end">
 
-														<!-- Employee Combo -->
-														
-														<div class="row mb-2">
-															<div class="col-lg-3">
-																<div class="form-group">
-																	<select data-plugin-selecttwo class="form-control select2-js" id="petty_cash_account_name" name="petty_account_name" required onchange="getMonthlyTonageOfCustomer()">
-																		<option value="" disabled selected>Select Account</option>
-																		@foreach($emply as $key => $row)	
-																			<option value="{{$row->id}}">{{$row->name}}</option>
-																		@endforeach
-																	</select>
-																</div>
-															</div>
-															<div class="col-lg-2">
-																<a class="btn btn-primary" style="padding: 0.5rem 0.6rem;" onclick="getMonthlyTonageOfCustomer()">
-																	<i class="fa fa-filter"></i>
-																</a>
+														<!-- Account Select -->
+														<div class="col-lg-4 col-md-6">
+															<div class="form-group">
+																<label>Select Account</label>
+																<select data-plugin-selecttwo 
+																		class="form-control select2-js" 
+																		id="petty_cash_account_name" 
+																		name="petty_account_name" 
+																		required>
+																	<option value="" disabled selected>Select Account</option>
+																	@foreach($emply as $key => $row)    
+																		<option value="{{$row->id}}">{{$row->name}}</option>
+																	@endforeach
+																</select>
 															</div>
 														</div>
 
+														<!-- Filter Button -->
+														<div class="col-lg-2 col-md-3">
+															<button class="btn btn-primary w-100"
+																	onclick="getMonthlyTonageOfCustomer()">
+																<i class="fa fa-filter"></i> Filter
+															</button>
+														</div>
+
+													</div>
+
 													<!-- 📊 TABLE -->
 													<div class="scrollable-div2">
-														<table class="table table-responsive-md table-striped mb-0">
-															
+														<table class="table table-bordered table-striped mb-0">
+
 															<thead class="sticky-tbl-header">
 																<tr>
 																	<th>Date</th>
 																	<th>User</th>
 																	<th>Detail</th>
-																	<th>Add/IN</th>
-																	<th>Less/Out</th>
+																	<th class="text-end">Add / IN</th>
+																	<th class="text-end">Less / OUT</th>
 																</tr>
 															</thead>
 
