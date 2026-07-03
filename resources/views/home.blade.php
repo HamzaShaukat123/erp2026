@@ -3584,7 +3584,7 @@
 
 						rows += `<tr>
 							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
-							<td>${value['user_name'] || ''}</td>
+							<td>${value['user_id'] || ''}</td>
 							<td>${value['detail'] || ''}</td>
 							<td class="text-end">${debit.toFixed(0)}</td>
 							<td class="text-end">${credit.toFixed(0)}</td>
