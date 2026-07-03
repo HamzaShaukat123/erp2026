@@ -65,7 +65,7 @@ class HomeController extends Controller
 
             $emply = users::where('status', 1)->get();
     
-            return view('home', compact('receivables','payables','short_term_loan','long_term_loan','pdc','bal_pdc','banks','cash','foreign','login_users','last_month_purchase','last_month_sale','dash_pur_2_summary_monthly_companywise','coa'));
+            return view('home', compact('receivables','payables','short_term_loan','long_term_loan','pdc','bal_pdc','banks','cash','foreign','login_users','last_month_purchase','last_month_sale','dash_pur_2_summary_monthly_companywise','coa','emply'));
         }
         else{
             $coa = AC::where('status', 1)->get();
