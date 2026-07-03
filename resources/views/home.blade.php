@@ -2086,7 +2086,6 @@
 																<tr>
 																	<th>Date</th>
 																	<th>Detail</th>
-																	<th>Amount</th>
 																	<th>Debit</th>
 																	<th>Credit</th>
 																	<th>Balance</th>
@@ -3488,8 +3487,8 @@
 
 							salesRows += `<tr>
 								<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
+								<td>${value['user_id'] || ''}</td>
 								<td>${value['detail'] || ''}</td>
-								<td class="text-end">${(debit + credit).toFixed(0)}</td>
 								<td class="text-end">${debit.toFixed(0)}</td>
 								<td class="text-end">${credit.toFixed(0)}</td>
 								<td class="text-end">${balance.toFixed(0)}</td>
