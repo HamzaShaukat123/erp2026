@@ -2085,6 +2085,7 @@
 															<thead class="sticky-tbl-header">
 																<tr>
 																	<th>Date</th>
+																	<th>User</th>
 																	<th>Detail</th>
 																	<th>Debit</th>
 																	<th>Credit</th>
@@ -3478,7 +3479,7 @@
 						var salesRows = '';
 						var balance = 0;
 
-						$.each(result['Petty_Cash'], function (index, value) {
+						$.each(result['petty_cash'], function (index, value) {
 
 							var debit = value['debit'] ? parseFloat(value['debit']) : 0;
 							var credit = value['credit'] ? parseFloat(value['credit']) : 0;
