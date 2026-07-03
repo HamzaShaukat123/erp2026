@@ -2076,14 +2076,6 @@
 															</div>
 														</div>
 
-														<!-- Filter Button -->
-														<div class="col-lg-2 col-md-3">
-															<button class="btn btn-primary w-100"
-																	onclick="getPettyCash()">
-																<i class="fa fa-filter"></i> Filter
-															</button>
-														</div>
-
 														<!-- Entry -->
 														<div class="col-lg-2 col-md-3">
 															<button class="btn btn-primary w-100"
