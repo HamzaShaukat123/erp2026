@@ -2066,6 +2066,7 @@
 																		class="form-control select2-js" 
 																		id="petty_cash_account_name" 
 																		name="petty_account_name" 
+																		onchange="getPettyCash()"
 																		required>
 																	<option value="" disabled selected>Select Account</option>
 																	@foreach($emply as $key => $row)    
