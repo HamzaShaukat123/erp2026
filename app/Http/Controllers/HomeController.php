@@ -69,7 +69,8 @@ class HomeController extends Controller
         }
         else{
             $coa = AC::where('status', 1)->get();
-            return view('home', compact('coa'));
+            $emply = users::where('status', 1)->get();
+            return view('home', compact('coa','emply'));
         }
        
     }
