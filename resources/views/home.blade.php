@@ -2080,7 +2080,7 @@
 														<div class="col-lg-2 col-md-3">
 															<button class="btn btn-primary w-100"
 																	onclick="EntryPettyCash()">
-																<i class="fa fa-filter"></i> Entry
+																<i class="fas fa-plus"></i> New Entry
 															</button>
 														</div>
 
