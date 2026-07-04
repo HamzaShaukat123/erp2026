@@ -3672,6 +3672,7 @@
 
 
 
+		
 		function getPettyCash() {
 
 			var accountId = $('#petty_cash_account_name').val();
@@ -3690,12 +3691,12 @@
 				type: "GET",
 				url: '/dashboard-tabs/petty-cash',
 				data: {
-					account_id: accountId   // ✅ send selected account
+					account_id: accountId
 				},
 
 				beforeSend: function () {
 					$('#PettyCashTable')
-						.html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+						.html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
 				},
 
 				success: function (result) {
@@ -3717,10 +3718,10 @@
 							<td>${debit.toFixed(0)}</td>
 							<td>${credit.toFixed(0)}</td>
 							<td>
-									<a href="#" class="">
-										<i class="fas fa-pencil-alt text-success"></i>
-									</a>
-								</td>
+								<a href="#">
+									<i class="fas fa-pencil-alt text-success"></i>
+								</a>
+							</td>
 						</tr>`;
 					});
 
@@ -3729,45 +3730,43 @@
 
 				error: function () {
 					$('#PettyCashTable')
-						.html('<tr><td colspan="5" class="text-center text-danger">Error loading data</td></tr>');
+						.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
 				}
 			});
 		}
 
 
-
-
 		$(document).ready(function () {
 
-			// 🔹 Initialize Select2
+			// ✅ Initialize Select2
 			$('#petty_cash_account_name').select2();
 
-			// 🔹 Function to set textbox value (ID)
+			// ✅ Set textbox value from Select2
 			function setTextboxValue() {
-				var selectedValue = $('#petty_cash_account_name').val(); // 👉 ID
+				var data = $('#petty_cash_account_name').select2('data');
 
-				if(selectedValue){
-					$('#petty_extra_detail').val(selectedValue);
+				if (data.length > 0) {
+					$('#petty_extra_detail').val(data[0].text); // 👉 Name
 				} else {
 					$('#petty_extra_detail').val('');
 				}
 			}
 
-			// 🔹 On page load
-			setTimeout(function(){
-				setTextboxValue();
-			}, 300);
+			// ✅ Run on page load
+			setTextboxValue();
 
-			// 🔹 On change
+			// ✅ Load data if already selected (important for user != 2)
+			if ($('#petty_cash_account_name').val()) {
+				getPettyCash();
+			}
+
+			// ✅ On change
 			$('#petty_cash_account_name').on('change', function () {
 				setTextboxValue();
-			});
-
-			// 🔹 On Select2 select
-			$('#petty_cash_account_name').on('select2:select', function () {
-				setTextboxValue();
+				getPettyCash();
 			});
 
 		});
+
 	</script>									
 </html>
