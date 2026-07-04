@@ -2078,13 +2078,8 @@
 
 														<!-- Entry -->
 														<div class="col-lg-2 col-md-3">
-															<button class="btn btn-primary w-100"
-																	onclick="EntryPettyCash()">
-																<i class="fas fa-plus"></i> New Entry
-															</button>
-
 															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#EntryPettyCash">
-																<i class="fas fa-plus"></i> New Voucher
+																<i class="fas fa-plus"></i> New Entry
 															</button>
 														</div>
 
@@ -2141,31 +2136,36 @@
 					
 					<div class="card-body">
 						<div class="row form-group">
-							<div class="col-lg-6">
-								<label>JV1 Code</label>
-								<input type="number" class="form-control" placeholder="JV1 Code" required disabled>
-								<input type="hidden" id="isInduced" name="isInduced" value="0" class="form-control" >
-								<input type="hidden" name="pdc_id" id="pdc_id" value="">
-								<input type="hidden" name="pdc_prefix" id="pdc_prefix" value="">
 
-							</div>
+							<div class="col-lg-6 mb-2">
+                                <label>Account Credit<span style="color: red;"><strong>*</strong></span></label>
+
+                                <select  data-plugin-selecttwo class="form-control select2-js" name ="ac_cr_sid" required>
+                                    <option value="" disabled selected>Select Account</option>
+                                        @foreach($emply as $key => $row)    
+                                            <option value="{{$row->id}}">{{$row->name}}</option>
+                                        @endforeach
+                                </select>  
+                                
+                                <input type="hidden" name="ac_cr_sid_hidden" id="ac_cr_sid_hidden">                           
+                            </div>
+
 							<div class="col-lg-6 mb-2">
 								<label>Date</label>
 								<input type="date" class="form-control" placeholder="Date" name="date" value="<?php echo date('Y-m-d'); ?>" required>
 							</div>
 							
 							<div class="col-lg-6 mb-2">
-								<label>Amount<span style="color: red;"><strong>*</strong></span></label>
-								<input type="number" class="form-control" placeholder="Amount" value="0" step="any" name="amount" required>
+								<label>Add<span style="color: red;"><strong>*</strong></span></label>
+								<input type="number" class="form-control" placeholder="Add" value="0" step="any" name="debit" required>
 							</div>
-
 							<div class="col-lg-6 mb-2">
-								<label>Attachments</label>
-								<input type="file" class="form-control" name="att[]" multiple accept=".zip, appliation/zip, application/pdf, image/png, image/jpeg">
-							</div>  
+								<label>Less<span style="color: red;"><strong>*</strong></span></label>
+								<input type="number" class="form-control" placeholder="Less" value="0" step="any" name="credit" required>
+							</div>
 							<div class="col-lg-12 mb-2">
-								<label>Remarks</label>
-								<textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" name="remarks"> </textarea>       
+								<label>Detail</label>
+								<textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Detail" name="detail"> </textarea>       
 							</div>
 							
 							
