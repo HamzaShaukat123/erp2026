@@ -2093,8 +2093,7 @@
 
 														<div class="col-lg-3 col-md-4">
 															<div class="form-group">
-																<label>Extra Detail</label>
-																<input type="text" 
+																<input type="hidden" 
 																	class="form-control" 
 																	id="petty_extra_detail" 
 																	name="petty_extra_detail" 
