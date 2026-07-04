@@ -455,7 +455,7 @@
 
         // Petty Cash Tab
         Route::get('/dashboard-tabs/petty-cash', [App\Http\Controllers\DashboardPettyCashTabController::class, 'PettyCash']);
-        Route::post('/dashboard-tabs/petty-cash/create', [App\Http\Controllers\DashboardPettyCashTabController::class, 'store'])->name('store-petty');
+       
 
 
     });
@@ -686,6 +686,10 @@
 
     Route::get('/salesageing/all-salesageing', [App\Http\Controllers\SalesAgeingController::class, 'index'])->name('all-salesageing');
     Route::post('/salesageing/delete', [App\Http\Controllers\SalesAgeingController::class, 'destroy'])->name('delete-salesageing');
+
+
+
+     Route::post('/dashboard-tabs/petty-cash/create', [App\Http\Controllers\DashboardPettyCashTabController::class, 'store'])->name('store-petty');
 
 
 
