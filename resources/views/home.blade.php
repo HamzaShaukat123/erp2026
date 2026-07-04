@@ -2064,7 +2064,7 @@
 																<label>Select Account</label>
 																<select data-plugin-selecttwo 
 																		class="form-control select2-js" 
-																		id="petty_cash_account_name" 
+																		id="petty_cash_account_name1" 
 																		name="petty_account_name" 
 																		onchange="getPettyCash()"
 																		required>
@@ -2082,7 +2082,7 @@
 																<select data-plugin-selecttwo 
 																		class="form-control select2-js" 
 																		id="petty_cash_account_name" 
-																		name="petty_account_name" 
+																		name="petty_account_name2" 
 																		onchange="getPettyCash()"
 																		required>
 
