@@ -2042,97 +2042,73 @@
 
 								<div id="PETTY_CASH" class="tab-pane">
 									<div class="row pb-3">
-
 										<div class="col-12">
 											<section class="card">
 
 												<header class="card-header">
-													<div class="card-actions">
-														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-													</div>
 													<h2 class="card-title">Petty Cash Detail</h2>
 												</header>
 
 												<div class="card-body">
 
-													<!-- 🔍 FILTER SECTION -->
+													<!-- FILTER -->
 													<div class="row mb-3 align-items-end">
 
-														<!-- Account Select -->
-														<div class="col-lg-4 col-md-6">
-															<div class="form-group">
-																<label>Select Account</label>
-																<select data-plugin-selecttwo 
-																	class="form-control select2-js" 
-																	id="petty_cash_account_name" 
-																	name="petty_account_name" 
-																	onchange="getPettyCash()"
-																	{{ $activeUserId == 2 ? '' : 'disabled' }}
-																	required>
+														<div class="col-lg-4">
+															<label>Select Account</label>
+															<select data-plugin-selecttwo 
+																class="form-control select2-js" 
+																id="petty_cash_account_name"
+																{{ $activeUserId == 2 ? '' : 'disabled' }}
+																required>
 
-																	<option value="" disabled>Select Account</option>
+																<option value="" disabled>Select Account</option>
 
-																	@foreach($emply as $row)    
-																		<option value="{{$row->id}}" 
-																			{{ $row->id == $activeUserId ? 'selected' : '' }}>
-																			{{$row->name}}
-																		</option>
-																	@endforeach
-
-																</select>
-															</div>
+																@foreach($emply as $row)    
+																	<option value="{{$row->id}}" 
+																		{{ $row->id == $activeUserId ? 'selected' : '' }}>
+																		{{$row->name}}
+																	</option>
+																@endforeach
+															</select>
 														</div>
 
-														<!-- Entry -->
-														<div class="col-lg-2 col-md-3">
-															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#AddPettyCash">
-																<i class="fas fa-plus"></i> New Entry
+														<div class="col-lg-2">
+															<button type="button" class="modal-with-form btn btn-primary" href="#AddPettyCash">
+																+ New Entry
 															</button>
 														</div>
 
-														<!-- Hidden Textbox -->
-
-														<div class="col-lg-3 col-md-4">
-															<div class="form-group">
-																<input type="text" 
-																	class="form-control" 
-																	id="petty_extra_detail" 
-																	name="petty_extra_detail" 
-																	placeholder="Enter detail">
-															</div>
+														<div class="col-lg-3">
+															<input type="text" 
+																class="form-control" 
+																id="petty_extra_detail" 
+																placeholder="Selected User Name">
 														</div>
 
 													</div>
 
-
-
-													<!-- 📊 TABLE -->
+													<!-- TABLE -->
 													<div class="scrollable-div2">
-														<table class="table table-bordered table-striped mb-0">
-
-															<thead class="sticky-tbl-header">
+														<table class="table table-bordered">
+															<thead>
 																<tr>
 																	<th>Date</th>
 																	<th>User</th>
 																	<th>Detail</th>
-																	<th>Add / IN</th>
-																	<th>Less / OUT</th>
+																	<th>Add</th>
+																	<th>Less</th>
 																	<th>Action</th>
 																</tr>
 															</thead>
 
-															<tbody id="PettyCashTable">
-																<!-- Dynamic Data -->
-															</tbody>
-
+															<tbody id="PettyCashTable"></tbody>
 														</table>
 													</div>
 
 												</div>
-
 											</section>
 										</div>
-
 									</div>
 								</div>
 
@@ -2146,67 +2122,61 @@
 			</div>
 		</section>
 
-		<div id="AddPettyCash" class="modal-block modal-block-primary mfp-hide">
+		<div id="AddPettyCash" class="modal-block mfp-hide">
 			<section class="card">
-				<form method="post" action="{{ route('store-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+				<form method="post" action="{{ route('store-petty') }}">
 					@csrf
-					<header class="card-header d-flex align-items-center">
-						<h2 class="card-title">Add Petty Cash</h2>
-						
+
+					<header class="card-header">
+						<h2>Add Petty Cash</h2>
 					</header>
-					
+
 					<div class="card-body">
-						<div class="row form-group">
 
-							<div class="col-lg-6 mb-2">
-                                <label>Name<span style="color: red;"><strong>*</strong></span></label>
+						<div class="row">
 
-                                <select 
-									data-plugin-selecttwo 
+							<div class="col-lg-6">
+								<label>Name *</label>
+								<select 
 									class="form-control select2-js" 
-									id="petty_account_name"
-									name="user_id_name" 
+									name="user_id"
 									required>
-									
-									<option value="" disabled selected>Select Account</option>
-									@foreach($emply as $key => $row)    
+
+									<option value="" disabled selected>Select</option>
+									@foreach($emply as $row)    
 										<option value="{{$row->id}}">{{$row->name}}</option>
 									@endforeach
-								</select>   
-                                  
-								<input type="text" name="user_id_hidden" id="user_id_hidden">                       
-                            </div>
+								</select>
+							</div>
 
-							<div class="col-lg-6 mb-2">
+							<div class="col-lg-6">
 								<label>Date</label>
-								<input type="date" class="form-control" placeholder="Date" name="date" value="<?php echo date('Y-m-d'); ?>" required>
+								<input type="date" class="form-control" name="date" value="{{ date('Y-m-d') }}">
 							</div>
-							
-							<div class="col-lg-6 mb-2">
-								<label>Add<span style="color: red;"><strong>*</strong></span></label>
-								<input type="number" class="form-control" placeholder="Add" value="0" step="any" name="debit" required>
+
+							<div class="col-lg-6">
+								<label>Add</label>
+								<input type="number" class="form-control" name="debit" value="0">
 							</div>
-							<div class="col-lg-6 mb-2">
-								<label>Less<span style="color: red;"><strong>*</strong></span></label>
-								<input type="number" class="form-control" placeholder="Less" value="0" step="any" name="credit" required>
+
+							<div class="col-lg-6">
+								<label>Less</label>
+								<input type="number" class="form-control" name="credit" value="0">
 							</div>
-							<div class="col-lg-12 mb-2">
+
+							<div class="col-lg-12">
 								<label>Detail</label>
-								<textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Detail" name="detail"> </textarea>       
+								<textarea class="form-control" name="detail"></textarea>
 							</div>
-							
-							
-							
+
 						</div>
-						<footer class="card-footer">
-							<div class="row">
-								<div class="col-md-12 text-end">
-									<button type="submit" class="btn btn-primary">Add Petty Cash</button>
-									<button class="btn btn-default modal-dismiss">Cancel</button>
-								</div>
-							</div>
-						</footer>
+
 					</div>
+
+					<footer class="card-footer text-end">
+						<button type="submit" class="btn btn-primary">Save</button>
+					</footer>
+
 				</form>
 			</section>
 		</div>
@@ -2220,7 +2190,9 @@
 			// Get current date and day
 			const now = new Date();
 			const day = getDaySuffix(now.getDate());
-			const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+			const options = { weekd
+			
+			ay: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 			const currentDate = now.toLocaleDateString(undefined, options);
 
 			// Format the date as "Thursday, 5th December 2024"
@@ -3676,118 +3648,76 @@
 			}
 		}
 
-
-
+		//// pettty cash start ///
 		
 		function getPettyCash() {
 
 			var accountId = $('#petty_cash_account_name').val();
 
-			if (!accountId) {
-				alert('Please select account');
-				return;
-			}
-
-			var table = document.getElementById('PettyCashTable');
-			while (table.rows.length > 0) {
-				table.deleteRow(0);
-			}
+			if (!accountId) return;
 
 			$.ajax({
 				type: "GET",
 				url: '/dashboard-tabs/petty-cash',
-				data: {
-					account_id: accountId
-				},
+				data: { account_id: accountId },
 
 				beforeSend: function () {
-					$('#PettyCashTable')
-						.html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
+					$('#PettyCashTable').html('<tr><td colspan="6">Loading...</td></tr>');
 				},
 
-				success: function (result) {
+				success: function (res) {
 
-					var rows = '';
-					var balance = 0;
+					let rows = '';
+					let balance = 0;
 
-					$.each(result['petty_cash'], function (index, value) {
+					$.each(res.petty_cash, function (i, v) {
 
-						var debit = value['debit'] ? parseFloat(value['debit']) : 0;
-						var credit = value['credit'] ? parseFloat(value['credit']) : 0;
+						let debit = parseFloat(v.debit || 0);
+						let credit = parseFloat(v.credit || 0);
 
 						balance += debit - credit;
 
-						rows += `<tr>
-							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
-							<td>${value['user_id'] || ''}</td>
-							<td>${value['detail'] || ''}</td>
-							<td>${debit.toFixed(0)}</td>
-							<td>${credit.toFixed(0)}</td>
+						rows += `
+						<tr>
+							<td>${moment(v.date).format('D-M-YY')}</td>
+							<td>${v.user_name}</td>
+							<td>${v.detail || ''}</td>
+							<td>${debit}</td>
+							<td>${credit}</td>
 							<td>
-								<a href="#">
-									<i class="fas fa-pencil-alt text-success"></i>
-								</a>
+								<a href="#"><i class="fas fa-pencil-alt text-success"></i></a>
 							</td>
 						</tr>`;
 					});
 
 					$('#PettyCashTable').html(rows);
-				},
-
-				error: function () {
-					$('#PettyCashTable')
-						.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
 				}
 			});
 		}
 
-
 		$(document).ready(function () {
 
-			// ✅ Initialize Select2
 			$('#petty_cash_account_name').select2();
 
-			// ✅ Set textbox value from Select2
-			function setTextboxValue() {
-				var data = $('#petty_cash_account_name').select2('data');
-
-				if (data.length > 0) {
-					$('#petty_extra_detail').val(data[0].text); // 👉 Name
-				} else {
-					$('#petty_extra_detail').val('');
-				}
+			function setTextbox() {
+				let data = $('#petty_cash_account_name').select2('data');
+				$('#petty_extra_detail').val(data.length ? data[0].text : '');
 			}
 
-			// ✅ Run on page load
-			setTextboxValue();
+			setTextbox();
 
-			// ✅ Load data if already selected (important for user != 2)
 			if ($('#petty_cash_account_name').val()) {
 				getPettyCash();
 			}
 
-			// ✅ On change
 			$('#petty_cash_account_name').on('change', function () {
-				setTextboxValue();
+				setTextbox();
 				getPettyCash();
 			});
 
 		});
 
-		$(document).ready(function () {
-
-			$('#petty_account_name').on('change', function () {
-				let selectedId = $(this).val();
-				let selectedText = $('#petty_account_name option:selected').text();
-
-				// Set hidden ID
-				$('#user_id_hidden').val(selectedId);
-
-				// OPTIONAL: if you want name also in hidden (not needed usually)
-				// $('#user_name_hidden').val(selectedText);
-			});
-
-		});
+		//// pettty cash end ///
 
 	</script>									
 </html>
