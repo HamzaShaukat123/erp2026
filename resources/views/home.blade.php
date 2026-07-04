@@ -2093,7 +2093,7 @@
 
 														<div class="col-lg-3 col-md-4">
 															<div class="form-group">
-																<input type="hidden" 
+																<input type="text" 
 																	class="form-control" 
 																	id="petty_extra_detail" 
 																	name="petty_extra_detail" 
