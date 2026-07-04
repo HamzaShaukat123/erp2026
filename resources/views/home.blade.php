@@ -2067,18 +2067,19 @@
 																	id="petty_cash_account_name" 
 																	name="petty_account_name" 
 																	onchange="getPettyCash()"
+																	{{ $activeUserId == 2 ? '' : 'disabled' }}
 																	required>
 
-																<option value="" disabled>Select Account</option>
+																	<option value="" disabled>Select Account</option>
 
-																@foreach($emply as $row)    
-																	<option value="{{$row->id}}" 
-																		{{ $row->id == $activeUserId ? 'selected' : '' }}>
-																		{{$row->name}}
-																	</option>
-																@endforeach
+																	@foreach($emply as $row)    
+																		<option value="{{$row->id}}" 
+																			{{ $row->id == $activeUserId ? 'selected' : '' }}>
+																			{{$row->name}}
+																		</option>
+																	@endforeach
 
-															</select>
+																</select>
 															</div>
 														</div>
 
