@@ -2082,6 +2082,10 @@
 																	onclick="EntryPettyCash()">
 																<i class="fas fa-plus"></i> New Entry
 															</button>
+
+															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#EntryPettyCash">
+																<i class="fas fa-plus"></i> New Voucher
+															</button>
 														</div>
 
 													</div>
