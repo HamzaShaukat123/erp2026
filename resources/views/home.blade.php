@@ -2085,6 +2085,7 @@
 																		name="petty_account_name" 
 																		onchange="getPettyCash()"
 																		required>
+
 																	<option value="" disabled>Select Account</option>
 
 																	@foreach($emply as $row)    
@@ -2093,6 +2094,7 @@
 																			{{$row->name}}
 																		</option>
 																	@endforeach
+
 																</select>
 															</div>
 														</div>
