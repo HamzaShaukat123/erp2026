@@ -3766,9 +3766,7 @@
 				getPettyCash();
 			});
 
-		});
 
-		$(document).ready(function () {
 
 			$('#petty_account_name').on('change', function () {
 				let selectedId = $(this).val();
@@ -3782,6 +3780,8 @@
 			});
 
 		});
+
+	
 
 	</script>									
 </html>
