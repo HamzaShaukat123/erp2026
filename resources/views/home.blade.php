@@ -2159,16 +2159,22 @@
 						<div class="row form-group">
 
 							<div class="col-lg-6 mb-2">
-                                <label>Account Credit<span style="color: red;"><strong>*</strong></span></label>
+                                <label>Name<span style="color: red;"><strong>*</strong></span></label>
 
-                                <select  data-plugin-selecttwo class="form-control select2-js" name ="user_id_name" required>
-                                    <option value="" disabled selected>Select Account</option>
-                                        @foreach($emply as $key => $row)    
-                                            <option value="{{$row->id}}">{{$row->name}}</option>
-                                        @endforeach
-                                </select>  
-                                
-                                <input type="text" name="user_id_hidden" id="user_id_hidden">                           
+                                <select 
+									data-plugin-selecttwo 
+									class="form-control select2-js" 
+									id="petty_account_name"
+									name="user_id_name" 
+									required>
+									
+									<option value="" disabled selected>Select Account</option>
+									@foreach($emply as $key => $row)    
+										<option value="{{$row->id}}">{{$row->name}}</option>
+									@endforeach
+								</select>   
+                                  
+								<input type="hidden" name="user_id_hidden" id="user_id_hidden">                       
                             </div>
 
 							<div class="col-lg-6 mb-2">
