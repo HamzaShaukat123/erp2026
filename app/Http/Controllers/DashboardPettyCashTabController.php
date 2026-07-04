@@ -28,13 +28,13 @@ class DashboardPettyCashTabController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'user_id_name' => 'required',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'user_id_name' => 'required',
+        // ]);
         
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json(['errors' => $validator->errors()], 422);
+        // }
 
         $jv1 = new petty_cash();
         $jv1->created_by = session('user_id');
