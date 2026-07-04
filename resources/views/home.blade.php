@@ -3733,5 +3733,29 @@
 			});
 		}
 
+
+
+
+		// ✅ 1. Set default value on page load
+		$(document).ready(function () {
+			var selectedText = $('#petty_cash_account_name option:selected').text();
+			if(selectedText){
+				$('#petty_extra_detail').val(selectedText);
+			}
+
+			// ✅ 2. For normal select change
+			$('#petty_cash_account_name').on('change', function () {
+				var selectedText = $(this).find('option:selected').text();
+				$('#petty_extra_detail').val(selectedText);
+			});
+
+			// ✅ 3. For Select2 change (important)
+			$('#petty_cash_account_name').on('select2:select', function (e) {
+				var selectedText = e.params.data.text;
+				$('#petty_extra_detail').val(selectedText);
+			});
+
+		});
+
 	</script>									
 </html>
