@@ -2085,7 +2085,7 @@
 
 														<!-- Entry -->
 														<div class="col-lg-2 col-md-3">
-															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#EntryPettyCash">
+															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#AddPettyCash">
 																<i class="fas fa-plus"></i> New Entry
 															</button>
 														</div>
@@ -2146,7 +2146,7 @@
 			</div>
 		</section>
 
-		<div id="EntryPettyCash" class="modal-block modal-block-primary mfp-hide">
+		<div id="AddPettyCash" class="modal-block modal-block-primary mfp-hide">
 			<section class="card">
 				<form method="post" action="{{ route('store-jv1') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
 					@csrf
