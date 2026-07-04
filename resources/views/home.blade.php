@@ -3738,18 +3738,18 @@
 
 
 
-		$(document).ready(function () {
+		// $(document).ready(function () {
 
-			let activeUserId = "{{ $activeUserId }}";
+		// 	let activeUserId = "{{ $activeUserId }}";
 
-			// wait a bit if select2 initializes late
-			setTimeout(function () {
-				$('#petty_cash_account_name')
-					.val(activeUserId)
-					.trigger('change.select2');
-			}, 200);
+		// 	// wait a bit if select2 initializes late
+		// 	setTimeout(function () {
+		// 		$('#petty_cash_account_name')
+		// 			.val(activeUserId)
+		// 			.trigger('change.select2');
+		// 	}, 200);
 
-		});
+		// });
 
 	</script>									
 </html>
