@@ -2097,6 +2097,7 @@
 																	<th>Detail</th>
 																	<th class="text-end">Add / IN</th>
 																	<th class="text-end">Less / OUT</th>
+																	<th>Action</th>
 																</tr>
 															</thead>
 
