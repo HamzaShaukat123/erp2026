@@ -26,72 +26,41 @@ class DashboardPettyCashTabController extends Controller
 
 
 
-    // public function store(Request $request)
-    // {
-    //     // $validator = Validator::make($request->all(), [
-    //     //     'user_id_name' => 'required',
-    //     // ]);
-        
-    //     // if ($validator->fails()) {
-    //     //     return response()->json(['errors' => $validator->errors()], 422);
-    //     // }
-
-    //     $jv1 = new petty_cash();
-    //     $jv1->created_by = session('user_id');
-
-    //     if ($request->has('user_id_hidden') && $request->user_id_hidden) {
-    //         $jv1->user_id=$request->user_id_hidden;
-    //     }
-    //     if ($request->has('date') && $request->date) {
-    //         $jv1->date=$request->date;
-    //     }
-    //     if ($request->has('debit') && $request->debit OR $request->debit==0 ) {
-    //         $jv1->debit=$request->debit;
-    //     }
-    //     if ($request->has('credit') && $request->credit OR $request->credit==0 ) {
-    //         $jv1->credit=$request->credit;
-    //     }
-    //     if ($request->has('detail') && $request->detail  OR empty($request->detail)) {
-    //         $jv1->detail=$request->detail;
-    //     }
-    //     $jv1->save();
-
-    //     $latest_jv1 = petty_cash::latest()->first();
-
-        
-    //     // return redirect()->route('home');
-    //     return redirect('/home');
-    // }
-
-
-
     public function store(Request $request)
-{
-    $jv1 = new petty_cash();
-
-    $jv1->user_id = $request->user_id;
-    $jv1->date = $request->date;
-    $jv1->debit = $request->debit;
-    $jv1->credit = $request->credit;
-    $jv1->detail = $request->detail;
-
-    $jv1->save();
-
-    return back()->with('success', 'Saved');
-}
-
-
-public function getPettyCash(Request $request)
     {
-        $data = petty_cash::join('users', 'users.id', '=', 'petty_cash.user_id')
-            ->where('user_id', $request->account_id)
-            ->select('petty_cash.*', 'users.name as user_name')
-            ->orderBy('date', 'asc')
-            ->get();
+        // $validator = Validator::make($request->all(), [
+        //     'user_id_name' => 'required',
+        // ]);
+        
+        // if ($validator->fails()) {
+        //     return response()->json(['errors' => $validator->errors()], 422);
+        // }
 
-        return response()->json([
-            'petty_cash' => $data
-        ]);
+        $jv1 = new petty_cash();
+        $jv1->created_by = session('user_id');
+
+        if ($request->has('user_id_hidden') && $request->user_id_hidden) {
+            $jv1->user_id=$request->user_id_hidden;
+        }
+        if ($request->has('date') && $request->date) {
+            $jv1->date=$request->date;
+        }
+        if ($request->has('debit') && $request->debit OR $request->debit==0 ) {
+            $jv1->debit=$request->debit;
+        }
+        if ($request->has('credit') && $request->credit OR $request->credit==0 ) {
+            $jv1->credit=$request->credit;
+        }
+        if ($request->has('detail') && $request->detail  OR empty($request->detail)) {
+            $jv1->detail=$request->detail;
+        }
+        $jv1->save();
+
+        $latest_jv1 = petty_cash::latest()->first();
+
+        
+        // return redirect()->route('home');
+        return redirect('/home');
     }
 
 }
