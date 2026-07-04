@@ -2115,6 +2115,7 @@
 
 									</div>
 								</div>
+
 								
 							</div>
 						</div>
@@ -2124,6 +2125,83 @@
 				</section>
 			</div>
 		</section>
+
+		<div id="EntryPettyCash" class="modal-block modal-block-primary mfp-hide">
+			<section class="card">
+				<form method="post" action="{{ route('store-jv1') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+					@csrf
+					<header class="card-header d-flex align-items-center">
+						<h2 class="card-title">Add Petty Cash</h2>
+						
+					</header>
+					
+					<div class="card-body">
+						<div class="row form-group">
+							<div class="col-lg-6">
+								<label>JV1 Code</label>
+								<input type="number" class="form-control" placeholder="JV1 Code" required disabled>
+								<input type="hidden" id="isInduced" name="isInduced" value="0" class="form-control" >
+								<input type="hidden" name="pdc_id" id="pdc_id" value="">
+								<input type="hidden" name="pdc_prefix" id="pdc_prefix" value="">
+
+							</div>
+							<div class="col-lg-6 mb-2">
+								<label>Date</label>
+								<input type="date" class="form-control" placeholder="Date" name="date" value="<?php echo date('Y-m-d'); ?>" required>
+							</div>
+							<div class="col-lg-6 mb-2">
+								<label>Account Debit<span style="color: red;"><strong>*</strong></span></label>
+								<select data-plugin-selecttwo class="form-control select2-js" name ="ac_dr_sid" required>
+									<option value="" disabled selected>Select Account</option>
+									@foreach($acc as $key => $row)	
+										<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+									@endforeach
+								</select>
+								<input type="hidden" name="ac_dr_sid_hidden" id="ac_dr_sid_hidden">
+							</div>
+							<div class="col-lg-6 mb-2">
+								<label>Account Credit<span style="color: red;"><strong>*</strong></span></label>
+
+								<select  data-plugin-selecttwo class="form-control select2-js" name ="ac_cr_sid" required>
+									<option value="" disabled selected>Select Account</option>
+									@foreach($acc as $key => $row)	
+										<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+									@endforeach
+								</select> 
+								
+								<input type="hidden" name="ac_cr_sid_hidden" id="ac_cr_sid_hidden">                           
+							</div>
+							<div class="col-lg-6 mb-2">
+								<label>Amount<span style="color: red;"><strong>*</strong></span></label>
+								<input type="number" class="form-control" placeholder="Amount" value="0" step="any" name="amount" required>
+							</div>
+
+							<div class="col-lg-6 mb-2">
+								<label>Attachments</label>
+								<input type="file" class="form-control" name="att[]" multiple accept=".zip, appliation/zip, application/pdf, image/png, image/jpeg">
+							</div>  
+							<div class="col-lg-12 mb-2">
+								<label>Remarks</label>
+								<textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Remarks" name="remarks"> </textarea>       
+							</div>
+							
+							
+							
+						</div>
+						<footer class="card-footer">
+							<div class="row">
+								<div class="col-md-12 text-end">
+									<button type="submit" class="btn btn-primary">Add Petty Cash</button>
+									<button class="btn btn-default modal-dismiss">Cancel</button>
+								</div>
+							</div>
+						</footer>
+					</div>
+				</form>
+			</section>
+		</div>
+
+
         @include('layouts.footerlinks')
 	</body>
 	<script>
