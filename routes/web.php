@@ -689,7 +689,7 @@
 
 
 
-     Route::post('/dashboard-tabs/petty-cash/create', [App\Http\Controllers\DashboardPettyCashTabController::class, 'store'])->name('store-petty');
+     Route::post('/dashboard-tabs-petty-cash/create', [App\Http\Controllers\DashboardPettyCashTabController::class, 'store'])->name('store-petty');
 
 
 
