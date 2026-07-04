@@ -2080,22 +2080,22 @@
 															<div class="form-group">
 																<label>Select Account</label>
 																<select data-plugin-selecttwo 
-																		class="form-control select2-js" 
-																		id="petty_cash_account_name" 
-																		name="petty_account_name2" 
-																		onchange="getPettyCash()"
-																		required>
+																	class="form-control select2-js" 
+																	id="petty_cash_account_name" 
+																	name="petty_account_name2" 
+																	onchange="getPettyCash()"
+																	required>
 
-																	<option value="" disabled>Select Account</option>
+																<option value="" disabled>Select Account</option>
 
-																	@foreach($emply as $row)    
-																		<option value="{{$row->id}}" 
-																			{{ $row->id == $activeUserId ? 'selected' : '' }}>
-																			{{$row->name}}
-																		</option>
-																	@endforeach
+																@foreach($emply as $row)    
+																	<option value="{{$row->id}}" 
+																		{{ $row->id == $activeUserId ? 'selected' : '' }}>
+																		{{$row->name}}
+																	</option>
+																@endforeach
 
-																</select>
+															</select>
 															</div>
 														</div>
 
@@ -3735,6 +3735,21 @@
 				}
 			});
 		}
+
+
+
+		$(document).ready(function () {
+
+			let activeUserId = "{{ $activeUserId }}";
+
+			// wait a bit if select2 initializes late
+			setTimeout(function () {
+				$('#petty_cash_account_name')
+					.val(activeUserId)
+					.trigger('change.select2');
+			}, 200);
+
+		});
 
 	</script>									
 </html>
