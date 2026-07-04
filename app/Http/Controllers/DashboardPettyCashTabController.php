@@ -29,7 +29,7 @@ class DashboardPettyCashTabController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id_hidden' => 'required',
+            'user_id_name' => 'required',
         ]);
         
         if ($validator->fails()) {
