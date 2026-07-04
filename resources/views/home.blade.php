@@ -2147,7 +2147,7 @@
                                         @endforeach
                                 </select>  
                                 
-                                <input type="hidden" name="ac_cr_sid_hidden" id="ac_cr_sid_hidden">                           
+                                <input type="text" name="ac_cr_sid_hidden" id="ac_cr_sid_hidden">                           
                             </div>
 
 							<div class="col-lg-6 mb-2">
