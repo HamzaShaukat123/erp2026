@@ -3738,36 +3738,35 @@
 
 		$(document).ready(function () {
 
-			// 🔹 Initialize Select2 (IMPORTANT)
+			// 🔹 Initialize Select2
 			$('#petty_cash_account_name').select2();
 
-			// 🔹 Function to set textbox value
+			// 🔹 Function to set textbox value (ID)
 			function setTextboxValue() {
-				var selectedText = $('#petty_cash_account_name option:selected').text().trim();
+				var selectedValue = $('#petty_cash_account_name').val(); // 👉 ID
 
-				if(selectedText !== '' && selectedText !== 'Select Account'){
-					$('#petty_extra_detail').val(selectedText);
+				if(selectedValue){
+					$('#petty_extra_detail').val(selectedValue);
 				} else {
 					$('#petty_extra_detail').val('');
 				}
 			}
 
-			// 🔹 On page load (default selected)
+			// 🔹 On page load
 			setTimeout(function(){
 				setTextboxValue();
-			}, 300); // delay for select2 render
+			}, 300);
 
-			// 🔹 On normal change
+			// 🔹 On change
 			$('#petty_cash_account_name').on('change', function () {
 				setTextboxValue();
 			});
 
-			// 🔹 On Select2 selection
+			// 🔹 On Select2 select
 			$('#petty_cash_account_name').on('select2:select', function () {
 				setTextboxValue();
 			});
 
 		});
-
 	</script>									
 </html>
