@@ -3736,23 +3736,35 @@
 
 
 
-		// ✅ 1. Set default value on page load
 		$(document).ready(function () {
-			var selectedText = $('#petty_cash_account_name option:selected').text();
-			if(selectedText){
-				$('#petty_extra_detail').val(selectedText);
+
+			// 🔹 Initialize Select2 (IMPORTANT)
+			$('#petty_cash_account_name').select2();
+
+			// 🔹 Function to set textbox value
+			function setTextboxValue() {
+				var selectedText = $('#petty_cash_account_name option:selected').text().trim();
+
+				if(selectedText !== '' && selectedText !== 'Select Account'){
+					$('#petty_extra_detail').val(selectedText);
+				} else {
+					$('#petty_extra_detail').val('');
+				}
 			}
 
-			// ✅ 2. For normal select change
+			// 🔹 On page load (default selected)
+			setTimeout(function(){
+				setTextboxValue();
+			}, 300); // delay for select2 render
+
+			// 🔹 On normal change
 			$('#petty_cash_account_name').on('change', function () {
-				var selectedText = $(this).find('option:selected').text();
-				$('#petty_extra_detail').val(selectedText);
+				setTextboxValue();
 			});
 
-			// ✅ 3. For Select2 change (important)
-			$('#petty_cash_account_name').on('select2:select', function (e) {
-				var selectedText = e.params.data.text;
-				$('#petty_extra_detail').val(selectedText);
+			// 🔹 On Select2 selection
+			$('#petty_cash_account_name').on('select2:select', function () {
+				setTextboxValue();
 			});
 
 		});
