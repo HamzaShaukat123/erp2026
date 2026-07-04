@@ -2090,12 +2090,17 @@
 														</div>
 
 														<!-- Hidden Textbox -->
-															<div class="col-lg-3 col-md-4" id="pettyHiddenBox" style="display: none;">
-																<div class="form-group">
-																	<label>Extra Detail</label>
-																	<input type="text" class="form-control" id="petty_extra_detail" placeholder="Enter detail">
-																</div>
+
+														<div class="col-lg-3 col-md-4">
+															<div class="form-group">
+																<label>Extra Detail</label>
+																<input type="text" 
+																	class="form-control" 
+																	id="petty_extra_detail" 
+																	name="petty_extra_detail" 
+																	placeholder="Enter detail">
 															</div>
+														</div>
 
 													</div>
 
