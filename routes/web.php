@@ -455,6 +455,8 @@
 
         // Petty Cash Tab
         Route::get('/dashboard-tabs/petty-cash', [App\Http\Controllers\DashboardPettyCashTabController::class, 'PettyCash']);
+        Route::post('/dashboard-tabs/petty-cash/create', [App\Http\Controllers\DashboardPettyCashTabController::class, 'store'])->name('store-petty');
+
 
     });
 

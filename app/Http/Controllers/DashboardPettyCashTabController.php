@@ -23,4 +23,42 @@ class DashboardPettyCashTabController extends Controller
             'petty_cash' => $petty_cash,
         ]);
     }
+
+
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id_hidden' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $jv1 = new petty_cash();
+        $jv1->created_by = session('user_id');
+
+        if ($request->has('user_id_hidden') && $request->user_id_hidden) {
+            $jv1->user_id_hidden=$request->user_id_hidden;
+        }
+        if ($request->has('date') && $request->date) {
+            $jv1->date=$request->date;
+        }
+        if ($request->has('debit') && $request->debit OR $request->debit==0 ) {
+            $jv1->debit=$request->debit;
+        }
+        if ($request->has('credit') && $request->credit OR $request->credit==0 ) {
+            $jv1->credit=$request->credit;
+        }
+        if ($request->has('detail') && $request->detail  OR empty($request->detail)) {
+            $jv1->detail=$request->detail;
+        }
+        $jv1->save();
+
+        $latest_jv1 = petty_cash::latest()->first();
+
+        return redirect()->route('all-pdc');
+    }
+
 }

@@ -2148,7 +2148,7 @@
 
 		<div id="AddPettyCash" class="modal-block modal-block-primary mfp-hide">
 			<section class="card">
-				<form method="post" action="{{ route('store-jv1') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+				<form method="post" action="{{ route('store-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
 					@csrf
 					<header class="card-header d-flex align-items-center">
 						<h2 class="card-title">Add Petty Cash</h2>
@@ -2161,14 +2161,14 @@
 							<div class="col-lg-6 mb-2">
                                 <label>Account Credit<span style="color: red;"><strong>*</strong></span></label>
 
-                                <select  data-plugin-selecttwo class="form-control select2-js" name ="ac_cr_sid" required>
+                                <select  data-plugin-selecttwo class="form-control select2-js" name ="user_id_name" required>
                                     <option value="" disabled selected>Select Account</option>
                                         @foreach($emply as $key => $row)    
                                             <option value="{{$row->id}}">{{$row->name}}</option>
                                         @endforeach
                                 </select>  
                                 
-                                <input type="text" name="ac_cr_sid_hidden" id="ac_cr_sid_hidden">                           
+                                <input type="text" name="user_id_hidden" id="user_id_hidden">                           
                             </div>
 
 							<div class="col-lg-6 mb-2">
