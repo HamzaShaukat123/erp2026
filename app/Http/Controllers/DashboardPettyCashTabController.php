@@ -58,7 +58,7 @@ class DashboardPettyCashTabController extends Controller
 
         $latest_jv1 = petty_cash::latest()->first();
 
-        return redirect()->route('PettyCash');
+        // return redirect()->route('PettyCash');
     }
 
 }
