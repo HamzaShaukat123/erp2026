@@ -2063,26 +2063,9 @@
 															<div class="form-group">
 																<label>Select Account</label>
 																<select data-plugin-selecttwo 
-																		class="form-control select2-js" 
-																		id="petty_cash_account_name1" 
-																		name="petty_account_name" 
-																		onchange="getPettyCash()"
-																		required>
-																	<option value="" disabled selected>Select Account</option>
-																	@foreach($emply as $key => $row)    
-																		<option value="{{$row->id}}">{{$row->name}}</option>
-																	@endforeach
-																</select>
-															</div>
-														</div>
-
-														<div class="col-lg-4 col-md-6">
-															<div class="form-group">
-																<label>Select Account</label>
-																<select data-plugin-selecttwo 
 																	class="form-control select2-js" 
 																	id="petty_cash_account_name" 
-																	name="petty_account_name2" 
+																	name="petty_account_name" 
 																	onchange="getPettyCash()"
 																	required>
 
@@ -3735,21 +3718,6 @@
 				}
 			});
 		}
-
-
-
-		// $(document).ready(function () {
-
-		// 	let activeUserId = "{{ $activeUserId }}";
-
-		// 	// wait a bit if select2 initializes late
-		// 	setTimeout(function () {
-		// 		$('#petty_cash_account_name')
-		// 			.val(activeUserId)
-		// 			.trigger('change.select2');
-		// 	}, 200);
-
-		// });
 
 	</script>									
 </html>
