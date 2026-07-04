@@ -3546,6 +3546,11 @@
 								<td>${value['detail'] || ''}</td>
 								<td class="text-end">${debit.toFixed(0)}</td>
 								<td class="text-end">${credit.toFixed(0)}</td>
+								<td>
+									<a href="#" class="">
+										<i class="fas fa-pencil-alt text-success"></i>
+									</a>
+								</td>
 							</tr>`;
 						});
 
