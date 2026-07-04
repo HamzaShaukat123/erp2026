@@ -3571,62 +3571,62 @@
 				});
 
 			}
-			else if (tabId == "#PETTY_CASH") {
+			// else if (tabId == "#PETTY_CASH") {
 
-				var table = document.getElementById('PettyCashTable');
-				while (table.rows.length > 0) {
-					table.deleteRow(0);
-				}
+			// 	var table = document.getElementById('PettyCashTable');
+			// 	while (table.rows.length > 0) {
+			// 		table.deleteRow(0);
+			// 	}
 
-				$.ajax({
-					type: "GET",
-					url: '/dashboard-tabs/petty-cash',
+			// 	$.ajax({
+			// 		type: "GET",
+			// 		url: '/dashboard-tabs/petty-cash',
 
-					beforeSend: function () {
-						$('#PettyCashTable')
-							.html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
-					},
+			// 		beforeSend: function () {
+			// 			$('#PettyCashTable')
+			// 				.html('<tr><td colspan="6" class="text-center">Loading...</td></tr>');
+			// 		},
 
-					success: function (result) {
+			// 		success: function (result) {
 
-						// =========================
-						// Petty Cash
-						// =========================
-						var salesRows = '';
-						var balance = 0;
+			// 			// =========================
+			// 			// Petty Cash
+			// 			// =========================
+			// 			var salesRows = '';
+			// 			var balance = 0;
 
-						$.each(result['petty_cash'], function (index, value) {
+			// 			$.each(result['petty_cash'], function (index, value) {
 
-							var debit = value['debit'] ? parseFloat(value['debit']) : 0;
-							var credit = value['credit'] ? parseFloat(value['credit']) : 0;
+			// 				var debit = value['debit'] ? parseFloat(value['debit']) : 0;
+			// 				var credit = value['credit'] ? parseFloat(value['credit']) : 0;
 
-							balance += debit - credit;
+			// 				balance += debit - credit;
 
-							salesRows += `<tr>
-								<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
-								<td>${value['user_id'] || ''}</td>
-								<td>${value['detail'] || ''}</td>
-								<td>${debit.toFixed(0)}</td>
-								<td>${credit.toFixed(0)}</td>
-								<td>
-									<a href="#" class="">
-										<i class="fas fa-pencil-alt text-success"></i>
-									</a>
-								</td>
-							</tr>`;
-						});
+			// 				salesRows += `<tr>
+			// 					<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
+			// 					<td>${value['user_id'] || ''}</td>
+			// 					<td>${value['detail'] || ''}</td>
+			// 					<td>${debit.toFixed(0)}</td>
+			// 					<td>${credit.toFixed(0)}</td>
+			// 					<td>
+			// 						<a href="#" class="">
+			// 							<i class="fas fa-pencil-alt text-success"></i>
+			// 						</a>
+			// 					</td>
+			// 				</tr>`;
+			// 			});
 
 
-						// ✅ IMPORTANT (you missed this)
-						$('#PettyCashTable').html(salesRows);
-					},
+			// 			// ✅ IMPORTANT (you missed this)
+			// 			$('#PettyCashTable').html(salesRows);
+			// 		},
 
-					error: function () {
-						$('#PettyCashTable')
-							.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
-					}
-				});
-			}
+			// 		error: function () {
+			// 			$('#PettyCashTable')
+			// 				.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
+			// 		}
+			// 	});
+			// }
 
 		}
 
