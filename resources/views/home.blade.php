@@ -2095,8 +2095,8 @@
 																	<th>Date</th>
 																	<th>User</th>
 																	<th>Detail</th>
-																	<th class="text-end">Add / IN</th>
-																	<th class="text-end">Less / OUT</th>
+																	<th>Add / IN</th>
+																	<th>Less / OUT</th>
 																	<th>Action</th>
 																</tr>
 															</thead>
@@ -3545,8 +3545,8 @@
 								<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
 								<td>${value['user_id'] || ''}</td>
 								<td>${value['detail'] || ''}</td>
-								<td class="text-end">${debit.toFixed(0)}</td>
-								<td class="text-end">${credit.toFixed(0)}</td>
+								<td>${debit.toFixed(0)}</td>
+								<td>${credit.toFixed(0)}</td>
 								<td>
 									<a href="#" class="">
 										<i class="fas fa-pencil-alt text-success"></i>
@@ -3632,8 +3632,8 @@
 							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
 							<td>${value['user_id'] || ''}</td>
 							<td>${value['detail'] || ''}</td>
-							<td class="text-end">${debit.toFixed(0)}</td>
-							<td class="text-end">${credit.toFixed(0)}</td>
+							<td>${debit.toFixed(0)}</td>
+							<td>${credit.toFixed(0)}</td>
 							<td>
 									<a href="#" class="">
 										<i class="fas fa-pencil-alt text-success"></i>
