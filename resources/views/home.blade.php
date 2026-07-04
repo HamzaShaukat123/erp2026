@@ -2076,6 +2076,27 @@
 															</div>
 														</div>
 
+														<div class="col-lg-4 col-md-6">
+															<div class="form-group">
+																<label>Select Account</label>
+																<select data-plugin-selecttwo 
+																		class="form-control select2-js" 
+																		id="petty_cash_account_name" 
+																		name="petty_account_name" 
+																		onchange="getPettyCash()"
+																		required>
+																	<option value="" disabled>Select Account</option>
+
+																	@foreach($emply as $row)    
+																		<option value="{{$row->id}}" 
+																			{{ $row->id == $activeUserId ? 'selected' : '' }}>
+																			{{$row->name}}
+																		</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+
 														<!-- Entry -->
 														<div class="col-lg-2 col-md-3">
 															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#EntryPettyCash">
