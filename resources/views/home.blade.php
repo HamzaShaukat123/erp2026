@@ -3768,5 +3768,20 @@
 
 		});
 
+		$(document).ready(function () {
+
+			$('#petty_account_name').on('change', function () {
+				let selectedId = $(this).val();
+				let selectedText = $('#petty_account_name option:selected').text();
+
+				// Set hidden ID
+				$('#user_id_hidden').val(selectedId);
+
+				// OPTIONAL: if you want name also in hidden (not needed usually)
+				// $('#user_name_hidden').val(selectedText);
+			});
+
+		});
+
 	</script>									
 </html>
