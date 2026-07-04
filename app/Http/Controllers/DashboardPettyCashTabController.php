@@ -39,7 +39,7 @@ class DashboardPettyCashTabController extends Controller
         $jv1 = new petty_cash();
         $jv1->created_by = session('user_id');
 
-        if ($request->has('user_id_hidden') && $request->user_id_hidden) {
+        if ($request->has('user_id') && $request->user_id) {
             $jv1->user_id_hidden=$request->user_id_hidden;
         }
         if ($request->has('date') && $request->date) {
