@@ -2225,7 +2225,7 @@
                                 <select 
 									data-plugin-selecttwo 
 									class="form-control select2-js" 
-									id="petty_account_name"
+									id="petty_account_name_update"
 									name="user_id_name" 
 									{{ $activeUserId == 2 ? '' : 'disabled' }}
 									required>
@@ -3781,7 +3781,7 @@
 							<td>
 								<a class="modal-with-form"
 									href="#UpdatePettyCash"
-									onclick="getPettyCashDetails({{ $row->id }})">
+									onclick="getPettyCashDetails(${value['id']})">
 									<i class="fas fa-pencil-alt text-success"></i>
 								</a>
 							</td>
@@ -3877,7 +3877,7 @@
 				success: function(result){
 					$('#update_id').val(result['id']);
 					$('#update_id_view').val(result['id']);
-					$('#petty_account_name').val(result['user_id']).trigger('change');
+					$('#petty_account_name_update').val(result['user_id']).trigger('change');
 					$('#user_id_hidden').val(result['user_id']);
 					$('#update_add').val(result['debit']);
 					$('#update_less').val(result['credit']);
@@ -3891,11 +3891,20 @@
 		}
 
 
-		$('.modal-with-form').magnificPopup({
-    type: 'inline',
-    preloader: false,
-    focus: '#name'
-});
+		$(document).on('click', '.modal-with-form', function(e) {
+			e.preventDefault();
+
+			var id = $(this).attr('onclick').match(/\d+/)[0];
+
+			getPettyCashDetails(id);
+
+			$.magnificPopup.open({
+				items: {
+					src: '#UpdatePettyCash'
+				},
+				type: 'inline'
+			});
+		});
 
 
 		////// PettyCash Ends //////
