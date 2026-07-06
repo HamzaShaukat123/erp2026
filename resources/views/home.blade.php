@@ -3677,7 +3677,7 @@
 		}
 
 
-
+		////// PettyCash Starts //////
 		
 		function getPettyCash() {
 
@@ -3795,18 +3795,21 @@
 
 		$(document).on('click', '.modal-with-form', function () {
 
-    // Get selected value from main dropdown
-    var selectedUserId = $('#petty_cash_account_name').val();
+			// Get selected value from main dropdown
+			var selectedUserId = $('#petty_cash_account_name').val();
 
-    if (selectedUserId) {
+			if (selectedUserId) {
 
-        // Set value in modal dropdown
-        $('#petty_account_name').val(selectedUserId).trigger('change');
+				// Set value in modal dropdown
+				$('#petty_account_name').val(selectedUserId).trigger('change');
 
-        // Set hidden input (optional)
-        $('#user_id_hidden').val(selectedUserId);
-    }
-});
+				// Set hidden input (optional)
+				$('#user_id_hidden').val(selectedUserId);
+			}
+		});
+
+
+		////// PettyCash Ends //////
 
 	</script>									
 </html>
