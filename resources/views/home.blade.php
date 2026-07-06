@@ -2090,18 +2090,6 @@
 															</button>
 														</div>
 
-														<!-- Hidden Textbox -->
-
-														<div class="col-lg-3 col-md-4">
-															<div class="form-group">
-																<input type="text" 
-																	class="form-control" 
-																	id="petty_extra_detail" 
-																	name="petty_extra_detail" 
-																	placeholder="Enter detail">
-															</div>
-														</div>
-
 													</div>
 
 
@@ -2166,7 +2154,7 @@
 									class="form-control select2-js" 
 									id="petty_account_name"
 									name="user_id_name" 
-									disabled
+									{{ $activeUserId == 2 ? '' : 'disabled' }}
 									required>
 									
 									<option value="" disabled selected>Select Account</option>
@@ -2175,7 +2163,7 @@
 									@endforeach
 								</select>   
                                   
-								<input type="text" name="user_id_hidden" id="user_id_hidden">                       
+								<input type="hidden" name="user_id_hidden" id="user_id_hidden">                       
                             </div>
 
 							<div class="col-lg-6 mb-2">
