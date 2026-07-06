@@ -2091,8 +2091,11 @@
 														</div>
 
 														<div class="col-lg-3 col-md-3">
-															<label style="font-weight:bold; color:red;">
-																Balance: <span id="pettyCashBalance">0</span>
+															<label style="font-weight:bold; color:black; font-size:20px;">
+																Balance: 
+																<span id="pettyCashBalance" class="text-danger" style="font-size:22px; font-weight:bold;">
+																	0
+																</span>
 															</label>
 														</div>
 
