@@ -3779,8 +3779,9 @@
 							<td>${debit.toFixed(0)}</td>
 							<td>${credit.toFixed(0)}</td>
 							<td>
-								<a onclick="getPettyCashDetails({{ $row->auto_lager }})"
-								href="#UpdatePettyCash">
+								<a class="modal-with-form"
+									href="#UpdatePettyCash"
+									onclick="getPettyCashDetails({{ $row->id }})">
 									<i class="fas fa-pencil-alt text-success"></i>
 								</a>
 							</td>
