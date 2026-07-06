@@ -2084,19 +2084,21 @@
 														</div>
 
 														<!-- Entry -->
-														<div class="col-lg-2 col-md-3">
-															<button type="button" class="modal-with-form btn btn-primary mb-2" href="#AddPettyCash">
+														<div class="col-lg-5 col-md-6 d-flex align-items-end justify-content-between">
+
+															<!-- New Entry Button -->
+															<button type="button" 
+																class="modal-with-form btn btn-primary mb-2" 
+																href="#AddPettyCash">
 																<i class="fas fa-plus"></i> New Entry
 															</button>
-														</div>
 
-														<div class="col-lg-3 col-md-3">
-															<label style="font-weight:bold; color:black; font-size:20px;">
-																Balance: 
-																<span id="pettyCashBalance" class="text-danger" style="font-size:22px; font-weight:bold;">
-																	0
-																</span>
-															</label>
+															<!-- Balance Box -->
+															<div class="petty-balance-box">
+																<div class="balance-title">Balance</div>
+																<div id="pettyCashBalance" class="balance-amount">0</div>
+															</div>
+
 														</div>
 
 													</div>
