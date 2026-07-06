@@ -3729,16 +3729,14 @@
 				success: function (result) {
 
 					var rows = '';
-					var totalDebit = 0;
-					var totalCredit = 0;
+					var balance = 0;
 
 					$.each(result['petty_cash'], function (index, value) {
 
 						var debit = value['debit'] ? parseFloat(value['debit']) : 0;
 						var credit = value['credit'] ? parseFloat(value['credit']) : 0;
 
-						totalDebit += debit;
-						totalCredit += credit;
+						balance += debit - credit;
 
 						rows += `<tr>
 							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
@@ -3755,14 +3753,8 @@
 						</tr>`;
 					});
 
-					// ✅ Final Balance Calculation
-					var balance = totalDebit - totalCredit;
-
-					// ✅ Show in textbox
-					$('#update_balance').val(balance.toFixed(0));
-
 					$('#PettyCashTable').html(rows);
-				}
+				},
 
 				error: function () {
 					$('#PettyCashTable')
