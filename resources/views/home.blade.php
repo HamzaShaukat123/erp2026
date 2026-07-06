@@ -2236,7 +2236,7 @@
 									@endforeach
 								</select>   
                                   
-								<input type="text" name="user_id_hidden" id="user_id_hidden">                       
+								<input type="text" name="user_id_hidden" id="user_id_hidden_update">                       
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Add<span style="color: red;"><strong>*</strong></span></label>
@@ -3878,7 +3878,7 @@
 					$('#update_id').val(result['id']);
 					$('#update_id_view').val(result['id']);
 					$('#petty_account_name_update').val(result['user_id']).trigger('change');
-					$('#user_id_hidden').val(result['user_id']);
+					$('#user_id_hidden_update').val(result['user_id']);
 					$('#update_add').val(result['debit']);
 					$('#update_less').val(result['credit']);
 					$('#update_date').val(result['date']);
