@@ -2084,7 +2084,7 @@
 														</div>
 
 														<!-- Entry -->
-														<div class="col-lg-5 col-md-6 d-flex align-items-end justify-content-between">
+														<div class="col-lg-5 col-md-6 d-flex align-items-end">
 
 															<!-- New Entry Button -->
 															<button type="button" 
