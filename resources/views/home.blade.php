@@ -2055,12 +2055,11 @@
 
 												<div class="card-body">
 
-													<!-- 🔍 FILTER SECTION -->
 													<div class="row mb-3 align-items-end">
 
 														<!-- Account Select -->
 														<div class="col-lg-4 col-md-6">
-															<div class="form-group">
+															<div class="form-group mb-0">
 																<select data-plugin-selecttwo 
 																	class="form-control select2-js" 
 																	id="petty_cash_account_name" 
@@ -2082,31 +2081,30 @@
 															</div>
 														</div>
 
-														<!-- Entry -->
-														<div class="col-lg-5 col-md-6 d-flex align-items-end">
+														<!-- Entry + Balance -->
+														<div class="col-lg-4 col-md-6 d-flex align-items-center">
 
-															<!-- New Entry Button -->
+															<!-- Button -->
 															<button type="button" 
-																class="modal-with-form btn btn-primary mb-2 me-2" 
-																href="#AddPettyCash">
+																class="modal-with-form btn btn-primary me-3" 
+																href="#AddPettyCash"
+																style="height: 38px;">
 																<i class="fas fa-plus"></i> New Entry
 															</button>
 
-															<!-- Balance Box -->
-															<div class="petty-balance-box">
-																
-																<label style="font-weight:bold; color:black; font-size:20px;">
-																	Balance: 
-																	<span id="pettyCashBalance" class="text-danger" style="font-size:22px; font-weight:bold;">
-																		0
-																	</span>
-																</label>
+															<!-- Balance -->
+															<div style="line-height:1;">
+																<div style="font-size:13px; color:#6c757d;">Balance</div>
+																<div id="pettyCashBalance" 
+																	class="text-danger" 
+																	style="font-size:20px; font-weight:600;">
+																	0
+																</div>
 															</div>
 
 														</div>
 
 													</div>
-
 
 
 													<!-- 📊 TABLE -->
