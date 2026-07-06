@@ -2101,7 +2101,6 @@
 															<thead class="sticky-tbl-header">
 																<tr>
 																	<th>Date</th>
-																	<th>User</th>
 																	<th>Detail</th>
 																	<th>Add / IN</th>
 																	<th>Less / OUT</th>
@@ -3791,7 +3790,6 @@
 
 						rows += `<tr>
 							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
-							<td>${value['user_id'] || ''}</td>
 							<td>${value['detail'] || ''}</td>
 							<td>${debit.toFixed(0)}</td>
 							<td>${credit.toFixed(0)}</td>
