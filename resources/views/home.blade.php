@@ -2043,7 +2043,7 @@
 								<div id="PETTY_CASH" class="tab-pane">
 									<div class="row pb-3">
 
-										<div class="col-12">
+										<div class="col-6">
 											<section class="card">
 
 												<header class="card-header">
