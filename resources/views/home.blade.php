@@ -3869,25 +3869,25 @@
 
 
 		function getPettyCashDetails(id){
-        $.ajax({
-            type: "GET",
-            url: "/dashboard-tabs/petty-cash/detail",
-            data: {id:id},
-            success: function(result){
-                $('#update_id').val(result['id']);
-                $('#update_id_view').val(result['id']);
-                $('#user_id_name').val(result['user_id']).trigger('change');
-				$('#user_id_hidden').val(result['user_id']);
-                $('#update_add').val(result['debit']);
-				$('#update_less').val(result['credit']);
-                $('#update_date').val(result['date']);
-                $('#update_detail').val(result['detail']);
-            },
-            error: function(){
-                alert("error");
-            }
-        });
-	}
+			$.ajax({
+				type: "GET",
+				url: "/dashboard-tabs/petty-cash/detail",
+				data: {id:id},
+				success: function(result){
+					$('#update_id').val(result['id']);
+					$('#update_id_view').val(result['id']);
+					$('#petty_account_name').val(result['user_id']).trigger('change');
+					$('#user_id_hidden').val(result['user_id']);
+					$('#update_add').val(result['debit']);
+					$('#update_less').val(result['credit']);
+					$('#update_date').val(result['date']);
+					$('#update_detail').val(result['detail']);
+				},
+				error: function(){
+					alert("error");
+				}
+			});
+		}
 
 
 		////// PettyCash Ends //////
