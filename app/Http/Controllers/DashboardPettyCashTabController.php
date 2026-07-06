@@ -60,7 +60,7 @@ class DashboardPettyCashTabController extends Controller
 
         
         // return redirect()->route('home');
-        return redirect('/home')->with('success', 'Petty Cash added successfully!');
+        return redirect('/home');
     }
 
 
@@ -99,7 +99,7 @@ class DashboardPettyCashTabController extends Controller
             'updated_by' => session('user_id'),
         ]);
 
-        return redirect('/home')->with('success', 'Petty Cash updated successfully!');
+        return redirect('/home');
     }
 
 
