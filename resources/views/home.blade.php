@@ -2061,7 +2061,6 @@
 														<!-- Account Select -->
 														<div class="col-lg-4 col-md-6">
 															<div class="form-group">
-																<label>Select Account</label>
 																<select data-plugin-selecttwo 
 																	class="form-control select2-js" 
 																	id="petty_cash_account_name" 
