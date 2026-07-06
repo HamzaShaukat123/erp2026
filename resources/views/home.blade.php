@@ -3902,7 +3902,10 @@
 				items: {
 					src: '#UpdatePettyCash'
 				},
-				type: 'inline'
+				type: 'inline',
+				closeOnBgClick: false,   // ✅ IMPORTANT (disable outside click)
+				enableEscapeKey: false,  // optional (disable ESC close)
+				showCloseBtn: true       // keep close button
 			});
 		});
 
