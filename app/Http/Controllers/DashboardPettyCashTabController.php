@@ -17,7 +17,7 @@ class DashboardPettyCashTabController extends Controller
             $query->where('user_id', $request->account_id);
         }
 
-        $petty_cash = $query->orderBy('date', 'asc')->get();
+        $petty_cash = $query->orderBy('date', 'desc')->get();
 
         return response()->json([
             'petty_cash' => $petty_cash,
