@@ -63,4 +63,51 @@ class DashboardPettyCashTabController extends Controller
         return redirect('/home');
     }
 
+
+
+
+    public function update(Request $request)
+    {
+
+        
+        $jv1 = petty_cash::where('id', $request->update_id)->get()->first();
+
+        if ($request->has('user_id_hidden') && $request->user_id_hidden) {
+            $jv1->user_id=$request->user_id_hidden;
+        }
+        if ($request->has('update_add') && $request->update_add OR $request->update_add==0 ) {
+            $jv1->debit=$request->update_add;
+        }
+        if ($request->has('update_less') && $request->update_less OR $request->update_less==0 ) {
+            $jv1->credit=$request->update_less;
+        }
+        if ($request->has('update_date') && $request->update_date) {
+            $jv1->date=$request->update_date;
+        }
+        if ($request->has('update_detail') && $request->update_detail OR empty($request->update_detail))  {
+            $jv1->detail=$request->update_detail;
+        }
+        
+        
+    
+        petty_cash::where('id', $request->user_id_hidden)->update([
+            'user_id'=>$jv1->user_id,
+            'debit'=>$jv1->debit,
+            'credit'=>$jv1->credit,
+            'date'=>$jv1->date,
+            'detail'=>$jv1->detail,
+            'updated_by' => session('user_id'),
+        ]);
+
+        return redirect('/home');
+
+    }
+
+
+    public function getPettyCashDetails(Request $request)
+    {
+        $jv1_details = petty_cash::where('id', $request->id)->get()->first();
+        return $jv1_details;
+    }
+
 }

@@ -2201,6 +2201,72 @@
 		</div>
 
 
+		<div id="UpdatePettyCash" class="modal-block modal-block-primary mfp-hide" style="z-index: 1050">
+            <section class="card">
+                <form method="post" action="{{ route('update-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+                    @csrf
+                    <header class="card-header">
+                        <h2 class="card-title">Update Petty Cash Entry</h2>
+                    </header>
+                    <div class="card-body">
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label>ID</label>
+                                <input type="number" class="form-control" placeholder="ID" id="update_id" required disabled>
+                                <input type="hidden" class="form-control" placeholder="ID" name="update_id" id="update_id_view" required>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Date</label>
+                                <input type="date" class="form-control" placeholder="Date" id="update_date" name="update_date" value="<?php echo date('Y-m-d'); ?>" required>
+                            </div>
+							<div class="col-lg-6 mb-2">
+                                <label>Name<span style="color: red;"><strong>*</strong></span></label>
+
+                                <select 
+									data-plugin-selecttwo 
+									class="form-control select2-js" 
+									id="petty_account_name"
+									name="user_id_name" 
+									{{ $activeUserId == 2 ? '' : 'disabled' }}
+									required>
+									
+									<option value="" disabled selected>Select Account</option>
+									@foreach($emply as $key => $row)    
+										<option value="{{$row->id}}">{{$row->name}}</option>
+									@endforeach
+								</select>   
+                                  
+								<input type="hidden" name="user_id_hidden" id="user_id_hidden">                       
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <label>Add<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="number" class="form-control" placeholder="Add" id="update_add" value="0" step="any" name="update_add" required>
+                            </div> 
+							<div class="col-lg-6 mb-2">
+                                <label>Less<span style="color: red;"><strong>*</strong></span></label>
+                                <input type="number" class="form-control" placeholder="Less" id="update_less" value="0" step="any" name="update_less" required>
+                            </div> 
+                            <div class="col-lg-12 mb-2">
+                                <label>Detail</label>
+                                <textarea rows="4" cols="50" class="form-control cust-textarea" placeholder="Detail" id="update_detail" name="update_detail"> </textarea>
+                            </div>
+                           
+                        </div>
+                    
+                    <footer class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-end">
+                                <button type="submit" class="btn btn-primary">Update Petty Cash Entry</button>
+                                <button class="btn btn-default modal-dismiss">Cancel</button>
+                            </div>
+                        </div>
+                    </footer>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+
         @include('layouts.footerlinks')
 	</body>
 	<script>
@@ -3713,7 +3779,8 @@
 							<td>${debit.toFixed(0)}</td>
 							<td>${credit.toFixed(0)}</td>
 							<td>
-								<a href="#">
+								<a onclick="getPettyCashDetails({{ $row->auto_lager }})"
+								href="#UpdatePettyCash">
 									<i class="fas fa-pencil-alt text-success"></i>
 								</a>
 							</td>
@@ -3796,6 +3863,31 @@
 				$('#user_id_hidden').val(selectedUserId);
 			}
 		});
+
+
+
+
+
+		function getPettyCashDetails(id){
+        $.ajax({
+            type: "GET",
+            url: "/dashboard-tabs/petty-cash/detail",
+            data: {id:id},
+            success: function(result){
+                $('#update_id').val(result['id']);
+                $('#update_id_view').val(result['id']);
+                $('#user_id_name').val(result['user_id']).trigger('change');
+				$('#user_id_hidden').val(result['user_id']);
+                $('#update_add').val(result['debit']);
+				$('#update_less').val(result['credit']);
+                $('#update_date').val(result['date']);
+                $('#update_detail').val(result['detail']);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+	}
 
 
 		////// PettyCash Ends //////
