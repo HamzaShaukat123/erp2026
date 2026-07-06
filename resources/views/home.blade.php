@@ -3910,6 +3910,14 @@
 		});
 
 
+		$(document).on('change', '#petty_account_name_update', function () {
+			let selectedId = $(this).val();
+
+			$('#user_id_hidden_update').val(selectedId);
+		});
+
+
+
 		////// PettyCash Ends //////
 
 	</script>									
