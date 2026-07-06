@@ -2090,11 +2090,6 @@
 															</button>
 														</div>
 
-														<div class="col-lg-6 mb-2">
-															<label>Balance</label>
-															<input type="text" class="form-control" id="update_balance" readonly>
-														</div>
-
 													</div>
 
 
@@ -3729,14 +3724,16 @@
 				success: function (result) {
 
 					var rows = '';
-					var balance = 0;
+					var totalDebit = 0;
+					var totalCredit = 0;
 
 					$.each(result['petty_cash'], function (index, value) {
 
 						var debit = value['debit'] ? parseFloat(value['debit']) : 0;
 						var credit = value['credit'] ? parseFloat(value['credit']) : 0;
 
-						balance += debit - credit;
+						totalDebit += debit;
+						totalCredit += credit;
 
 						rows += `<tr>
 							<td>${value['date'] ? moment(value['date']).format('D-M-YY') : ''}</td>
@@ -3753,12 +3750,23 @@
 						</tr>`;
 					});
 
+					// Calculate final balance
+					var balance = totalDebit - totalCredit;
+
+					// Add balance row at bottom
+					rows += `<tr style="font-weight:bold; background:#f5f5f5;">
+						<td colspan="2" style="text-align:right;">Balance</td>
+						<td colspan="3" style="color:green;">
+							${balance.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+						</td>
+					</tr>`;
+
 					$('#PettyCashTable').html(rows);
 				},
 
 				error: function () {
 					$('#PettyCashTable')
-						.html('<tr><td colspan="6" class="text-center text-danger">Error loading data</td></tr>');
+						.html('<tr><td colspan="5" class="text-center text-danger">Error loading data</td></tr>');
 				}
 			});
 		}
