@@ -2090,6 +2090,12 @@
 															</button>
 														</div>
 
+														<div class="col-lg-3 col-md-3">
+															<label style="font-weight:bold; color:red;">
+																Balance: <span id="pettyCashBalance">0</span>
+															</label>
+														</div>
+
 													</div>
 
 
@@ -3753,13 +3759,10 @@
 					// Calculate final balance
 					var balance = totalDebit - totalCredit;
 
-					// Add balance row at bottom
-					rows += `<tr style="font-weight:bold; background:#f5f5f5;">
-						<td colspan="2" style="text-align:right;">Balance</td>
-						<td colspan="3" style="color:green;">
-							${balance.toLocaleString('en-US', { minimumFractionDigits: 0 })}
-						</td>
-					</tr>`;
+					// Update top label
+					$('#pettyCashBalance').text(
+						balance.toLocaleString('en-US', { minimumFractionDigits: 0 })
+					);
 
 					$('#PettyCashTable').html(rows);
 				},
