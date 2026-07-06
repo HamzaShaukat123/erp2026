@@ -3891,20 +3891,20 @@
 		}
 
 
-		// $(document).on('click', '.modal-with-form', function(e) {
-		// 	e.preventDefault();
+		$(document).on('click', '.modal-with-form', function(e) {
+			e.preventDefault();
 
-		// 	var id = $(this).attr('onclick').match(/\d+/)[0];
+			var id = $(this).attr('onclick').match(/\d+/)[0];
 
-		// 	getPettyCashDetails(id);
+			getPettyCashDetails(id);
 
-		// 	$.magnificPopup.open({
-		// 		items: {
-		// 			src: '#UpdatePettyCash'
-		// 		},
-		// 		type: 'inline'
-		// 	});
-		// });
+			$.magnificPopup.open({
+				items: {
+					src: '#UpdatePettyCash'
+				},
+				type: 'inline'
+			});
+		});
 
 
 		////// PettyCash Ends //////
