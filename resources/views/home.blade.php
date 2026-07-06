@@ -2166,6 +2166,7 @@
 									class="form-control select2-js" 
 									id="petty_account_name"
 									name="user_id_name" 
+									disabled
 									required>
 									
 									<option value="" disabled selected>Select Account</option>
