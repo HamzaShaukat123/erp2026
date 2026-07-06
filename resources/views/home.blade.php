@@ -2236,7 +2236,7 @@
 									@endforeach
 								</select>   
                                   
-								<input type="hidden" name="user_id_hidden" id="user_id_hidden">                       
+								<input type="text" name="user_id_hidden" id="user_id_hidden">                       
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Add<span style="color: red;"><strong>*</strong></span></label>
