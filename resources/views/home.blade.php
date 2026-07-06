@@ -3891,6 +3891,13 @@
 		}
 
 
+		$('.modal-with-form').magnificPopup({
+    type: 'inline',
+    preloader: false,
+    focus: '#name'
+});
+
+
 		////// PettyCash Ends //////
 
 	</script>									
