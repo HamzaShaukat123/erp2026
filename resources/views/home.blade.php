@@ -2088,7 +2088,7 @@
 
 															<!-- New Entry Button -->
 															<button type="button" 
-																class="modal-with-form btn btn-primary mb-2" 
+																class="modal-with-form btn btn-primary mb-2 me-2" 
 																href="#AddPettyCash">
 																<i class="fas fa-plus"></i> New Entry
 															</button>
