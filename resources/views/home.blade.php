@@ -1979,6 +1979,7 @@
 								<div id="PDC" class="tab-pane">
 									<div class="row form-group pb-3">
 
+
 										<div class="col-12 col-md-6 mb-3">
 											<section class="card">
 												<header class="card-header">
@@ -2041,9 +2042,10 @@
 								</div>
 
 								<div id="PETTY_CASH" class="tab-pane">
-									<div class="row pb-3">
+									
+									<div class="row form-group pb-3">
 
-										<div class="col-6">
+										<div class="col-12 col-md-6 mb-3">
 											<section class="card">
 
 												<header class="card-header">
