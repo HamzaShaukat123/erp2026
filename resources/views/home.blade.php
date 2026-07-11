@@ -2150,7 +2150,8 @@
 
 		<div id="AddPettyCash" class="modal-block modal-block-primary mfp-hide">
 			<section class="card">
-				<form method="post" action="{{ route('store-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+				
+				<form id="pettyCashForm" method="post" action="{{ route('store-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
 					@csrf
 					<header class="card-header d-flex align-items-center">
 						<h2 class="card-title">Add Petty Cash</h2>
@@ -3848,6 +3849,43 @@
 				// Set hidden input (optional)
 				$('#user_id_hidden').val(selectedUserId);
 			}
+		});
+
+
+		$('#pettyCashForm').submit(function(e) {
+
+			e.preventDefault(); // ❌ stop full page reload
+
+			$.ajax({
+				url: $(this).attr('action'),
+				type: "POST",
+				data: $(this).serialize(),
+
+				success: function(response) {
+
+					if (response.status === 'success') {
+
+						// ✅ Close modal (Magnific Popup)
+						$.magnificPopup.close();
+
+						// ✅ Refresh ONLY table (your existing function)
+						getPettyCash();
+
+						// ✅ Reset form
+						$('#pettyCashForm')[0].reset();
+
+						// ✅ Keep selected account again (important)
+						var selectedUser = $('#petty_cash_account_name').val();
+						$('#user_id_hidden').val(selectedUser);
+
+					}
+				},
+
+				error: function(xhr) {
+					alert('Error saving data');
+				}
+			});
+
 		});
 
 
