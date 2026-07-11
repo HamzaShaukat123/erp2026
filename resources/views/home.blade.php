@@ -3889,6 +3889,14 @@
 		});
 
 
+		getPettyCash();
+
+			// small delay then highlight last row
+			setTimeout(function() {
+				$('#PettyCashTable tr:last').addClass('table-success');
+		}, 300);
+
+
 
 
 
