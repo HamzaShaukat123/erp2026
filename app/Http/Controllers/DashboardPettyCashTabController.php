@@ -104,7 +104,9 @@ class DashboardPettyCashTabController extends Controller
             'updated_by' => session('user_id'),
         ]);
 
-        return redirect('/home');
+        return response()->json([
+            'status' => 'success'
+        ]);  
     }
 
 

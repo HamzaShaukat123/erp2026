@@ -2218,7 +2218,7 @@
 
 		<div id="UpdatePettyCash" class="modal-block modal-block-primary mfp-hide" style="z-index: 1050">
 			<section class="card">
-				<form method="post" action="{{ route('update-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+				<form id="updatePettyCashForm" method="post" action="{{ route('update-petty') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
 					@csrf
 
 					<!-- HEADER -->
@@ -3894,7 +3894,41 @@
 			// small delay then highlight last row
 			setTimeout(function() {
 				$('#PettyCashTable tr:last').addClass('table-success');
-		}, 300);
+		}, 200);
+
+
+
+
+		$('#updatePettyCashForm').submit(function(e) {
+
+			e.preventDefault(); // stop reload
+
+			$.ajax({
+				url: $(this).attr('action'),
+				type: "POST",
+				data: $(this).serialize(),
+
+				success: function(response) {
+
+					if (response.status === 'success') {
+
+						// ✅ Close modal
+						$.magnificPopup.close();
+
+						// ✅ Refresh table
+						getPettyCash();
+
+						// optional
+						// alert('Updated successfully');
+					}
+				},
+
+				error: function() {
+					alert('Error updating data');
+				}
+			});
+
+		});
 
 
 
