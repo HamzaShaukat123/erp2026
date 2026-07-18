@@ -83,7 +83,7 @@
 	</div>
 
 
-	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
+	<!-- <div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
 		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
 			  style="width: 75%" enctype="multipart/form-data" 
 			  onkeydown="return event.key != 'Enter';">
@@ -115,6 +115,72 @@
 					</div>
 				</div>
 			</footer>
+		</form>
+	</div> -->
+
+
+
+	<div id="changePassword" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
+		<form id="changePasswordForm" method="post" action="{{ route('change-user-password') }}" 
+			style="width: 75%" enctype="multipart/form-data" 
+			onkeydown="return event.key != 'Enter';">
+			@csrf
+
+			<header class="card-header">
+				<h2 class="card-title">Change Password</h2>
+			</header>
+
+			<div class="card-body">
+				<div class="row form-group">    
+
+					<div class="col-12 mb-2">
+						<label>Current Password</label>
+						<div class="input-group">
+							<span class="input-group-text text-primary">
+								<i class="fas fa-key"></i>
+							</span>
+							<input type="password" class="form-control" 
+								placeholder="Current Password" 
+								id="current_password" name="current_password" required>
+						</div>
+					</div> 
+
+					<div class="col-12 mb-2">
+						<label>New Password</label>
+						<div class="input-group">
+							<span class="input-group-text text-primary">
+								<i class="fas fa-lock"></i>
+							</span>
+							<input type="password" class="form-control" 
+								placeholder="New Password" 
+								id="new_password" minlength="8" name="new_password" required>
+						</div>
+					</div>
+
+					<div class="col-12 mb-2">
+						<label>Confirm New Password</label>
+						<div class="input-group">
+							<span class="input-group-text text-primary">
+								<i class="fas fa-check-circle"></i>
+							</span>
+							<input type="password" class="form-control" 
+								placeholder="Confirm New Password" 
+								minlength="8" id="confirm_new_password" required>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<footer class="card-footer">
+				<div class="row">
+					<div class="col-md-12 text-end">
+						<button type="submit" class="btn btn-primary">Change Password</button>
+						<button type="button" class="btn btn-default modal-dismiss">Cancel</button>
+					</div>
+				</div>
+			</footer>
+
 		</form>
 	</div>
 </header>
