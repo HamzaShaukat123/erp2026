@@ -710,6 +710,12 @@
         return view('games.memory');
     })->name('games.memory');
 
+
+    // Space Invaders Game
+    Route::get('/space-invaders', function () {
+        return view('games.space-invaders');
+    })->name('games.space_invaders');
+
      
 
 

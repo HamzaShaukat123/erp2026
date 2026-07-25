@@ -547,6 +547,12 @@
                                     Memory Match
                                 </a>
                             </li>
+
+                            <li>
+                                <a class="nav-link" href="{{ route('games.space_invaders') }}">
+                                    Space Invaders
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @endif
