@@ -705,6 +705,11 @@
         return view('games.tictactoe');
     })->name('games.tictactoe');
 
+    // Memory Game
+    Route::get('/memory', function () {
+        return view('games.memory');
+    })->name('games.memory');
+
      
 
 

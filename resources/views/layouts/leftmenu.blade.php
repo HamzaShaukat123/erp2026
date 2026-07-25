@@ -542,6 +542,11 @@
                                     Tic Tac Toe
                                 </a>
                             </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('games.memory') }}">
+                                    Memory Match
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @endif
