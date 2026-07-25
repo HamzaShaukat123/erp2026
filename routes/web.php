@@ -695,6 +695,16 @@
 
 
 
+   // Snake Game
+    Route::get('/snake', function () {
+        return view('games.snake');
+    })->name('games.snake');
+
+    // Tic Tac Toe Game
+    Route::get('/tictactoe', function () {
+        return view('games.tictactoe');
+    })->name('games.tictactoe');
+
      
 
 

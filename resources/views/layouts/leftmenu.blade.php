@@ -520,9 +520,31 @@
                                     </li>
                                 </ul>
                             </li>
+
+                           
                         </ul>
                     </li>
-                    
+                    <!-- set admin Role ID here -->
+                    @if(session('user_role')==2)
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+                            <i style="font-size:16px" class="fa fa-users" aria-hidden="true"></i>
+                            <span>Games</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link"   href="{{ route('games.snake')}}">
+                                    Snake
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link"   href="{{ route('games.tictactoe')}}">
+                                    Tic Tac Toe
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
                 </ul>	
             </nav>
 		</div>
