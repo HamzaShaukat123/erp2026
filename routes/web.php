@@ -716,6 +716,11 @@
         return view('games.space-invaders');
     })->name('games.space_invaders');
 
+    // Brick Breaker Game
+    Route::get('/brick-breaker', function () {
+        return view('games.brick-breaker');
+    })->name('games.brick_breaker');
+
      
 
 

@@ -553,6 +553,11 @@
                                     Space Invaders
                                 </a>
                             </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('games.brick_breaker') }}">
+                                    Brick Breaker
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @endif
