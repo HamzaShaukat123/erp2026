@@ -13,6 +13,7 @@ use App\Models\tpurchase;
 use App\Models\tpurchase_2;
 use App\Models\pur2_att;
 use App\Models\tax_tpurchase_2;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Traits\SaveImage;
 use Illuminate\Support\Facades\Response;
@@ -26,75 +27,136 @@ class Purchase2Controller extends Controller
 
     public function index()
     {
-        $pur2 = tpurchase::where('tpurchase.status',1)
-        ->leftjoin ('tpurchase_2', 'tpurchase_2.sales_inv_cod' , '=', 'tpurchase.Sale_inv_no')
-        ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tpurchase.account_name')
-        ->join('ac as disp_to', 'disp_to.ac_code', '=', 'tpurchase.Cash_pur_name_ac')
-        ->leftjoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
-        ->leftjoin('item_group', 'item_group.item_group_cod', '=', 'tax_tpurchase_2.item')
-        ->select(
-            'tpurchase.Sale_inv_no','tpurchase.sa_date','acc_name.ac_name as acc_name','tpurchase.pur_ord_no',
-            'disp_to.ac_name as disp_to','tpurchase.Cash_pur_name','tpurchase.Sales_Remarks','tpurchase.sales_against','tpurchase.prefix',
-            'tpurchase.ConvanceCharges','tpurchase.LaborCharges','tpurchase.Bill_discount','item_group.group_name', 'tpurchase.sales_against',
-            \DB::raw('SUM(tpurchase_2.weight_pc * tpurchase_2.Sales_qty2) as weight_sum'),
-            \DB::raw('SUM(((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) + ((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) * (tpurchase_2.discount/100))) * tpurchase_2.length) as total_bill')
-        )
-        ->groupby('tpurchase.Sale_inv_no','tpurchase.sa_date','acc_name.ac_name','tpurchase.pur_ord_no','item_group.group_name',
-            'disp_to.ac_name','tpurchase.Cash_pur_name','tpurchase.Sales_Remarks','tpurchase.sales_against','tpurchase.prefix' ,
-            'tpurchase.ConvanceCharges','tpurchase.LaborCharges','tpurchase.Bill_discount')
-        ->get();
-        // 'item_group.group_name'
-        return view('purchase2.index',compact('pur2'));
+        // $pur2 = tpurchase::where('tpurchase.status',1)
+        // ->leftjoin ('tpurchase_2', 'tpurchase_2.sales_inv_cod' , '=', 'tpurchase.Sale_inv_no')
+        // ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tpurchase.account_name')
+        // ->join('ac as disp_to', 'disp_to.ac_code', '=', 'tpurchase.Cash_pur_name_ac')
+        // ->leftjoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
+        // ->leftjoin('item_group', 'item_group.item_group_cod', '=', 'tax_tpurchase_2.item')
+        // ->select(
+        //     'tpurchase.Sale_inv_no','tpurchase.sa_date','acc_name.ac_name as acc_name','tpurchase.pur_ord_no',
+        //     'disp_to.ac_name as disp_to','tpurchase.Cash_pur_name','tpurchase.Sales_Remarks','tpurchase.sales_against','tpurchase.prefix',
+        //     'tpurchase.ConvanceCharges','tpurchase.LaborCharges','tpurchase.Bill_discount','item_group.group_name', 'tpurchase.sales_against',
+        //     \DB::raw('SUM(tpurchase_2.weight_pc * tpurchase_2.Sales_qty2) as weight_sum'),
+        //     \DB::raw('SUM(((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) + ((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) * (tpurchase_2.discount/100))) * tpurchase_2.length) as total_bill')
+        // )
+        // ->groupby('tpurchase.Sale_inv_no','tpurchase.sa_date','acc_name.ac_name','tpurchase.pur_ord_no','item_group.group_name',
+        //     'disp_to.ac_name','tpurchase.Cash_pur_name','tpurchase.Sales_Remarks','tpurchase.sales_against','tpurchase.prefix' ,
+        //     'tpurchase.ConvanceCharges','tpurchase.LaborCharges','tpurchase.Bill_discount')
+        // ->get();
+        // // 'item_group.group_name'
+        // return view('purchase2.index',compact('pur2'));
+
+
+
+        $tp2 = DB::table('tpurchase_2')
+            ->select(
+                'sales_inv_cod',
+                DB::raw('SUM(weight_pc * Sales_qty2) as weight_sum'),
+                DB::raw('SUM(
+                    ((Sales_qty2 * sales_price) 
+                    + ((Sales_qty2 * sales_price) * (discount/100))) 
+                    * length
+                ) as total_bill')
+            )
+            ->groupBy('sales_inv_cod');
+
+        $pur2 = DB::table('tpurchase')
+            ->where('tpurchase.status', 1)
+
+            ->leftJoinSub($tp2, 'tp2', function ($join) {
+                $join->on('tp2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no');
+            })
+
+            ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tpurchase.account_name')
+
+            ->join('ac as disp_to', 'disp_to.ac_code', '=', 'tpurchase.Cash_pur_name_ac')
+
+            ->leftJoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
+
+            ->leftJoin('item_group', 'item_group.item_group_cod', '=', 'tax_tpurchase_2.item')
+
+            ->select(
+                'tpurchase.Sale_inv_no',
+                'tpurchase.sa_date',
+                'acc_name.ac_name as acc_name',
+                'tpurchase.pur_ord_no',
+                'disp_to.ac_name as disp_to',
+                'tpurchase.Cash_pur_name',
+                'tpurchase.Sales_Remarks',
+                'tpurchase.sales_against',
+                'tpurchase.prefix',
+                'tpurchase.ConvanceCharges',
+                'tpurchase.LaborCharges',
+                'tpurchase.Bill_discount',
+                'item_group.group_name',
+
+                'tp2.weight_sum',
+                'tp2.total_bill'
+            )
+
+            ->orderBy('tpurchase.Sale_inv_no', 'DESC')
+
+            ->get();
+
+        return view('purchase2.index', compact('pur2'));
     }
 
 
 
     public function indexPaginate()
     {
-        $pur2 = tpurchase::where('tpurchase.status', 1)
-        ->leftJoin('tpurchase_2', 'tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
-        ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tpurchase.account_name')
-        ->join('ac as disp_to', 'disp_to.ac_code', '=', 'tpurchase.Cash_pur_name_ac')
-        ->leftJoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
-        ->leftJoin('item_group', 'item_group.item_group_cod', '=', 'tax_tpurchase_2.item')
-        ->select(
-            'tpurchase.Sale_inv_no',
-            'tpurchase.sa_date',
-            'acc_name.ac_name as acc_name',
-            'tpurchase.pur_ord_no',
-            'disp_to.ac_name as disp_to',
-            'tpurchase.Cash_pur_name',
-            'tpurchase.Sales_Remarks',
-            'tpurchase.sales_against',
-            'tpurchase.prefix',
-            'tpurchase.ConvanceCharges',
-            'tpurchase.LaborCharges',
-            'tpurchase.Bill_discount',
-            'item_group.group_name',
-            \DB::raw('SUM(tpurchase_2.weight_pc * tpurchase_2.Sales_qty2) as weight_sum'),
-            \DB::raw('SUM(((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) + ((tpurchase_2.Sales_qty2 * tpurchase_2.sales_price) * (tpurchase_2.discount/100))) * tpurchase_2.length) as total_bill')
-        )
-        ->groupBy(
-            'tpurchase.Sale_inv_no',
-            'tpurchase.sa_date',
-            'acc_name.ac_name',
-            'tpurchase.pur_ord_no',
-            'item_group.group_name',
-            'disp_to.ac_name',
-            'tpurchase.Cash_pur_name',
-            'tpurchase.Sales_Remarks',
-            'tpurchase.sales_against',
-            'tpurchase.prefix',
-            'tpurchase.ConvanceCharges',
-            'tpurchase.LaborCharges',
-            'tpurchase.Bill_discount'
-        )
-        ->orderBy('tpurchase.Sale_inv_no', 'desc') // Order by date, latest first
-        ->paginate(100); // Paginate with 100 records per page
+        $tp2 = DB::table('tpurchase_2')
+            ->select(
+                'sales_inv_cod',
+                DB::raw('SUM(weight_pc * Sales_qty2) as weight_sum'),
+                DB::raw('SUM(
+                    ((Sales_qty2 * sales_price) 
+                    + ((Sales_qty2 * sales_price) * (discount/100))) 
+                    * length
+                ) as total_bill')
+            )
+            ->groupBy('sales_inv_cod');
 
+        $pur2 = DB::table('tpurchase')
+            ->where('tpurchase.status', 1)
 
-        // 'item_group.group_name'
-        return view('purchase2.index',compact('pur2'));
+            ->leftJoinSub($tp2, 'tp2', function ($join) {
+                $join->on('tp2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no');
+            })
+
+            ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tpurchase.account_name')
+
+            ->join('ac as disp_to', 'disp_to.ac_code', '=', 'tpurchase.Cash_pur_name_ac')
+
+            ->leftJoin('tax_tpurchase_2', 'tax_tpurchase_2.sales_inv_cod', '=', 'tpurchase.Sale_inv_no')
+
+            ->leftJoin('item_group', 'item_group.item_group_cod', '=', 'tax_tpurchase_2.item')
+
+            ->select(
+                'tpurchase.Sale_inv_no',
+                'tpurchase.sa_date',
+                'acc_name.ac_name as acc_name',
+                'tpurchase.pur_ord_no',
+                'disp_to.ac_name as disp_to',
+                'tpurchase.Cash_pur_name',
+                'tpurchase.Sales_Remarks',
+                'tpurchase.sales_against',
+                'tpurchase.prefix',
+                'tpurchase.ConvanceCharges',
+                'tpurchase.LaborCharges',
+                'tpurchase.Bill_discount',
+                'item_group.group_name',
+
+                'tp2.weight_sum',
+                'tp2.total_bill'
+            )
+
+            ->orderBy('tpurchase.Sale_inv_no', 'DESC')
+
+            ->paginate(100);
+
+        return view('purchase2.index', compact('pur2'));
     }
 
    public function create(Request $request)
