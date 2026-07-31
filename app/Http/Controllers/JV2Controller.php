@@ -69,53 +69,124 @@ class JV2Controller extends Controller
         // return view('jv2.jv2', compact('jv2'));
 
 
+        /// old 
+        // $jv2 = lager0::where('lager0.status', 1)
+        //     ->select(
+        //         'lager0.jv_no',
+        //         'lager0.jv_date',
+        //         'lager0.narration',
+        //         DB::raw('COALESCE(dc.total_debit, 0) AS total_debit'),
+        //         DB::raw('COALESCE(dc.total_credit, 0) AS total_credit'),
+        //         DB::raw("GROUP_CONCAT(DISTINCT CONCAT(sales_ageing.sales_prefix, sales_ageing.sales_id) SEPARATOR ' ; ') AS merged_sales_ids"),
+        //         DB::raw("GROUP_CONCAT(DISTINCT CONCAT(purchase_ageing.sales_prefix, purchase_ageing.sales_id) SEPARATOR ' ; ') AS merged_purchase_ids"),
+        //         'sales_ageing.status as sales_status',
+        //         'purchase_ageing.status as purchase_status',
+        //         'jv2_accountname.account_names', // From jv2_accountname
+        //         'sales_ac.ac_name AS sales_account_name', // From ac table (sales)
+        //         'purchase_ac.ac_name AS purchase_account_name' // From ac table (purchase)
+        //     )
+        //     ->leftJoin(
+        //         DB::raw('(SELECT auto_lager, SUM(debit) AS total_debit, SUM(credit) AS total_credit FROM lager GROUP BY auto_lager) AS dc'),
+        //         'lager0.jv_no', '=', 'dc.auto_lager'
+        //     )
+        //     ->leftJoin('sales_ageing', function ($join) {
+        //         $join->on('lager0.jv_no', '=', 'sales_ageing.jv2_id')
+        //             ->where('sales_ageing.voch_prefix', 'JV2-');
+        //     })
+        //     ->leftJoin('purchase_ageing', function ($join) {
+        //         $join->on('lager0.jv_no', '=', 'purchase_ageing.jv2_id')
+        //             ->where('purchase_ageing.voch_prefix', 'JV2-');
+        //     })
+        //     ->leftJoin('jv2_accountname', 'lager0.jv_no', '=', 'jv2_accountname.auto_lager')
+        //     // Left join AC table for sales_ageing
+        //     ->leftJoin('ac as sales_ac', 'sales_ac.ac_code', '=', 'sales_ageing.acc_name')
+        //     // Left join AC table for purchase_ageing
+        //     ->leftJoin('ac as purchase_ac', 'purchase_ac.ac_code', '=', 'purchase_ageing.acc_name')
+        //     ->groupBy(
+        //         'lager0.jv_no',
+        //         'lager0.jv_date',
+        //         'lager0.narration',
+        //         'dc.total_debit',
+        //         'dc.total_credit',
+        //         'sales_ageing.status',
+        //         'purchase_ageing.status',
+        //         'jv2_accountname.account_names',
+        //         'sales_ac.ac_name',
+        //         'purchase_ac.ac_name'
+        //     )
+        //     ->orderBy('lager0.jv_no', 'desc')
+        //     ->get();
 
-        $jv2 = lager0::where('lager0.status', 1)
+        // return view('jv2.jv2', compact('jv2'));
+
+
+
+
+
+        DB::statement("SET SESSION group_concat_max_len = 100000");
+
+        $jv2 = DB::table('lager0 as l0')
+
+            ->where('l0.status', 1)
+
             ->select(
-                'lager0.jv_no',
-                'lager0.jv_date',
-                'lager0.narration',
+                'l0.jv_no',
+                'l0.jv_date',
+                'l0.narration',
+
                 DB::raw('COALESCE(dc.total_debit, 0) AS total_debit'),
                 DB::raw('COALESCE(dc.total_credit, 0) AS total_credit'),
-                DB::raw("GROUP_CONCAT(DISTINCT CONCAT(sales_ageing.sales_prefix, sales_ageing.sales_id) SEPARATOR ' ; ') AS merged_sales_ids"),
-                DB::raw("GROUP_CONCAT(DISTINCT CONCAT(purchase_ageing.sales_prefix, purchase_ageing.sales_id) SEPARATOR ' ; ') AS merged_purchase_ids"),
-                'sales_ageing.status as sales_status',
-                'purchase_ageing.status as purchase_status',
-                'jv2_accountname.account_names', // From jv2_accountname
-                'sales_ac.ac_name AS sales_account_name', // From ac table (sales)
-                'purchase_ac.ac_name AS purchase_account_name' // From ac table (purchase)
+
+                'sa.merged_sales_ids',
+                'pa.merged_purchase_ids',
+
+                'sa.sales_status',
+                'pa.purchase_status',
+
+                'jv.account_names',
+
+                'sa.sales_account_name',
+                'pa.purchase_account_name'
             )
-            ->leftJoin(
-                DB::raw('(SELECT auto_lager, SUM(debit) AS total_debit, SUM(credit) AS total_credit FROM lager GROUP BY auto_lager) AS dc'),
-                'lager0.jv_no', '=', 'dc.auto_lager'
-            )
-            ->leftJoin('sales_ageing', function ($join) {
-                $join->on('lager0.jv_no', '=', 'sales_ageing.jv2_id')
-                    ->where('sales_ageing.voch_prefix', 'JV2-');
-            })
-            ->leftJoin('purchase_ageing', function ($join) {
-                $join->on('lager0.jv_no', '=', 'purchase_ageing.jv2_id')
-                    ->where('purchase_ageing.voch_prefix', 'JV2-');
-            })
-            ->leftJoin('jv2_accountname', 'lager0.jv_no', '=', 'jv2_accountname.auto_lager')
-            // Left join AC table for sales_ageing
-            ->leftJoin('ac as sales_ac', 'sales_ac.ac_code', '=', 'sales_ageing.acc_name')
-            // Left join AC table for purchase_ageing
-            ->leftJoin('ac as purchase_ac', 'purchase_ac.ac_code', '=', 'purchase_ageing.acc_name')
-            ->groupBy(
-                'lager0.jv_no',
-                'lager0.jv_date',
-                'lager0.narration',
-                'dc.total_debit',
-                'dc.total_credit',
-                'sales_ageing.status',
-                'purchase_ageing.status',
-                'jv2_accountname.account_names',
-                'sales_ac.ac_name',
-                'purchase_ac.ac_name'
-            )
-            ->orderBy('lager0.jv_no', 'desc')
-            ->get();
+
+            // ✅ Debit/Credit
+            ->leftJoin(DB::raw("(
+                SELECT auto_lager, SUM(debit) AS total_debit, SUM(credit) AS total_credit
+                FROM lager
+                GROUP BY auto_lager
+            ) as dc"), 'l0.jv_no', '=', 'dc.auto_lager')
+
+            // ✅ SALES
+            ->leftJoin(DB::raw("(
+                SELECT 
+                    sa.jv2_id,
+                    GROUP_CONCAT(DISTINCT CONCAT(sa.sales_prefix, sa.sales_id) SEPARATOR ' ; ') AS merged_sales_ids,
+                    MAX(sa.status) AS sales_status,
+                    MAX(ac.ac_name) AS sales_account_name
+                FROM sales_ageing sa
+                LEFT JOIN ac ON ac.ac_code = sa.acc_name
+                WHERE sa.voch_prefix = 'JV2-'
+                GROUP BY sa.jv2_id
+            ) as sa"), 'l0.jv_no', '=', 'sa.jv2_id')
+
+            // ✅ PURCHASE
+            ->leftJoin(DB::raw("(
+                SELECT 
+                    pa.jv2_id,
+                    GROUP_CONCAT(DISTINCT CONCAT(pa.sales_prefix, pa.sales_id) SEPARATOR ' ; ') AS merged_purchase_ids,
+                    MAX(pa.status) AS purchase_status,
+                    MAX(ac.ac_name) AS purchase_account_name
+                FROM purchase_ageing pa
+                LEFT JOIN ac ON ac.ac_code = pa.acc_name
+                WHERE pa.voch_prefix = 'JV2-'
+                GROUP BY pa.jv2_id
+            ) as pa"), 'l0.jv_no', '=', 'pa.jv2_id')
+
+            ->leftJoin('jv2_accountname as jv', 'l0.jv_no', '=', 'jv.auto_lager')
+
+            ->orderByDesc('l0.jv_no')
+
+            ->get(); // ⚠ ALL DATA
 
         return view('jv2.jv2', compact('jv2'));
 
