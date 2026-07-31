@@ -14,6 +14,7 @@ use App\Models\sale2_att;
 use App\Models\tpurchase;
 use App\Models\tstock_out;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use App\Traits\SaveImage;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -25,68 +26,168 @@ class Sales2Controller extends Controller
 
     public function index()
     {
-        $pur2 = tsales::where('tsales.status',1)
-        ->leftjoin ('tsales_2', 'tsales_2.sales_inv_cod' , '=', 'tsales.Sal_inv_no')
-        ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
-        ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
-        ->select(
-            'tsales.Sal_inv_no','tsales.sa_date','acc_name.ac_name as acc_name','tsales.pur_ord_no',
-            'comp_acc.ac_name as comp_account','tsales.company_name','tsales.Sales_Remarks','tsales.Cash_name','tsales.pur_against','tsales.prefix',
-            'tsales.ConvanceCharges','tsales.LaborCharges','tsales.Bill_discount', 'tsales.pur_against',
-            \DB::raw('SUM(tsales_2.weight_pc * tsales_2.Sales_qty2) as weight_sum'),
-            \DB::raw('SUM(((tsales_2.Sales_qty2 * tsales_2.sales_price) + ((tsales_2.Sales_qty2 * tsales_2.sales_price) * (tsales_2.discount/100))) * tsales_2.length) as total_bill')
-        )
-        ->groupby('tsales.Sal_inv_no','tsales.sa_date','acc_name','tsales.pur_ord_no',
-            'comp_account','tsales.company_name','tsales.Sales_Remarks','tsales.pur_against','tsales.prefix',
-            'tsales.ConvanceCharges','tsales.LaborCharges','tsales.Bill_discount', 'tsales.pur_against','tsales.Cash_name',)
-        ->get();
+        // $pur2 = tsales::where('tsales.status',1)
+        // ->leftjoin ('tsales_2', 'tsales_2.sales_inv_cod' , '=', 'tsales.Sal_inv_no')
+        // ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
+        // ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
+        // ->select(
+        //     'tsales.Sal_inv_no','tsales.sa_date','acc_name.ac_name as acc_name','tsales.pur_ord_no',
+        //     'comp_acc.ac_name as comp_account','tsales.company_name','tsales.Sales_Remarks','tsales.Cash_name','tsales.pur_against','tsales.prefix',
+        //     'tsales.ConvanceCharges','tsales.LaborCharges','tsales.Bill_discount', 'tsales.pur_against',
+        //     \DB::raw('SUM(tsales_2.weight_pc * tsales_2.Sales_qty2) as weight_sum'),
+        //     \DB::raw('SUM(((tsales_2.Sales_qty2 * tsales_2.sales_price) + ((tsales_2.Sales_qty2 * tsales_2.sales_price) * (tsales_2.discount/100))) * tsales_2.length) as total_bill')
+        // )
+        // ->groupby('tsales.Sal_inv_no','tsales.sa_date','acc_name','tsales.pur_ord_no',
+        //     'comp_account','tsales.company_name','tsales.Sales_Remarks','tsales.pur_against','tsales.prefix',
+        //     'tsales.ConvanceCharges','tsales.LaborCharges','tsales.Bill_discount', 'tsales.pur_against','tsales.Cash_name',)
+        // ->get();
 
-        return view('sale2.index',compact('pur2'));
-    }
+        // return view('sale2.index',compact('pur2'));
+
+
+        $ts2 = DB::table('tsales_2')
+            ->select(
+                'sales_inv_cod',
+                DB::raw('SUM(weight_pc * Sales_qty2) as weight_sum'),
+                DB::raw('SUM(
+                    ((Sales_qty2 * sales_price) 
+                    + ((Sales_qty2 * sales_price) * (discount/100))) 
+                    * length
+                ) as total_bill')
+            )
+            ->groupBy('sales_inv_cod');
+
+        $pur2 = DB::table('tsales')
+            ->where('tsales.status', 1)
+
+            ->leftJoinSub($ts2, 'ts2', function ($join) {
+                $join->on('ts2.sales_inv_cod', '=', 'tsales.Sal_inv_no');
+            })
+
+            ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
+
+            ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
+
+            ->select(
+                'tsales.Sal_inv_no',
+                'tsales.sa_date',
+                'acc_name.ac_name as acc_name',
+                'tsales.pur_ord_no',
+                'comp_acc.ac_name as comp_account',
+                'tsales.company_name',
+                'tsales.Sales_Remarks',
+                'tsales.Cash_name',
+                'tsales.pur_against',
+                'tsales.prefix',
+                'tsales.ConvanceCharges',
+                'tsales.LaborCharges',
+                'tsales.Bill_discount',
+
+                'ts2.weight_sum',
+                'ts2.total_bill'
+            )
+
+            ->orderBy('tsales.Sal_inv_no', 'DESC')
+
+            ->get();
+
+        return view('sale2.index', compact('pur2'));
+            }
 
     public function indexPaginate()
     {
-        $pur2 = tsales::where('tsales.status', 1)
-        ->leftJoin('tsales_2', 'tsales_2.sales_inv_cod', '=', 'tsales.Sal_inv_no')
-        ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
-        ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
-        ->select(
-            'tsales.Sal_inv_no',
-            'tsales.sa_date',
-            'acc_name.ac_name as acc_name',
-            'tsales.pur_ord_no',
-            'comp_acc.ac_name as comp_account',
-            'tsales.company_name',
-            'tsales.Sales_Remarks',
-            'tsales.Cash_name',
-            'tsales.pur_against',
-            'tsales.prefix',
-            'tsales.ConvanceCharges',
-            'tsales.LaborCharges',
-            'tsales.Bill_discount',
-            \DB::raw('SUM(tsales_2.weight_pc * tsales_2.Sales_qty2) as weight_sum'),
-            \DB::raw('SUM(((tsales_2.Sales_qty2 * tsales_2.sales_price) + ((tsales_2.Sales_qty2 * tsales_2.sales_price) * (tsales_2.discount/100))) * tsales_2.length) as total_bill')
-        )
-        ->groupBy(
-            'tsales.Sal_inv_no',
-            'tsales.sa_date',
-            'acc_name.ac_name', // Fixed alias
-            'tsales.pur_ord_no',
-            'comp_acc.ac_name', // Fixed alias
-            'tsales.company_name',
-            'tsales.Sales_Remarks',
-            'tsales.pur_against',
-            'tsales.prefix',
-            'tsales.ConvanceCharges',
-            'tsales.LaborCharges',
-            'tsales.Bill_discount',
-            'tsales.Cash_name'
-        )
-        ->orderBy('tsales.Sal_inv_no', 'desc') // Order by latest date
-        ->paginate(100); // Paginate (100 records per page)
+        // $pur2 = tsales::where('tsales.status', 1)
+        // ->leftJoin('tsales_2', 'tsales_2.sales_inv_cod', '=', 'tsales.Sal_inv_no')
+        // ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
+        // ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
+        // ->select(
+        //     'tsales.Sal_inv_no',
+        //     'tsales.sa_date',
+        //     'acc_name.ac_name as acc_name',
+        //     'tsales.pur_ord_no',
+        //     'comp_acc.ac_name as comp_account',
+        //     'tsales.company_name',
+        //     'tsales.Sales_Remarks',
+        //     'tsales.Cash_name',
+        //     'tsales.pur_against',
+        //     'tsales.prefix',
+        //     'tsales.ConvanceCharges',
+        //     'tsales.LaborCharges',
+        //     'tsales.Bill_discount',
+        //     \DB::raw('SUM(tsales_2.weight_pc * tsales_2.Sales_qty2) as weight_sum'),
+        //     \DB::raw('SUM(((tsales_2.Sales_qty2 * tsales_2.sales_price) + ((tsales_2.Sales_qty2 * tsales_2.sales_price) * (tsales_2.discount/100))) * tsales_2.length) as total_bill')
+        // )
+        // ->groupBy(
+        //     'tsales.Sal_inv_no',
+        //     'tsales.sa_date',
+        //     'acc_name.ac_name', // Fixed alias
+        //     'tsales.pur_ord_no',
+        //     'comp_acc.ac_name', // Fixed alias
+        //     'tsales.company_name',
+        //     'tsales.Sales_Remarks',
+        //     'tsales.pur_against',
+        //     'tsales.prefix',
+        //     'tsales.ConvanceCharges',
+        //     'tsales.LaborCharges',
+        //     'tsales.Bill_discount',
+        //     'tsales.Cash_name'
+        // )
+        // ->orderBy('tsales.Sal_inv_no', 'desc') // Order by latest date
+        // ->paginate(100); // Paginate (100 records per page)
 
 
-        return view('sale2.index',compact('pur2'));
+        // return view('sale2.index',compact('pur2'));
+
+
+
+
+        $ts2 = DB::table('tsales_2')
+            ->select(
+                'sales_inv_cod',
+                DB::raw('SUM(weight_pc * Sales_qty2) as weight_sum'),
+                DB::raw('SUM(
+                    ((Sales_qty2 * sales_price) 
+                    + ((Sales_qty2 * sales_price) * (discount/100))) 
+                    * length
+                ) as total_bill')
+            )
+            ->groupBy('sales_inv_cod');
+
+        $pur2 = DB::table('tsales')
+            ->where('tsales.status', 1)
+
+            ->leftJoinSub($ts2, 'ts2', function ($join) {
+                $join->on('ts2.sales_inv_cod', '=', 'tsales.Sal_inv_no');
+            })
+
+            ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
+
+            ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
+
+            ->select(
+                'tsales.Sal_inv_no',
+                'tsales.sa_date',
+                'acc_name.ac_name as acc_name',
+                'tsales.pur_ord_no',
+                'comp_acc.ac_name as comp_account',
+                'tsales.company_name',
+                'tsales.Sales_Remarks',
+                'tsales.Cash_name',
+                'tsales.pur_against',
+                'tsales.prefix',
+                'tsales.ConvanceCharges',
+                'tsales.LaborCharges',
+                'tsales.Bill_discount',
+
+                'ts2.weight_sum',
+                'ts2.total_bill'
+            )
+
+            ->orderBy('tsales.Sal_inv_no', 'DESC')
+
+            ->paginate(100);
+
+        return view('sale2.index', compact('pur2'));
     }
 
     public function create(Request $request)
