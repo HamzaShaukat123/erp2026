@@ -95,7 +95,8 @@ class Sales2Controller extends Controller
                 ')
             )
 
-            ->orderBy('tsales.Sal_inv_no', 'DESC');
+            ->orderBy('tsales.Sal_inv_no', 'DESC')
+            ->get();
 
             return view('sale2.index', compact('pur2'));
         }
