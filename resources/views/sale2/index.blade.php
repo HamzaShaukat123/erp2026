@@ -70,45 +70,59 @@
                                             <tbody>
                                                 @foreach ($pur2 as $key => $row)
                                                 <tr>
-                                                    <td style="display:none">{{$row->Sal_inv_no}}</td>
-                                                    <td>{{$row->prefix}}{{$row->Sal_inv_no}}</td>
+                                                    <td style="display:none">{{ $row->Sal_inv_no }}</td>
+                                                    <td>{{ $row->prefix }}{{ $row->Sal_inv_no }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($row->sa_date)->format('d-m-y') }}</td>
-                                                    <td><strong>{{$row->acc_name}}</strong></td>
-                                                    <td>{{$row->pur_ord_no}}</td>
-                                                    <td>{{$row->comp_account}}</td>
-                                                    <td>{{$row->Cash_name}}</td>
-                                                    <td>{{$row->Sales_Remarks}}</td>
-                                                    <td>{{$row->pur_against}}</td>
-                                                    <td>{{$row->weight_sum}}</td>
-                                                    <td>{{$row->total_bill}}</td>
-                                                    <td>{{$row->ConvanceCharges}}</td>
-                                                    <td>{{$row->LaborCharges}}</td>
-                                                    <td>{{$row->Bill_discount}}</td>
-                                                    @php ($net_amount=$row->total_bill+$row->ConvanceCharges+$row->LaborCharges-$row->Bill_discount)
-                                
-                                                    @if(substr(strval($row->net_amount), strpos(strval($row->net_amount), '.') + 1)>0) 
-                                                    <td><strong style="font-size:15px">{{ rtrim(rtrim(number_format($net_amount), '0'), '.') }}</strong></td>
-                                                    @else
-                                                        <td><strong style="font-size:15px">{{ number_format(intval($net_amount))}}</strong></td>
-                                                    @endif
-                                                    <td style="vertical-align: middle;">
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-dark" onclick="getAttachements({{$row->Sal_inv_no}})" href="#attModal"><i class="fa fa-eye"> </i></a>
-                                                        <span class="separator"> | </span>
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-danger" onclick="setAttId({{$row->Sal_inv_no}})" href="#addAttModal"> <i class="fas fa-paperclip"> </i></a>
+                                                    <td><strong>{{ $row->acc_name }}</strong></td>
+                                                    <td>{{ $row->pur_ord_no }}</td>
+                                                    <td>{{ $row->comp_account }}</td>
+                                                    <td>{{ $row->Cash_name }}</td>
+                                                    <td>{{ $row->Sales_Remarks }}</td>
+                                                    <td>{{ $row->pur_against }}</td>
+
+                                                    <td>{{ number_format($row->weight_sum ?? 0, 0) }}</td>
+                                                    <td>{{ number_format($row->total_bill ?? 0, 0) }}</td>
+                                                    <td>{{ number_format($row->ConvanceCharges ?? 0, 0) }}</td>
+                                                    <td>{{ number_format($row->LaborCharges ?? 0, 0) }}</td>
+                                                    <td>{{ number_format($row->Bill_discount ?? 0, 0) }}</td>
+
+                                                    {{-- ✅ NET AMOUNT (FROM QUERY) --}}
+                                                    <td>
+                                                        <strong style="font-size:15px">
+                                                            {{ number_format($row->net_amount ?? 0, 0) }}
+                                                        </strong>
                                                     </td>
 
-                                                    @if($row->pur_ord_no!=null) 
-                                                        <td> <i class="fas fa-circle" style="color:green;font-size:10px"></i> Closed </td>
+                                                    <td style="vertical-align: middle;">
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-dark" onclick="getAttachements({{ $row->Sal_inv_no }})" href="#attModal">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                        <span class="separator"> | </span>
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal text-danger" onclick="setAttId({{ $row->Sal_inv_no }})" href="#addAttModal">
+                                                            <i class="fas fa-paperclip"></i>
+                                                        </a>
+                                                    </td>
+
+                                                    @if($row->pur_ord_no != null)
+                                                        <td><i class="fas fa-circle" style="color:green;font-size:10px"></i> Closed</td>
                                                     @else
-                                                        <td> <i class="fas fa-circle" style="color:red;font-size:10px"></i> Not Close </td>
+                                                        <td><i class="fas fa-circle" style="color:red;font-size:10px"></i> Not Close</td>
                                                     @endif
+
                                                     <td class="actions">
-                                                        <a href="{{ route('show-sales2',$row->Sal_inv_no) }}" class=""><i class="fas fa-eye text-primary"></i></a>
+                                                        <a href="{{ route('show-sales2', $row->Sal_inv_no) }}">
+                                                            <i class="fas fa-eye text-primary"></i>
+                                                        </a>
                                                         <span class="separator"> | </span>
-                                                        <a href="{{ route('edit-sales2',$row->Sal_inv_no) }}" class=""><i class="fas fa-pencil-alt text-success"></i></a>
-                                                        @if(session('user_role')==1)
+                                                        <a href="{{ route('edit-sales2', $row->Sal_inv_no) }}">
+                                                            <i class="fas fa-pencil-alt text-success"></i>
+                                                        </a>
+
+                                                        @if(session('user_role') == 1)
                                                         <span class="separator"> | </span>
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->Sal_inv_no}})" href="#deleteModal"><i class="far fa-trash-alt text-danger" style="color:red"></i></a>
+                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{ $row->Sal_inv_no }})" href="#deleteModal">
+                                                            <i class="far fa-trash-alt text-danger"></i>
+                                                        </a>
                                                         @endif
                                                     </td>
                                                 </tr>
