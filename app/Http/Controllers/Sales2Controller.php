@@ -46,7 +46,7 @@ class Sales2Controller extends Controller
 
 
         $ts2 = DB::table('tsales_2')
-            ->select(
+                     ->select(
                 'sales_inv_cod',
                 DB::raw('SUM(weight_pc * Sales_qty2) as weight_sum'),
                 DB::raw('SUM(
@@ -57,6 +57,7 @@ class Sales2Controller extends Controller
             )
             ->groupBy('sales_inv_cod');
 
+
         $pur2 = DB::table('tsales')
             ->where('tsales.status', 1)
 
@@ -65,7 +66,6 @@ class Sales2Controller extends Controller
             })
 
             ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
-
             ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
 
             ->select(
@@ -84,15 +84,21 @@ class Sales2Controller extends Controller
                 'tsales.Bill_discount',
 
                 'ts2.weight_sum',
-                'ts2.total_bill'
+                'ts2.total_bill',
+
+                DB::raw('
+                    (COALESCE(ts2.total_bill,0) 
+                    + COALESCE(tsales.ConvanceCharges,0) 
+                    + COALESCE(tsales.LaborCharges,0) 
+                    - COALESCE(tsales.Bill_discount,0)
+                    ) as net_amount
+                ')
             )
 
-            ->orderBy('tsales.Sal_inv_no', 'DESC')
+            ->orderBy('tsales.Sal_inv_no', 'DESC');
 
-            ->get();
-
-        return view('sale2.index', compact('pur2'));
-            }
+            return view('sale2.index', compact('pur2'));
+        }
 
     public function indexPaginate()
     {
@@ -153,6 +159,7 @@ class Sales2Controller extends Controller
             )
             ->groupBy('sales_inv_cod');
 
+
         $pur2 = DB::table('tsales')
             ->where('tsales.status', 1)
 
@@ -161,7 +168,6 @@ class Sales2Controller extends Controller
             })
 
             ->join('ac as acc_name', 'acc_name.ac_code', '=', 'tsales.account_name')
-
             ->join('ac as comp_acc', 'comp_acc.ac_code', '=', 'tsales.company_name')
 
             ->select(
@@ -180,11 +186,18 @@ class Sales2Controller extends Controller
                 'tsales.Bill_discount',
 
                 'ts2.weight_sum',
-                'ts2.total_bill'
+                'ts2.total_bill',
+
+                DB::raw('
+                    (COALESCE(ts2.total_bill,0) 
+                    + COALESCE(tsales.ConvanceCharges,0) 
+                    + COALESCE(tsales.LaborCharges,0) 
+                    - COALESCE(tsales.Bill_discount,0)
+                    ) as net_amount
+                ')
             )
 
             ->orderBy('tsales.Sal_inv_no', 'DESC')
-
             ->paginate(100);
 
         return view('sale2.index', compact('pur2'));
