@@ -377,7 +377,7 @@
 								</section>
 							</div>
 
-							<div class="col-12 col-md-2 mb-2">
+							<!-- <div class="col-12 col-md-2 mb-2">
 								<section class="card card-featured-left card-featured-success">
 									<div class="card-body icon-container data-container" style="background-image: url('/assets/img/all-user-icon.png');background-position: top right;background-size: 44%;">
 										<h3 class="amount text-dark"><strong>Active Users</strong></h3>
@@ -403,7 +403,7 @@
 										</div>
 									</div>
 								</section>
-							</div>	
+							</div>	 -->
 						@endif
 					
 						<!-- summaries ends here -->
