@@ -307,7 +307,7 @@
 								</section>
 							</div>
 
-							<div class="col-12 col-md-2 mb-2">
+							<div class="col-12 col-md-3 mb-2">
 								<section class="card card-featured-left card-featured-tertiary mb-2">
 									<div class="card-body icon-container data-container" style="background-image: url('/assets/img/fc-icon.png'); ">
 										<h3 class="amount text-dark"><strong>Foreign Currency</strong></h3>
