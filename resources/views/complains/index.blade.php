@@ -35,73 +35,76 @@
                                         </div>
                                     </div>
 
-                                	<table class="table table-bordered table-striped mb-0" id="datatable-default">
-                                        
-                                        <thead>
-                                            <tr>
-                                                <th width="5%">Id</th>
-                                                <th>Complain Date</th>
-                                                <th>Company Name</th>
-                                                <th>Custmer Name</th>
-                                                <th>MFI Inv#</th>
-                                                <th>Mill Inv#</th>
-                                                <th>Complain Details</th>
-                                                <th>Resolve Date</th>
-                                                <th>Closing Remarks</th>
-                                                <th>Status</th>
-                                                <th>Att</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($complains as $key => $row)
+                                    <div class="modal-wrapper table-scroll">
+
+                                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                                            
+                                            <thead>
                                                 <tr>
-                                                    <td>{{$row->id}}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($row->inv_dat)->format('d-m-y') }}</td>
-                                                    <td>{{$row->company_name_display}}</td>
-                                                    <td>{{$row->party_name_display}}</td>
-                                                    <td>{{$row->mfi_pur_number}}</td>
-                                                    <td>{{$row->mill_pur_number}}</td>
-                                                    <td>{{$row->complain_detail}}</td>
-
-                                                    <td>
-                                                        @if($row->resolve_date)
-                                                            {{ \Carbon\Carbon::parse($row->resolve_date)->format('d-m-y') }}
-                                                        @endif
-                                                    </td>
-                                                    
-                                                    <td>{{$row->resolve_remarks}}</td>
-                                                    
-                                                    @if ($row->clear==0)
-                                                        <td> <i class="fas fa-circle" style="color:red;font-size:10px"></i> Open </td>
-                                                    @elseif ($row->clear==1)
-                                                        <td> <i class="fas fa-circle" style="color:green;font-size:10px"></i> Closed </td>
-                                                    @endif
-                                                    
-                                                    <td><a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getAttachements({{$row->id}})" href="#attModal">View Att.</a></td>
-                                                    <td class="actions">
-                                                        <a class="text-danger" href="{{route('print-complain',$row->id)}}" target="_blank">
-                                                          <i class="fas fa-print"></i>
-                                                        </a>
-
-                                                        <span class="separator"> | </span>
-
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getComplainsDetails({{$row->id}})" href="#updateModal">
-                                                          <i class="fas fa-pencil-alt text-success"></i>
-                                                        </a>
-                                                        @if(session('user_role')==1)
-                                                        <span class="separator"> | </span>
-
-                                                        <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->id}})" href="#deleteModal">
-                                                            <i class="far fa-trash-alt text-danger" style="color:red"></i>
-                                                        </a>
-                                                        @endif
-                                                    </td>
-
+                                                    <th width="5%">Id</th>
+                                                    <th>Complain Date</th>
+                                                    <th>Company Name</th>
+                                                    <th>Custmer Name</th>
+                                                    <th>MFI Inv#</th>
+                                                    <th>Mill Inv#</th>
+                                                    <th>Complain Details</th>
+                                                    <th>Resolve Date</th>
+                                                    <th>Closing Remarks</th>
+                                                    <th>Status</th>
+                                                    <th>Att</th>
+                                                    <th>Action</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-									</table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($complains as $key => $row)
+                                                    <tr>
+                                                        <td>{{$row->id}}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($row->inv_dat)->format('d-m-y') }}</td>
+                                                        <td>{{$row->company_name_display}}</td>
+                                                        <td>{{$row->party_name_display}}</td>
+                                                        <td>{{$row->mfi_pur_number}}</td>
+                                                        <td>{{$row->mill_pur_number}}</td>
+                                                        <td>{{$row->complain_detail}}</td>
+
+                                                        <td>
+                                                            @if($row->resolve_date)
+                                                                {{ \Carbon\Carbon::parse($row->resolve_date)->format('d-m-y') }}
+                                                            @endif
+                                                        </td>
+                                                        
+                                                        <td>{{$row->resolve_remarks}}</td>
+                                                        
+                                                        @if ($row->clear==0)
+                                                            <td> <i class="fas fa-circle" style="color:red;font-size:10px"></i> Open </td>
+                                                        @elseif ($row->clear==1)
+                                                            <td> <i class="fas fa-circle" style="color:green;font-size:10px"></i> Closed </td>
+                                                        @endif
+                                                        
+                                                        <td><a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getAttachements({{$row->id}})" href="#attModal">View Att.</a></td>
+                                                        <td class="actions">
+                                                            <a class="text-danger" href="{{route('print-complain',$row->id)}}" target="_blank">
+                                                            <i class="fas fa-print"></i>
+                                                            </a>
+
+                                                            <span class="separator"> | </span>
+
+                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getComplainsDetails({{$row->id}})" href="#updateModal">
+                                                            <i class="fas fa-pencil-alt text-success"></i>
+                                                            </a>
+                                                            @if(session('user_role')==1)
+                                                            <span class="separator"> | </span>
+
+                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->id}})" href="#deleteModal">
+                                                                <i class="far fa-trash-alt text-danger" style="color:red"></i>
+                                                            </a>
+                                                            @endif
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </section>
                         </div>
