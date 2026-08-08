@@ -16,6 +16,25 @@
                                     
                                 </header>
                                 <div class="card-body">
+                                    <div>
+                                        <div class="col-md-5" style="display:flex;">
+                                            <select class="form-control" style="margin-right:10px" id="columnSelect">
+                                                <option selected disabled>Search by</option>
+                                                <option value="0">by Id</option>
+                                                <option value="2">by Complain Date</option>
+                                                <option value="3">by Company Name</option>
+                                                <option value="4">by Custmer Name</option>
+                                                <option value="5">by MFI Inv#</option>
+                                                <option value="6">by Mill Inv#</option>
+                                                <option value="7">by Complain Details</option>
+                                                <option value="8">by Resolve Date</option>
+                                                <option value="10">by Closing Remarks</option>
+                                            </select>
+                                            <input type="text" class="form-control" id="columnSearch" placeholder="Search By Column"/>
+
+                                        </div>
+                                    </div>
+
                                 	<table class="table table-bordered table-striped mb-0" id="datatable-default">
                                         
                                         <thead>
