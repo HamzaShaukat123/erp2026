@@ -37,7 +37,7 @@
 
                                     <div class="modal-wrapper table-scroll">
 
-                                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                                        <table class="table table-bordered table-striped mb-0" id="cust-datatable-default">
                                             
                                             <thead>
                                                 <tr>
@@ -349,7 +349,7 @@
 
 
      $(document).ready(function(){
-        var table = $('#datatable-default').DataTable();
+        var table = $('#cust-datatable-default').DataTable();
 
         $('#columnSelect').on('change', function () {
             // Clear the previous search
