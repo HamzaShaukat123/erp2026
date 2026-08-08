@@ -1,367 +1,262 @@
 @include('../layouts.header')
-	<body>
-		<section class="body">
-            @include('layouts.homepageheader')
-			<div class="inner-wrapper cust-pad">
-				@include('layouts.leftmenu')
-				<section role="main" class="content-body">
-                    <div class="row">
-                        <div class="col">
-                            <section class="card">
-                                <header class="card-header" style="display: flex;justify-content: space-between;">
-                                    <h2 class="card-title">Complains</h2>
-                                    <div class="card-actions">
-                                        <button type="button" class="modal-with-form btn btn-primary" href="#addModal"> <i class="fas fa-plus"></i> New Complain</button>
-                                    </div>
-                                    
-                                </header>
-                                <div class="card-body">
-                                    <div>
-                                        <div class="col-md-5" style="display:flex;">
-                                            <select class="form-control" style="margin-right:10px" id="columnSelect">
-                                                <option selected disabled>Search by</option>
-                                                <option value="0">by Id</option>
-                                                <option value="2">by Complain Date</option>
-                                                <option value="3">by Company Name</option>
-                                                <option value="4">by Custmer Name</option>
-                                                <option value="5">by MFI Inv#</option>
-                                                <option value="6">by Mill Inv#</option>
-                                                <option value="7">by Complain Details</option>
-                                                <option value="8">by Resolve Date</option>
-                                                <option value="10">by Closing Remarks</option>
-                                            </select>
-                                            <input type="text" class="form-control" id="columnSearch" placeholder="Search By Column"/>
 
-                                        </div>
-                                    </div>
+<body>
+<section class="body">
+@include('layouts.homepageheader')
 
-                                    <div class="modal-wrapper table-scroll">
+<div class="inner-wrapper cust-pad">
+@include('layouts.leftmenu')
 
-                                        <table class="table table-bordered table-striped mb-0" id="cust-datatable-default">
-                                            
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">Id</th>
-                                                    <th>Complain Date</th>
-                                                    <th>Company Name</th>
-                                                    <th>Custmer Name</th>
-                                                    <th>MFI Inv#</th>
-                                                    <th>Mill Inv#</th>
-                                                    <th>Complain Details</th>
-                                                    <th>Resolve Date</th>
-                                                    <th>Closing Remarks</th>
-                                                    <th>Status</th>
-                                                    <th>Att</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($complains as $key => $row)
-                                                    <tr>
-                                                        <td>{{$row->id}}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($row->inv_dat)->format('d-m-y') }}</td>
-                                                        <td>{{$row->company_name_display}}</td>
-                                                        <td>{{$row->party_name_display}}</td>
-                                                        <td>{{$row->mfi_pur_number}}</td>
-                                                        <td>{{$row->mill_pur_number}}</td>
-                                                        <td>{{$row->complain_detail}}</td>
+<section role="main" class="content-body">
 
-                                                        <td>
-                                                            @if($row->resolve_date)
-                                                                {{ \Carbon\Carbon::parse($row->resolve_date)->format('d-m-y') }}
-                                                            @endif
-                                                        </td>
-                                                        
-                                                        <td>{{$row->resolve_remarks}}</td>
-                                                        
-                                                        @if ($row->clear==0)
-                                                            <td> <i class="fas fa-circle" style="color:red;font-size:10px"></i> Open </td>
-                                                        @elseif ($row->clear==1)
-                                                            <td> <i class="fas fa-circle" style="color:green;font-size:10px"></i> Closed </td>
-                                                        @endif
-                                                        
-                                                        <td><a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getAttachements({{$row->id}})" href="#attModal">View Att.</a></td>
-                                                        <td class="actions">
-                                                            <a class="text-danger" href="{{route('print-complain',$row->id)}}" target="_blank">
-                                                            <i class="fas fa-print"></i>
-                                                            </a>
+<div class="row">
+<div class="col">
 
-                                                            <span class="separator"> | </span>
+<section class="card">
 
-                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="getComplainsDetails({{$row->id}})" href="#updateModal">
-                                                            <i class="fas fa-pencil-alt text-success"></i>
-                                                            </a>
-                                                            @if(session('user_role')==1)
-                                                            <span class="separator"> | </span>
+<header class="card-header d-flex justify-content-between">
+<h2 class="card-title">Complaints</h2>
+<button class="btn btn-primary modal-with-form" href="#addModal">
+<i class="fas fa-plus"></i> New Complaint
+</button>
+</header>
 
-                                                            <a class="mb-1 mt-1 me-1 modal-with-zoom-anim ws-normal" onclick="setId({{$row->id}})" href="#deleteModal">
-                                                                <i class="far fa-trash-alt text-danger" style="color:red"></i>
-                                                            </a>
-                                                            @endif
-                                                        </td>
+<div class="card-body">
 
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </section>		
-			</div>
-		</section>
+<!-- Search -->
 
-        <div id="deleteModal" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
-            <form method="post" action="{{ route('delete-complains') }}" enctype="multipart/form-data">
-                @csrf
-                <section class="card">
-                    <header class="card-header">
-                        <h2 class="card-title">Delete Complain</h2>
-                    </header>
-                    <div class="card-body">
-                        <div class="modal-wrapper">
-                            <div class="modal-icon">
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            <div class="modal-text">
-                                <p class="mb-0">Are you sure that you want to delete this complain?</p>
-                                <input name="complain_id" id="deleteID" hidden>
-                            </div>
-                        </div>
-                    </div>
-                    <footer class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-end">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                                <button class="btn btn-default modal-dismiss">Cancel</button>
-                            </div>
-                        </div>
-                    </footer>
-                </section>
-            </form>
-        </div>
-        <div id="addModal" class="modal-block modal-block-primary mfp-hide">
-            <section class="card">
-                <form method="post" action="{{ route('store-complains') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
-                    @csrf
-                    <header class="card-header">
-                        <h2 class="card-title">New Complaint</h2>
-                    </header>
-                    <div class="card-body">
-                        <div class="row form-group">
-                            <div class="col-lg-6 mb-2">
-                                <label for="complaint_id">ID</label>
-                                <input type="number" id="complaint_id" class="form-control" placeholder="NEW ID" required disabled>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="complain_date">Complaint Date<span style="color: red;"><strong>*</strong></span></label>
-                                <input type="date" id="complain_date" class="form-control" placeholder="Date" name="inv_dat" value="{{ date('Y-m-d') }}" required>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="mfi_purchase_number">MFI Purchase Number</label>
-                                <input type="text" id="mfi_purchase_number" class="form-control" placeholder="MFI Purchase Number" name="mfi_pur_number">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="mill_purchase_number">Mill Purchase Number</label>
-                                <input type="text" id="mill_purchase_number" class="form-control" placeholder="Mill Purchase Number" name="mill_pur_number">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="company_name">Company Name<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="company_name" data-plugin-selecttwo class="form-control select2-js" name="company_name" required>
-                                    <option value="" disabled selected>Select Company Name</option>
-                                    @foreach($acc as $key => $row)    
-                                        <option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="party_name">Party Name<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="party_name" data-plugin-selecttwo class="form-control select2-js" name="party_name" required>
-                                    <option value="" disabled selected>Select Party Name</option>
-                                    @foreach($acc as $key => $row)    
-                                        <option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="complain_detail">Complain Details</label>
-                                <textarea id="complain_detail" rows="4" class="form-control cust-textarea" placeholder="Complain Details" name="complain_detail"></textarea>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="resolve_remarks">Resolve Remarks</label>
-                                <textarea id="resolve_remarks" rows="4" class="form-control cust-textarea" placeholder="Resolve Remarks" name="resolve_remarks" disabled></textarea>
-                            </div>
-                            
-                            <div class="col-lg-6 mb-2">
-                                <label for="resolve_date">Resolve Date</label>
-                                <input type="date" id="resolve_date" class="form-control" placeholder="Resolve Date" name="resolve_date" disabled>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="complain_status">Complaint Status<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="complain_status" data-plugin-selecttwo class="form-control select2-js" name="clear" required disabled>
-                                    <option value="" disabled>Select Status</option>
-                                    <option value="0" selected>Open</option>
-                                    <option value="1">Closed</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label for="attachments">Attachments</label>
-                                <input type="file" id="attachments" class="form-control" name="att[]" multiple accept=".zip, application/zip, application/pdf, image/png, image/jpeg">
-                            </div>
-                        </div>
-                    </div>
-                    <footer class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-end">
-                                <button type="submit" class="btn btn-primary">Add Complain</button>
-                                <button type="button" class="btn btn-default modal-dismiss">Cancel</button>
-                            </div>
-                        </div>
-                    </footer>
-                </form>
-            </section>
-        </div>
-        <div id="updateModal" class="modal-block modal-block-primary mfp-hide">
-            <section class="card">
-                <form method="post" action="{{ route('update-complains') }}" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
-                    @csrf
-                    <input type="hidden" id="update_complain_id_hidden" name="update_complain_id">
-                    <header class="card-header">
-                        <h2 class="card-title">Update Complain</h2>
-                    </header>
-                    <div class="card-body">
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <label>JV1 Code</label>
-                                <input type="number" class="form-control" placeholder="ID" id="update_complain_id" required disabled>
-                                <input type="hidden" class="form-control" placeholder="ID" name="update_id" id="update_id_view" required>
-                            </div>
+<div class="row mb-3">
+<div class="col-md-5 d-flex">
+<select class="form-control me-2" id="columnSelect">
+<option disabled selected>Search by</option>
+<option value="0">ID</option>
+<option value="1">Date</option>
+<option value="2">Company</option>
+<option value="3">Customer</option>
+<option value="4">MFI Inv</option>
+<option value="5">Mill Inv</option>
+<option value="6">Details</option>
+<option value="7">Resolve Date</option>
+<option value="8">Remarks</option>
+</select>
+<input type="text" id="columnSearch" class="form-control" placeholder="Search...">
+</div>
+</div>
 
-                            <div class="col-lg-6 mb-2">
-                                <label>Complain Date<span style="color: red;"><strong>*</strong></span></label>
-                                <input type="date" id="update_complain_date" class="form-control" placeholder="Date" name="update_inv_dat" required>
-                            </div>
-                            
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_mfi_purchase_number">MFI Purchase Number</label>
-                                <input type="text" id="update_mfi_purchase_number" class="form-control" placeholder="MFI Purchase Number" name="update_mfi_pur_number">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_mill_purchase_number">Mill Purchase Number</label>
-                                <input type="text" id="update_mill_purchase_number" class="form-control" placeholder="Mill Purchase Number" name="update_mill_pur_number">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_company_name">Company Name<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="update_company_name" data-plugin-selecttwo class="form-control select2-js"  name="update_company_name" required>
-                                    <option value="" disabled>Select Company Name</option>
-                                    @foreach($acc as $key => $row)
-                                        <option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_party_name">Party Name<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="update_party_name" data-plugin-selecttwo class="form-control select2-js" name="update_party_name" required>
-                                    <option value="" disabled>Select Party Name</option>
-                                    @foreach($acc as $key => $row)
-                                        <option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_complain_detail">Complain Details</label>
-                                <textarea id="update_complain_detail" rows="4" class="form-control cust-textarea" placeholder="Complain Details" name="update_complain_detail"></textarea>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_resolve_remarks">Resolve Remarks</label>
-                                <textarea id="update_resolve_remarks" rows="4" class="form-control cust-textarea" placeholder="Resolve Remarks" name="update_resolve_remarks"></textarea>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_resolve_date">Resolve Date</label>
-                                <input type="date" id="update_resolve_date" class="form-control" placeholder="Resolve Date" name="update_resolve_date">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="update_complain_status">Complain Status<span style="color: red;"><strong>*</strong></span></label>
-                                <select id="update_complain_status" data-plugin-selecttwo class="form-control select2-js" name="update_complain_status" required>
-                                    <option value="" disabled>Select Status</option>
-                                    <option value="0">Open</option>
-                                    <option value="1">Closed</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label for="update_attachments">Attachments</label>
-                                <input type="file" id="update_attachments" class="form-control" name="att[]" multiple accept=".zip, application/zip, application/pdf, image/png, image/jpeg">
-                            </div>
-                        </div>
-                    </div>
-                    <footer class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-end">
-                                <button type="submit" class="btn btn-primary">Update Complain</button>
-                                <button type="button" class="btn btn-default modal-dismiss">Cancel</button>
-                            </div>
-                        </div>
-                    </footer>
-                </form>
-            </section>
-        </div>
+<!-- Table -->
 
-        
-        <div id="attModal" class="zoom-anim-dialog modal-block modal-block-danger mfp-hide">
-            <section class="card">
-                <header class="card-header">
-                    <h2 class="card-title">All Attachements</h2>
-                </header>
-                <div class="card-body">
-                    <div class="modal-wrapper">
+<div class="table-responsive">
+<table class="table table-bordered table-striped" id="datatable-complaints">
+<thead>
+<tr>
+<th>ID</th>
+<th>Date</th>
+<th>Company</th>
+<th>Customer</th>
+<th>MFI Inv</th>
+<th>Mill Inv</th>
+<th>Details</th>
+<th>Resolve Date</th>
+<th>Remarks</th>
+<th>Status</th>
+<th>Attachment</th>
+<th>Action</th>
+</tr>
+</thead>
 
-                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
-                            <thead>
-                                <tr>
-                                    <th>Attachement Path</th>
-                                    <th>Download</th>
-                                    <th>View</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody id="complains_attachements">
+<tbody>
+@forelse ($complains as $row)
+<tr>
+<td>{{$row->id}}</td>
+<td>{{ \Carbon\Carbon::parse($row->inv_dat)->format('d-m-Y') }}</td>
+<td>{{$row->company_name_display}}</td>
+<td>{{$row->party_name_display}}</td>
+<td>{{$row->mfi_pur_number}}</td>
+<td>{{$row->mill_pur_number}}</td>
+<td>{{$row->complain_detail}}</td>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <div class="row">
-                        <div class="col-md-12 text-end">
-                            <button class="btn btn-default modal-dismiss">Cancel</button>
-                        </div>
-                    </div>
-                </footer>
-            </section>
-        </div>
-        
-        @include('../layouts.footerlinks')
-	</body>
-</html>
+<td>
+@if($row->resolve_date)
+{{ \Carbon\Carbon::parse($row->resolve_date)->format('d-m-Y') }}
+@endif
+</td>
+
+<td>{{$row->resolve_remarks}}</td>
+
+<td>
+@if ($row->clear==0)
+<span class="badge bg-danger">Open</span>
+@else
+<span class="badge bg-success">Closed</span>
+@endif
+</td>
+
+<td>
+<a onclick="getAttachements({{$row->id}})" href="#attModal" class="modal-with-zoom-anim">
+View
+</a>
+</td>
+
+<td>
+<a href="{{route('print-complain',$row->id)}}" target="_blank">
+<i class="fas fa-print text-primary"></i>
+</a>
+
+<span>|</span>
+
+<a onclick="getComplainsDetails({{$row->id}})" href="#updateModal">
+<i class="fas fa-pencil-alt text-success"></i>
+</a>
+
+@if(session('user_role')==1) <span>|</span> <a onclick="setId({{$row->id}})" href="#deleteModal"> <i class="far fa-trash-alt text-danger"></i> </a>
+@endif
+
+</td>
+</tr>
+
+@empty
+
+<tr>
+<td colspan="12" class="text-center">No complaints found</td>
+</tr>
+@endforelse
+</tbody>
+
+</table>
+</div>
+
+</div>
+</section>
+</div>
+</div>
+
+</section>
+</div>
+</section>
+
+<!-- DELETE MODAL -->
+
+<div id="deleteModal" class="modal-block modal-block-danger mfp-hide">
+<form method="post" action="{{ route('delete-complains') }}">
+@csrf
+
+<section class="card">
+<header class="card-header">
+<h2>Delete Complaint</h2>
+</header>
+
+<div class="card-body text-center">
+<p>Are you sure?</p>
+<input type="hidden" name="complain_id" id="deleteID">
+</div>
+
+<footer class="card-footer text-end">
+<button class="btn btn-danger">Delete</button>
+<button class="btn btn-default modal-dismiss">Cancel</button>
+</footer>
+</section>
+
+</form>
+</div>
+
+<!-- ADD MODAL -->
+
+<div id="addModal" class="modal-block modal-block-primary mfp-hide">
+<form method="post" action="{{ route('store-complains') }}" enctype="multipart/form-data">
+@csrf
+
+<section class="card">
+<header class="card-header">
+<h2>New Complaint</h2>
+</header>
+
+<div class="card-body">
+<div class="row">
+
+<div class="col-md-6 mb-2">
+<label>Date *</label>
+<input type="date" name="inv_dat" class="form-control" value="{{date('Y-m-d')}}" required>
+</div>
+
+<div class="col-md-6 mb-2">
+<label>MFI Inv</label>
+<input type="text" name="mfi_pur_number" class="form-control">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Mill Inv</label>
+<input type="text" name="mill_pur_number" class="form-control">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Company *</label>
+<select name="company_name" class="form-control select2-js" required>
+@foreach($acc as $row)
+<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+@endforeach
+</select>
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Customer *</label>
+<select name="party_name" class="form-control select2-js" required>
+@foreach($acc as $row)
+<option value="{{$row->ac_code}}">{{$row->ac_name}}</option>
+@endforeach
+</select>
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Details</label>
+<textarea name="complain_detail" class="form-control"></textarea>
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Status</label>
+<select name="clear" class="form-control">
+<option value="0" selected>Open</option>
+<option value="1">Closed</option>
+</select>
+</div>
+
+<div class="col-md-12 mb-2">
+<label>Attachments</label>
+<input type="file" name="att[]" class="form-control" multiple>
+</div>
+
+</div>
+</div>
+
+<footer class="card-footer text-end">
+<button class="btn btn-primary">Save</button>
+<button type="button" class="btn btn-default modal-dismiss">Cancel</button>
+</footer>
+
+</section>
+</form>
+</div>
+
+@include('../layouts.footerlinks')
+
 <script>
+$(document).ready(function(){
 
+var table = $('#datatable-complaints').DataTable();
 
-     $(document).ready(function(){
-        var table = $('#cust-datatable-default').DataTable();
+$('#columnSearch').on('keyup', function(){
+var col = $('#columnSelect').val();
+if(col !== null){
+table.column(col).search(this.value).draw();
+}
+});
 
-        $('#columnSelect').on('change', function () {
-            // Clear the previous search
-            table.search('').columns().search('').draw(); // Reset global and column-specific filters
-        });
-        $('#columnSearch').on('keyup change', function () {
-            var columnIndex = $('#columnSelect').val(); // Get selected column index
-            table.column(columnIndex).search(this.value).draw(); // Apply search and redraw
-        });
-    });
+});
+</script>
 
+</body>
+</html>
 
+<script>
     function setId(id){
         $('#deleteID').val(id);
     }
