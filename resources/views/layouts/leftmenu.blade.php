@@ -525,7 +525,7 @@
                         </ul>
                     </li>
                     <!-- set admin Role ID here -->
-                    @if(session('user_role')==2)
+                    @if(session('user_role')==1)
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
                             <i style="font-size:16px" class="fa fa-gamepad" aria-hidden="true"></i>
