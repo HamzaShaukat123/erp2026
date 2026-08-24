@@ -756,7 +756,7 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Company Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Customer Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
@@ -782,7 +782,7 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Company Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Customer Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
@@ -808,7 +808,7 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Company Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Customer Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
@@ -834,7 +834,7 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Company Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Customer Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
@@ -860,7 +860,7 @@
 													<table class="table table-responsive-md table-striped mb-0">
 														<thead class="sticky-tbl-header">
 															<tr>
-																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Company Name</font></font></th>
+																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Customer Name</font></font></th>
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
