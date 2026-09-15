@@ -62,7 +62,7 @@
                     @if(((session('user_access')[2]['module_id'])==3 && (session('user_access')[2]['view'])==1) OR ((session('user_access')[3]['module_id'])==4 && (session('user_access')[3]['view'])==1) OR ((session('user_access')[4]['module_id'])==5 && (session('user_access')[4]['view'])==1))
                     <li class="nav-parent">
                         <a class="nav-link" href="#">
-                            <i style="font-size:16px" class="fa fa-warehouse" aria-hidden="true"></i>
+                            <i style="font-size:16px" class="fa fa-cubes" aria-hidden="true"></i>
                             <span>Items</span>
                         </a>
                         <ul class="nav nav-children">
