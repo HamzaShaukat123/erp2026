@@ -121,8 +121,7 @@
                                 </a>
                             </li>
                             @endif
-{{-- 
-                            @if((session('user_access')[40]['module_id'])==41 && (session('user_access')[40]['view'])==1)
+                            {{-- @if((session('user_access')[40]['module_id'])==41 && (session('user_access')[40]['view'])==1)
                             <li>
                                 <a class="nav-link"   href="{{ route('all-city')}}">
                                     COA City
