@@ -725,22 +725,26 @@ class RptAccNameGLController extends Controller
   
     }
 
-    public function glr(Request $request){
+    public function glr(Request $request)
+    {
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
-        ->where('date', '<', $request->fromDate)
-        ->get();
+            ->whereRaw(
+                "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+                [$request->fromDate]
+            )
+            ->get();
 
         $lager_much_all = lager_much_all::where('account_cod', $request->acc_id)
-        ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
-        ->orderBy('jv_date','asc')
-        ->orderBy('prefix','asc')
-        ->orderBy('auto_lager','asc')
-        ->get();
+            ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
+            ->orderBy('jv_date', 'asc')
+            ->orderBy('prefix', 'asc')
+            ->orderBy('auto_lager', 'asc')
+            ->get();
 
         $lager_pdc = lager_pdc::where('ac_cr_sid', $request->acc_id)
-        ->whereNull('voch_id')
-        ->get();
-    
+            ->whereNull('voch_id')
+            ->get();
+
         $response = [
             'lager_much_op_bal' => $lager_much_op_bal,
             'lager_much_all' => $lager_much_all,
