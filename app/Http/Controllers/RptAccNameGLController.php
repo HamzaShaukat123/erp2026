@@ -21,7 +21,7 @@ class RptAccNameGLController extends Controller
         // ->get();
 
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
-        ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
+        // ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
         ->where('date', '<', $request->fromDate)
         ->get();
 
