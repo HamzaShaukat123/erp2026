@@ -20,40 +20,29 @@ class RptAccNameGLController extends Controller
         // ->where('date', '<', $request->fromDate)
         // ->get();
 
+        $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
+        ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
+        ->where('date', '<', $request->fromDate)
+        ->get();
 
-    try {
+        $lager_much_all = lager_much_all::where('account_cod', $request->acc_id)
+        ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
+        ->orderBy('jv_date','asc')
+        ->orderBy('prefix','asc')
+        ->orderBy('auto_lager','asc')
+        ->get();
 
-        $lager_much_op_bal = lager_much_op_bal::where('lager_much_op_bal.ac1', $request->acc_id)
-            ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-            ->where('lager_much_op_bal.date', '<', $request->fromDate)
-            ->get();
-
-        $lager_much_all = lager_much_all::where('lager_much_all.account_cod', $request->acc_id)
-            ->whereBetween('lager_much_all.jv_date', [$request->fromDate, $request->toDate])
-            ->orderBy('lager_much_all.jv_date', 'asc')
-            ->orderBy('lager_much_all.prefix', 'asc')
-            ->orderBy('lager_much_all.auto_lager', 'asc')
-            ->get();
-
-        $lager_pdc = lager_pdc::where('lager_pdc.ac_cr_sid', $request->acc_id)
-            ->whereNull('lager_pdc.voch_id')
-            ->get();
-
-        return response()->json([
+        $lager_pdc = lager_pdc::where('ac_cr_sid', $request->acc_id)
+        ->whereNull('voch_id')
+        ->get();
+    
+        $response = [
             'lager_much_op_bal' => $lager_much_op_bal,
             'lager_much_all' => $lager_much_all,
             'lager_pdc' => $lager_pdc,
-        ]);
+        ];
 
-    } catch (\Throwable $e) {
-
-        return response()->json([
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-        ], 500);
-    }
-
+        return response()->json($response);
     }
 
     public function glExcel(Request $request)
