@@ -45,6 +45,7 @@ class RptAccNameGLController extends Controller
         return response()->json($response);
     }
 
+
     public function glExcel(Request $request)
     {
             
