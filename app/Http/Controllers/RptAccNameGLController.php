@@ -89,7 +89,10 @@ class RptAccNameGLController extends Controller
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
             ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-            ->where('date', '<', $request->fromDate)
+            ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
             ->get();
 
         // Fetch transactions within the date range
@@ -169,7 +172,10 @@ class RptAccNameGLController extends Controller
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
             ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-            ->where('date', '<', $request->fromDate)
+            ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
             ->get();
 
         // Fetch transactions within the date range
@@ -243,7 +249,10 @@ class RptAccNameGLController extends Controller
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
         ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-        ->where('date', '<', $request->fromDate)
+        ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
         ->get();
 
         // Fetch transactions within the date range
@@ -486,7 +495,10 @@ class RptAccNameGLController extends Controller
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
         ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-        ->where('date', '<', $request->fromDate)
+        ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
         ->get();
 
         // Fetch transactions within the date range
@@ -759,7 +771,10 @@ class RptAccNameGLController extends Controller
       // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
         ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-        ->where('date', '<', $request->fromDate)
+        ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
         ->get();
 
         // Fetch transactions within the date range
@@ -1003,7 +1018,10 @@ class RptAccNameGLController extends Controller
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
         ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-        ->where('date', '<', $request->fromDate)
+        ->whereRaw(
+        "lager_much_op_bal.`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+        [$request->fromDate]
+    )
         ->get();
 
         // Fetch transactions within the date range
