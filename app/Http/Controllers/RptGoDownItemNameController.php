@@ -555,7 +555,10 @@ class RptGoDownItemNameController extends Controller
 
     public function IL(Request $request){
         $gd_pipe_item_ledger5_opp = gd_pipe_item_ledger5_opp::where('it_cod', $request->acc_id)
-        ->where('date', '<', $request->fromDate)
+            ->whereRaw(
+                "`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+                [$request->fromDate]
+            )
         ->get();
 
         $gd_pipe_item_ledger = gd_pipe_item_ledger::where('item_cod', $request->acc_id)
@@ -576,7 +579,10 @@ class RptGoDownItemNameController extends Controller
     public function ILExcel(Request $request)
     {
         $gd_pipe_item_ledger5_opp = gd_pipe_item_ledger5_opp::where('it_cod', $request->acc_id)
-        ->where('date', '<', $request->fromDate)
+                    ->whereRaw(
+                "`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+                [$request->fromDate]
+            )
         ->get();
 
         $gd_pipe_item_ledger = gd_pipe_item_ledger::where('item_cod', $request->acc_id)
@@ -608,7 +614,10 @@ class RptGoDownItemNameController extends Controller
         ]);
 
         $gd_pipe_item_ledger5_opp = gd_pipe_item_ledger5_opp::where('it_cod', $request->acc_id)
-        ->where('date', '<', $request->fromDate)
+        ->whereRaw(
+            "`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
+            [$request->fromDate]
+        )
         ->get();
 
         $gd_pipe_item_ledger = gd_pipe_item_ledger::where('item_cod', $request->acc_id)
