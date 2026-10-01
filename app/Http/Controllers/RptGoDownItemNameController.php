@@ -579,7 +579,7 @@ class RptGoDownItemNameController extends Controller
     public function ILExcel(Request $request)
     {
         $gd_pipe_item_ledger5_opp = gd_pipe_item_ledger5_opp::where('it_cod', $request->acc_id)
-                    ->whereRaw(
+            ->whereRaw(
                 "`date` COLLATE utf8mb4_unicode_ci < ? COLLATE utf8mb4_unicode_ci",
                 [$request->fromDate]
             )
