@@ -303,40 +303,63 @@
             }
 
             else if (tabId === "#BA") {
+
+    // Cache table body element
     const $tableBody = $('#BATbleBody');
 
+    // Define URL
     const url = "/rep-by-acc-grp/ba";
 
+    // Start the AJAX request
     $.ajax({
         type: "GET",
         url: url,
 
         beforeSend: function() {
-            $tableBody.html(
-                '<table class="table table-bordered table-striped mb-0">' +
-                '<tr><td colspan="6" class="text-center">Loading Data Please Wait...</td></tr>' +
-                '</table>'
-            );
+
+            // Show loading message
+            $tableBody.html(`
+                <table class="table table-bordered table-striped mb-0">
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            Loading Data Please Wait...
+                        </td>
+                    </tr>
+                </table>
+            `);
         },
 
         success: function(result) {
+
+            // Clear previous content
             $tableBody.empty();
 
+            // Group data by head and subhead
             const AllData = groupByHeadAndSub(result);
 
+            // Initialize HTML
             let html = '';
 
-            // GRAND TOTAL
+            // ==========================================
+            // GRAND TOTAL VARIABLES
+            // ==========================================
+
             let grandTotalDebit = 0;
             let grandTotalCredit = 0;
 
-            // Iterate through each HEAD
+
+            // ==========================================
+            // ITERATE THROUGH EACH HEAD
+            // ==========================================
+
             $.each(AllData, function(headCount, heads) {
 
+                // Table for each Head
                 html += `
                     <table class="table table-bordered table-striped mb-0">
 
                         <thead>
+
                             <tr>
                                 <th class="text-danger"
                                     colspan="6"
@@ -353,163 +376,270 @@
                                 <th>Debit</th>
                                 <th>Credit</th>
                             </tr>
+
                         </thead>
                 `;
 
-                // Iterate through each SUBHEAD
+
+                // ==========================================
+                // ITERATE THROUGH EACH SUBHEAD
+                // ==========================================
+
                 $.each(heads, function(subHeadCount, subheads) {
 
-                    // RESET SUBTOTAL FOR EACH SUBHEAD
+                    // ------------------------------------------
+                    // RESET SUBTOTAL FOR THIS SUBHEAD
+                    // ------------------------------------------
+
                     let subtotaldebit = 0;
                     let subtotalcredit = 0;
 
+
+                    // Subhead heading
                     html += `
                         <tbody>
 
                             <tr>
                                 <td colspan="6"
-                                    style="background-color:#cfe8e3;
-                                           text-align:center;
-                                           font-weight:bold;">
+                                    style="
+                                        background-color:#cfe8e3;
+                                        text-align:center;
+                                        font-weight:bold;
+                                    ">
                                     ${subHeadCount}
                                 </td>
                             </tr>
                     `;
 
-                    // Iterate through accounts
+
+                    // ==========================================
+                    // ITERATE THROUGH ACCOUNTS
+                    // ==========================================
+
                     $.each(subheads, function(itemCount, item) {
 
+                        // Convert AJAX values to numbers
                         const debit = parseFloat(item.Debit) || 0;
                         const credit = parseFloat(item.Credit) || 0;
 
+
+                        // Account row
                         html += `
                             <tr>
-                                <td>${itemCount + 1}</td>
-
-                                <td>${item.ac_code || ""}</td>
-
-                                <td>${item.ac_name || ""}</td>
-
-                                <td>${item.address || ""}</td>
 
                                 <td>
-                                    ${debit !== 0
-                                        ? debit.toLocaleString("en-US", {
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 0
-                                        })
-                                        : ""}
+                                    ${itemCount + 1}
                                 </td>
 
                                 <td>
-                                    ${credit !== 0
-                                        ? credit.toLocaleString("en-US", {
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 0
-                                        })
-                                        : ""}
+                                    ${item.ac_code || ""}
                                 </td>
+
+                                <td>
+                                    ${item.ac_name || ""}
+                                </td>
+
+                                <td>
+                                    ${item.address || ""}
+                                </td>
+
+                                <td>
+                                    ${
+                                        debit !== 0
+                                            ? debit.toLocaleString("en-US", {
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 0
+                                            })
+                                            : ""
+                                    }
+                                </td>
+
+                                <td>
+                                    ${
+                                        credit !== 0
+                                            ? credit.toLocaleString("en-US", {
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 0
+                                            })
+                                            : ""
+                                    }
+                                </td>
+
                             </tr>
                         `;
 
-                        // SUBTOTAL
+
+                        // ------------------------------------------
+                        // ADD ACCOUNT TO SUBHEAD SUBTOTAL
+                        // ------------------------------------------
+
                         subtotaldebit += debit;
                         subtotalcredit += credit;
 
-                        // GRAND TOTAL
-                        grandTotalDebit += debit;
-                        grandTotalCredit += credit;
                     });
+
 
                     html += `</tbody>`;
 
-                    // SUBTOTAL
+
+                    // ==========================================
+                    // ADD SUBHEAD SUBTOTAL TO GRAND TOTAL
+                    // ==========================================
+
+                    grandTotalDebit += subtotaldebit;
+                    grandTotalCredit += subtotalcredit;
+
+
+                    // ==========================================
+                    // SHOW SUBHEAD SUBTOTAL
+                    // ==========================================
+
                     html += `
                         <tr style="background-color:#FFFFFF;">
 
                             <td colspan="4"
                                 class="text-center">
+
                                 <strong>
                                     Sub Total for ${subHeadCount}
                                 </strong>
+
                             </td>
 
+
                             <td class="text-danger">
+
                                 <strong>
                                     ${subtotaldebit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
                                 </strong>
+
                             </td>
 
+
                             <td class="text-danger">
+
                                 <strong>
                                     ${subtotalcredit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
                                 </strong>
+
                             </td>
 
                         </tr>
                     `;
+
                 });
 
+
+                // Close Head table
                 html += `</table>`;
+
             });
+
 
             // ==========================================
             // GRAND TOTAL
+            // TOTAL OF ALL SUBHEAD SUBTOTALS
             // ==========================================
 
             html += `
                 <table class="table table-bordered table-striped mb-0">
 
                     <tfoot>
-                        <tr style="background-color:#17365D; color:white;">
+
+                        <tr style="
+                            background-color:#17365D;
+                            color:white;
+                        ">
 
                             <td colspan="4"
                                 class="text-center"
                                 style="font-size:18px;">
-                                <strong>GRAND TOTAL</strong>
+
+                                <strong>
+                                    GRAND TOTAL
+                                </strong>
+
                             </td>
 
-                            <td style="font-size:18px; text-align:right;">
+
+                            <td style="
+                                font-size:18px;
+                                text-align:right;
+                            ">
+
                                 <strong>
                                     ${grandTotalDebit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
                                 </strong>
+
                             </td>
 
-                            <td style="font-size:18px; text-align:right;">
+
+                            <td style="
+                                font-size:18px;
+                                text-align:right;
+                            ">
+
                                 <strong>
                                     ${grandTotalCredit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
                                 </strong>
+
                             </td>
 
                         </tr>
+
                     </tfoot>
 
                 </table>
             `;
 
+
+            // ==========================================
+            // APPEND FINAL HTML
+            // ==========================================
+
             $tableBody.html(html);
+
         },
 
+
+        // ==========================================
+        // AJAX ERROR
+        // ==========================================
+
         error: function() {
-            $tableBody.html(
-                '<table class="table table-bordered table-striped mb-0">' +
-                '<tr><td colspan="6" class="text-center text-danger">' +
-                'Error loading data. Please try again.' +
-                '</td></tr></table>'
-            );
+
+            $tableBody.html(`
+                <table class="table table-bordered table-striped mb-0">
+
+                    <tr>
+
+                        <td colspan="6"
+                            class="text-center text-danger">
+
+                            Error loading data.
+                            Please try again.
+
+                        </td>
+
+                    </tr>
+
+                </table>
+            `);
+
         }
+
     });
 }
 
