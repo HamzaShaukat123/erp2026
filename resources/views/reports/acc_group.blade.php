@@ -310,7 +310,7 @@
     // Define URL
     const url = "/rep-by-acc-grp/ba";
 
-    // Start the AJAX request
+    // Start AJAX request
     $.ajax({
         type: "GET",
         url: url,
@@ -334,37 +334,48 @@
             // Clear previous content
             $tableBody.empty();
 
-            // Group data by head and subhead
+            // Group data by Head and Subhead
             const AllData = groupByHeadAndSub(result);
 
             // Initialize HTML
             let html = '';
 
-            // ==========================================
-            // GRAND TOTAL VARIABLES
-            // ==========================================
-
-            let grandTotalDebit = 0;
-            let grandTotalCredit = 0;
+            // Global row number
+            let rowCount = 1;
 
 
-            // ==========================================
-            // ITERATE THROUGH EACH HEAD
-            // ==========================================
+            // =====================================================
+            // LOOP THROUGH HEADS
+            // =====================================================
 
             $.each(AllData, function(headCount, heads) {
 
-                // Table for each Head
+                // ---------------------------------------------
+                // HEAD TOTALS
+                // ---------------------------------------------
+
+                let headTotalDebit = 0;
+                let headTotalCredit = 0;
+
+
+                // ---------------------------------------------
+                // HEAD TABLE
+                // ---------------------------------------------
+
                 html += `
                     <table class="table table-bordered table-striped mb-0">
 
                         <thead>
 
                             <tr>
-                                <th class="text-danger"
-                                    colspan="6"
-                                    style="text-align:center; font-size:22px;">
-                                    ${headCount}
+                                <th colspan="6"
+                                    style="
+                                        text-align:center;
+                                        font-size:22px;
+                                        background-color:#d2edc7;
+                                        color:red;
+                                    ">
+                                    <strong>${headCount}</strong>
                                 </th>
                             </tr>
 
@@ -381,54 +392,86 @@
                 `;
 
 
-                // ==========================================
-                // ITERATE THROUGH EACH SUBHEAD
-                // ==========================================
+                // =====================================================
+                // LOOP THROUGH SUBHEADS
+                // =====================================================
 
                 $.each(heads, function(subHeadCount, subheads) {
 
-                    // ------------------------------------------
-                    // RESET SUBTOTAL FOR THIS SUBHEAD
-                    // ------------------------------------------
+                    // ---------------------------------------------
+                    // RESET SUBHEAD TOTALS
+                    // ---------------------------------------------
 
-                    let subtotaldebit = 0;
-                    let subtotalcredit = 0;
+                    let subTotalDebit = 0;
+                    let subTotalCredit = 0;
 
 
-                    // Subhead heading
+                    // ---------------------------------------------
+                    // SUBHEAD TITLE
+                    // ---------------------------------------------
+
                     html += `
                         <tbody>
 
                             <tr>
                                 <td colspan="6"
                                     style="
-                                        background-color:#cfe8e3;
+                                        background-color:#e2f3f5;
                                         text-align:center;
                                         font-weight:bold;
+                                        font-size:16px;
                                     ">
-                                    ${subHeadCount}
+                                    <strong>${subHeadCount}</strong>
                                 </td>
                             </tr>
                     `;
 
 
-                    // ==========================================
-                    // ITERATE THROUGH ACCOUNTS
-                    // ==========================================
+                    // =====================================================
+                    // ACCOUNT HEADER
+                    // =====================================================
+
+                    html += `
+                        <tr>
+
+                            <th>S/No</th>
+                            <th>AC</th>
+                            <th>Account Name</th>
+                            <th>Address</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+
+                        </tr>
+                    `;
+
+
+                    // =====================================================
+                    // LOOP THROUGH ACCOUNTS
+                    // =====================================================
 
                     $.each(subheads, function(itemCount, item) {
 
-                        // Convert AJAX values to numbers
+                        // Convert Debit / Credit to numbers
                         const debit = parseFloat(item.Debit) || 0;
                         const credit = parseFloat(item.Credit) || 0;
 
 
-                        // Account row
+                        // Alternating row background
+                        const backgroundColor =
+                            (rowCount % 2 === 0)
+                                ? '#f1f1f1'
+                                : '#ffffff';
+
+
+                        // ---------------------------------------------
+                        // ACCOUNT ROW
+                        // ---------------------------------------------
+
                         html += `
-                            <tr>
+                            <tr style="background-color:${backgroundColor};">
 
                                 <td>
-                                    ${itemCount + 1}
+                                    ${rowCount}
                                 </td>
 
                                 <td>
@@ -441,6 +484,7 @@
 
                                 <td>
                                     ${item.address || ""}
+                                    ${item.phone || ""}
                                 </td>
 
                                 <td>
@@ -469,12 +513,23 @@
                         `;
 
 
-                        // ------------------------------------------
-                        // ADD ACCOUNT TO SUBHEAD SUBTOTAL
-                        // ------------------------------------------
+                        // ---------------------------------------------
+                        // SUBHEAD TOTAL
+                        // ---------------------------------------------
 
-                        subtotaldebit += debit;
-                        subtotalcredit += credit;
+                        subTotalDebit += debit;
+                        subTotalCredit += credit;
+
+
+                        // ---------------------------------------------
+                        // HEAD TOTAL
+                        // ---------------------------------------------
+
+                        headTotalDebit += debit;
+                        headTotalCredit += credit;
+
+
+                        rowCount++;
 
                     });
 
@@ -482,35 +537,29 @@
                     html += `</tbody>`;
 
 
-                    // ==========================================
-                    // ADD SUBHEAD SUBTOTAL TO GRAND TOTAL
-                    // ==========================================
-
-                    grandTotalDebit += subtotaldebit;
-                    grandTotalCredit += subtotalcredit;
-
-
-                    // ==========================================
-                    // SHOW SUBHEAD SUBTOTAL
-                    // ==========================================
+                    // =====================================================
+                    // SUBHEAD SUB TOTAL
+                    // =====================================================
 
                     html += `
-                        <tr style="background-color:#FFFFFF;">
+                        <tr style="
+                            background-color:#e2f3f5;
+                            font-weight:bold;
+                        ">
 
                             <td colspan="4"
-                                class="text-center">
+                                style="text-align:right;">
 
                                 <strong>
-                                    Sub Total for ${subHeadCount}
+                                    Sub Total For ${subHeadCount}
                                 </strong>
 
                             </td>
 
-
                             <td class="text-danger">
 
                                 <strong>
-                                    ${subtotaldebit.toLocaleString("en-US", {
+                                    ${subTotalDebit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
@@ -518,11 +567,10 @@
 
                             </td>
 
-
                             <td class="text-danger">
 
                                 <strong>
-                                    ${subtotalcredit.toLocaleString("en-US", {
+                                    ${subTotalCredit.toLocaleString("en-US", {
                                         minimumFractionDigits: 0,
                                         maximumFractionDigits: 0
                                     })}
@@ -533,90 +581,146 @@
                         </tr>
                     `;
 
-                });
 
+                    // =====================================================
+                    // SUBHEAD BALANCE
+                    // =====================================================
 
-                // Close Head table
-                html += `</table>`;
-
-            });
-
-
-            // ==========================================
-            // GRAND TOTAL
-            // TOTAL OF ALL SUBHEAD SUBTOTALS
-            // ==========================================
-
-            html += `
-                <table class="table table-bordered table-striped mb-0">
-
-                    <tfoot>
-
+                    html += `
                         <tr style="
-                            background-color:#17365D;
-                            color:white;
+                            background-color:#e2f3f5;
+                            font-weight:bold;
                         ">
 
                             <td colspan="4"
-                                class="text-center"
-                                style="font-size:18px;">
+                                style="text-align:right;">
 
                                 <strong>
-                                    GRAND TOTAL
+                                    Balance For ${subHeadCount}
                                 </strong>
 
                             </td>
 
-
-                            <td style="
-                                font-size:18px;
-                                text-align:right;
-                            ">
+                            <td colspan="2"
+                                style="text-align:center;">
 
                                 <strong>
-                                    ${grandTotalDebit.toLocaleString("en-US", {
-                                        minimumFractionDigits: 0,
-                                        maximumFractionDigits: 0
-                                    })}
-                                </strong>
-
-                            </td>
-
-
-                            <td style="
-                                font-size:18px;
-                                text-align:right;
-                            ">
-
-                                <strong>
-                                    ${grandTotalCredit.toLocaleString("en-US", {
-                                        minimumFractionDigits: 0,
-                                        maximumFractionDigits: 0
-                                    })}
+                                    ${(subTotalDebit + subTotalCredit)
+                                        .toLocaleString("en-US", {
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 0
+                                        })}
                                 </strong>
 
                             </td>
 
                         </tr>
+                    `;
 
-                    </tfoot>
-
-                </table>
-            `;
+                });
 
 
-            // ==========================================
-            // APPEND FINAL HTML
-            // ==========================================
+                // =====================================================
+                // HEAD TOTAL
+                // =====================================================
+
+                html += `
+                    <tr style="
+                        background-color:#d2edc7;
+                        font-weight:bold;
+                        color:red;
+                    ">
+
+                        <td colspan="4"
+                            style="text-align:right;">
+
+                            <strong>
+                                Total For ${headCount}
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                ${headTotalDebit.toLocaleString("en-US", {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                })}
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                ${headTotalCredit.toLocaleString("en-US", {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                })}
+                            </strong>
+
+                        </td>
+
+                    </tr>
+                `;
+
+
+                // =====================================================
+                // HEAD BALANCE
+                // =====================================================
+
+                html += `
+                    <tr style="
+                        background-color:#d2edc7;
+                        font-weight:bold;
+                        color:red;
+                    ">
+
+                        <td colspan="4"
+                            style="text-align:right;">
+
+                            <strong>
+                                Balance For ${headCount}
+                            </strong>
+
+                        </td>
+
+                        <td colspan="2"
+                            style="text-align:center;">
+
+                            <strong>
+                                ${(headTotalDebit + headTotalCredit)
+                                    .toLocaleString("en-US", {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    })}
+                            </strong>
+
+                        </td>
+
+                    </tr>
+                `;
+
+
+                // Close table
+                html += `</table>`;
+
+            });
+
+
+            // =====================================================
+            // DISPLAY RESULT
+            // =====================================================
 
             $tableBody.html(html);
 
         },
 
 
-        // ==========================================
-        // AJAX ERROR
-        // ==========================================
+        // =====================================================
+        // ERROR
+        // =====================================================
 
         error: function() {
 
@@ -637,7 +741,6 @@
 
                 </table>
             `);
-
         }
 
     });
