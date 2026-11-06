@@ -1026,7 +1026,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">SS Cosmo 304 Sale Summary</h2>
+													<h2 class="card-title">SS Cosmo 304 Purchase Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1175,7 +1175,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">SS Cosmo 304 Sale Summary</h2>
+													<h2 class="card-title">SS Cosmo 304 Purchase Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
