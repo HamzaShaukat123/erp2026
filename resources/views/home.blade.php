@@ -959,7 +959,7 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
-														<tbody id="CRCSaleTable">
+														<tbody id="CRCPurchaseTable">
 															
 														</tbody>
 													</table>
@@ -985,7 +985,7 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
-														<tbody id="HRSSaleTable">
+														<tbody id="HRSPurchaseTable">
 															
 														</tbody>
 													</table>
@@ -1011,7 +1011,7 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
-														<tbody id="ECOSaleTable">
+														<tbody id="ECOPurchaseTable">
 															
 														</tbody>
 													</table>
@@ -1037,7 +1037,7 @@
 																<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;text-align:center">Tonage</font></font></th>
 															</tr>
 														</thead>
-														<tbody id="COSMOSaleTable">
+														<tbody id="COSMOPurchaseTable">
 															
 														</tbody>
 													</table>
@@ -1054,7 +1054,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">CRC Purchase Summary</h2>
+													<h2 class="card-title">CRC Sale Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1080,7 +1080,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">HRS Purchase Summary</h2>
+													<h2 class="card-title">HRS Sale Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1106,7 +1106,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">SS Eco 201 Purchase Summary</h2>
+													<h2 class="card-title">SS Eco 201 Sale Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -1132,7 +1132,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">SS Cosmo 304 Purchase Summary</h2>
+													<h2 class="card-title">SS Cosmo 304 Sale Summary</h2>
 												</header>
 												<div class="card-body scrollable-div">
 													
@@ -3129,22 +3129,22 @@
 
         	}
 			else if(tabId=="#IIL"){
-				var table = document.getElementById('CRCSaleTable');
+				var table = document.getElementById('CRCPurchaseTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
 				}
 
-				var table = document.getElementById('HRSSaleTable');
+				var table = document.getElementById('HRSPurchaseTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
 				}
 
-				var table = document.getElementById('ECOSaleTable');
+				var table = document.getElementById('ECOPurchaseTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
 				}
 
-				var table = document.getElementById('COSMOSaleTable');
+				var table = document.getElementById('COSMOPurchaseTable');
 				while (table.rows.length > 0) {
 					table.deleteRow(0);
 				}
@@ -3157,7 +3157,7 @@
 					data: { month: month },
 					beforeSend: function() {
 						// Show "Loading..." in all tables
-						$('#CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
+						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable')
 							.html('<tr><td colspan="2" class="text-center">Loading...</td></tr>');
 					},
 					success: function(result) {
@@ -3215,13 +3215,13 @@
 							$(`#${tableId}`).html(rows);
 						}
 
-						renderTable('CRCSaleTable', result['CRC']);
-						renderTable('HRSSaleTable', result['HRS']);
-						renderTable('ECOSaleTable', result['ECO']);
-						renderTable('COSMOSaleTable', result['COSMO']);
+						renderTable('CRCPurchaseTable', result['CRC']);
+						renderTable('HRSPurchaseTable', result['HRS']);
+						renderTable('ECOPurchaseTable', result['ECO']);
+						renderTable('COSMOPurchaseTable', result['COSMO']);
 					},
 					error: function() {
-						$('#CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
+						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable')
 							.html('<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>');
 					}
 				});
