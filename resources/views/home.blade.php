@@ -420,7 +420,7 @@
 									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#HR" href="#HR" data-bs-toggle="tab">HR</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#IIL" href="#IIL" data-bs-toggle="tab">IIL Karachi</a>
+									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#IIL" href="#IIL" data-bs-toggle="tab">IIL</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link nav-link-dashboard-tab" data-bs-target="#GARDER" href="#GARDER" data-bs-toggle="tab">Garder</a>
@@ -908,7 +908,7 @@
 														<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 													</div>
 
-													<h2 class="card-title">Item Wise IIL Karachi Pipe Purchase</h2>
+													<h2 class="card-title">Item Wise IIL Pipe Purchase</h2>
 												</header>
 												<div class="card-body">
 													<canvas id="IILtop5CustomerPerformance" style="height: 353px;width: 600px;"></canvas>
