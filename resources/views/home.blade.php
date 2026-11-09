@@ -3149,6 +3149,27 @@
 					table.deleteRow(0);
 				}
 
+
+				var table = document.getElementById('CRCSaleTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('HRSSaleTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('ECOSaleTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
+				var table = document.getElementById('COSMOSaleTable');
+				while (table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+
 				var month = document.getElementById('filterIIL').value;
 
 				$.ajax({
@@ -3157,7 +3178,7 @@
 					data: { month: month },
 					beforeSend: function() {
 						// Show "Loading..." in all tables
-						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable')
+						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable, #CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
 							.html('<tr><td colspan="2" class="text-center">Loading...</td></tr>');
 					},
 					success: function(result) {
@@ -3219,9 +3240,13 @@
 						renderTable('HRSPurchaseTable', result['HRS']);
 						renderTable('ECOPurchaseTable', result['ECO']);
 						renderTable('COSMOPurchaseTable', result['COSMO']);
+						renderTable('CRCSaleTable', result['CRC_SALE']);
+						renderTable('HRSSaleTable', result['HRS_SALE']);
+						renderTable('ECOSaleTable', result['ECO_SALE']);
+						renderTable('COSMOSaleTable', result['COSMO_SALE']);
 					},
 					error: function() {
-						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable')
+						$('#CRCPurchaseTable, #HRSPurchaseTable, #ECOPurchaseTable, #COSMOPurchaseTable, #CRCSaleTable, #HRSSaleTable, #ECOSaleTable, #COSMOSaleTable')
 							.html('<tr><td colspan="2" class="text-center text-danger">Error loading data</td></tr>');
 					}
 				});
