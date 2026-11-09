@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\pur2_company_wise_item_group_wise;
 use App\Models\dash_tsale_by_item_group_customer;
 use App\Models\dash_chart_for_item_group;
+use Illuminate\Support\Facades\DB;
 
 class DashboardIILTabController extends Controller
 {
